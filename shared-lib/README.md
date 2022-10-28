@@ -13,7 +13,7 @@
 ## contenet of the libreary
 
 ### error handling
-- comman error class \
+- comman error class 
 ```
 import {CommonError} from "@alpha-lib/shared-lib"
 
@@ -55,4 +55,25 @@ import { errorMiddleware } from "@alpha-lib/shared-lib";
 const app = express();
 
 app.use(errorMiddleware);
+```
+- validation result handling
+    this middleware use to handle the "[express-validator](https://express-validator.github.io/docs/)" validationResult \
+    this middleware should use after setting the validations
+
+```
+    import { Router } from "express";
+    import { body } from "express-validator";
+    import { requestValidationMiddleware } from "@alpha-lib/shared-lib";
+
+    const router = Router();
+
+    router.post(
+        "/", 
+        [
+            body("email")
+                .isEmail()
+                .normalizeEmail()
+        ],
+        requestValidationMiddleware
+    );
 ```
