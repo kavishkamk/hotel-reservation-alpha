@@ -56,7 +56,7 @@ const app = express();
 
 app.use(errorMiddleware);
 ```
-- validation result handling
+- validation result handling \
     this middleware use to handle the "[express-validator](https://express-validator.github.io/docs/)" validationResult \
     this middleware should use after setting the validations
 
@@ -76,4 +76,27 @@ app.use(errorMiddleware);
         ],
         requestValidationMiddleware
     );
+```
+- current-user-middleware \
+this middleware used to get the current user details that are attached to jwt token in session \
+in the session has jwt token (req.session.jwt) verify user and then set payload as req.currentUser\
+if not set jwt, return to next middleware through the next();
+```
+import express from "express";
+import { currentUserMiddleware } from "@alpha-lib/shared-lib";
+
+const app = express();
+
+app.use(currentUserMiddleware);
+```
+- require auth middleware \
+this meddileware check if user logged in or not and if not logged in return "Not Autherized" error with "401"status Code
+** before run this it's required to run currentUserMiddleware **
+```
+import express from "express";
+import { currentUserMiddleware, requireAuthMiddleware } from "@alpha-lib/shared-lib";
+
+const app = express();
+
+app.use(currentUserMiddleware, requireAuthMiddleware);
 ```

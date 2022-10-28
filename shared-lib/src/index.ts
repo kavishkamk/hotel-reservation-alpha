@@ -5,3 +5,5 @@ export * from "./errors/request-validation-errors";
 export * from "./middleware/error-middleware";
 export * from "./middleware/unhandled-route-middleware";
 export * from "./middleware/request-validation-middleware";
+export * from "./middleware/current-user-middleware";
+export * from "./middleware/require-auth-middleware";
