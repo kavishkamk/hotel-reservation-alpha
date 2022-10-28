@@ -2,15 +2,19 @@
 # yarn lockfile v1
 
 
-"@alpha-lib/shared-lib@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@alpha-lib/shared-lib/-/shared-lib-1.0.3.tgz#e71c307ed26f388108d7a5446d88ab4d665a7d77"
-  integrity sha512-LGgN8GRj+KqSfPpYyEjt01Ga4ktfKYv6Mc4s5VvyrZO6xar4dvODXNbwDf8uyHDhj0Rby8KIL4SHk/kbHseKDA==
+"@alpha-lib/shared-lib@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@alpha-lib/shared-lib/-/shared-lib-1.0.4.tgz#9f86aca45194abe21591f346cc493da78bdb3095"
+  integrity sha512-HuP4wwRsdKlYIOvg6cDCCHjr54eX/QSOqeP75SiWYcUqJlNafwQc6ts831bSjfKPXVKXMuMrQOAFUvpWpIMPOw==
   dependencies:
+    "@types/cookie-session" "^2.0.44"
     "@types/express" "^4.17.14"
     "@types/express-validator" "^3.0.0"
+    "@types/jsonwebtoken" "^8.5.9"
+    cookie-session "^2.0.0"
     express "^4.18.2"
     express-validator "^6.14.2"
+    jsonwebtoken "^8.5.1"
 
 "@aws-crypto/ie11-detection@^2.0.0":
   version "2.0.2"

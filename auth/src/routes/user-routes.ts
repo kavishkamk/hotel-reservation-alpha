@@ -1,13 +1,12 @@
 import { Router } from "express";
 import { body } from "express-validator";
-import { requestValidationMiddleware } from "@alpha-lib/shared-lib";
+import { requestValidationMiddleware, currentUserMiddleware } from "@alpha-lib/shared-lib";
 
 import { signin, signout, signup, currentUser } from "../controllers/user-controllers";
 
-
 const router = Router();
 
-router.get("/currentuser", currentUser);
+router.get("/currentuser", currentUserMiddleware, currentUser);
 
 router.post(
     "/signup",
