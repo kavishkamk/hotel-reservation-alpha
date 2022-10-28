@@ -1,7 +1,9 @@
 import { Router } from "express";
 import { body } from "express-validator";
+import { requestValidationMiddleware } from "@alpha-lib/shared-lib";
 
 import { signin, signout, signup, currentUser } from "../controllers/user-controllers";
+
 
 const router = Router();
 
@@ -29,6 +31,7 @@ router.post(
             .isLength({ min: 8 })
             .withMessage("Password should be at leadt 8 characters")
     ],
+    requestValidationMiddleware,
     signup
 );
 
@@ -45,6 +48,7 @@ router.post(
             .isEmpty()
             .withMessage("Password required")
     ],
+    requestValidationMiddleware,
     signin
 );
 

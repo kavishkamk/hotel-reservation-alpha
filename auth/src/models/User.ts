@@ -3,7 +3,10 @@
         build => User.build method used to create user
 */
 
-import { Schema, model, Model } from "mongoose";
+import { Schema, model, Model, Document } from "mongoose";
+import uniqueValidator from "mongoose-unique-validator";
+
+import { PasswordHandle } from "../services/PasswordHandle";
 
 // an interface that describe the properties
 // that are required to create user
@@ -12,6 +15,7 @@ interface IUser {
     lastName: string;
     email: string;
     password: string;
+    activeStatus: Boolean;
 };
 
 // an interface that describe the properties
@@ -22,24 +26,38 @@ interface UserModel extends Model<UserDoc> {
 
 // an interface that describe the properties
 // that are user document has
-interface UserDoc {
+interface UserDoc extends Document {
     firstName: string;
     lastName: string;
     email: string;
     password: string;
+    activeStatus: Boolean;
 }
 
 const userSchema = new Schema({
     firstName: { type: String, required: [true, "First Name required"] },
     lastName: { type: String, required: [true, "Last Name required"] },
-    email: { type: String, required: [true, "Email required"] },
-    password: { type: String, required: [true, "Password required"] }
+    email: { type: String, required: [true, "Email required"], unique: true },
+    password: { type: String, required: [true, "Password required"] },
+    activeStatus: { type: Boolean, required: [true, "Account activation should be set"] }
+});
+
+// set email as unique
+userSchema.plugin(uniqueValidator);
+
+// pre middleware for password hashing
+userSchema.pre("save", async function (done) {
+    if (this.isModified("password")) {
+        const hashedPassword = await PasswordHandle.toHash(this.get("password"));
+        this.set("password", hashedPassword);
+    };
+    done();
 });
 
 // create a user
-userSchema.statics.build = (attrs: IUser) => {
+userSchema.statics.build = (attrs: IUser): IUser => {
     return new User(attrs);
-}
+};
 
 const User = model<UserDoc, UserModel>("User", userSchema);
 
