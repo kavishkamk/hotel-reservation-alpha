@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 
 // images
 import offersImage from "../../assets/booking-progress/offers.png";
@@ -9,10 +9,12 @@ import roomsImage from "../../assets/booking-progress/rooms.png";
 // components
 import BackButton from "../../components/booking-progress/BackButton";
 import NextButton from "../../components/booking-progress/NextButton";
-import Container from "../../components/booking-progress/Container"
-import Topic from "../../components/booking-progress/Topic"
+import Container from "../../components/booking-progress/Container";
+import Topic from "../../components/booking-progress/Topic";
 
 const ReservationType = () => {
+	const [selected, setSelected] = useState();
+	const ref = useRef();
 
 	const reservationTypesData = [
 		{
@@ -42,19 +44,33 @@ const ReservationType = () => {
 	};
 
 	const nextHandler = () => {
-		console.log("next");
+		if(selected){
+			// cannot go to the next pg until select an item
+			console.log("next");
+		}
+	};
+
+	// set the id of selected item
+	const selectHandler = (id) => {
+		setSelected(id);
 	};
 
 	return (
 		<Container>
-			<Topic topic="Reservation Type "/>
+			<Topic topic="Reservation Type " />
 			<div className="flex flex-row flex-wrap gap-y-4 w-full mx-auto my-10">
 				{reservationTypesData.map((item) => (
-					<div
-						key={item.id}
-						className="w-[180px] mx-auto"
-					>
-						<div className="cursor-pointer rounded bg-opacity-30 bg-[#E6E7FE54] hover:bg-[#9FA2E7] focus:bg-[#9FA2E7] flex items-center justify-center h-28">
+					<div key={item.id} className="w-[180px] mx-auto">
+						<div
+							ref={ref}
+							onClick={() => selectHandler(item.id)}
+							className={
+								`h-28 cursor-pointer rounded hover:bg-[#9FA2E7] flex items-center justify-center 
+									${selected === item.id
+									? "bg-[#9FA2E7] "
+									: "bg-[#E6E7FE54] "}`
+							}
+						>
 							<img
 								src={item.image}
 								alt="packages"
