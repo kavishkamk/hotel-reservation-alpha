@@ -1,9 +1,12 @@
 import './App.css';
+import ReservationType from "./containers/booking-progress/ReservationType"
+import CheckinCheckout from "./containers/booking-progress/CheckinCheckout"
 
 function App() {
   return (
-    <div className="text-xl mx-auto w-fit text-red-500">hello world</div>
-  );
+			// <ReservationType />
+      <CheckinCheckout />
+	);
 }
 
 export default App;
