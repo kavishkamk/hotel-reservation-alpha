@@ -6,6 +6,7 @@ module.exports = {
 			fontFamily: {
 				manrope: ["Manrope", "sans-serif"],
 				poppins: ["Poppins", "sans-serif"],
+				inter: ["Inter", "sans-serif"],
 			},
 			colors: {
 				textBlue: "#2B3087",
