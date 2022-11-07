@@ -12,6 +12,7 @@ module.exports = {
 				textBlue: "#2B3087",
 				lightBlueGray: "#F7F7FF",
 				lightPurple: "#9FA2E7",
+				lightBlue: "#0889FF",
 			},
 		},
 	},

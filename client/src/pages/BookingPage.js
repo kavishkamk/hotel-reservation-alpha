@@ -33,11 +33,11 @@ const BookingPage = () => {
 			setPage={setPage}
 			formData={formData}
 			setFormData={setFormData}
-		/>,
+		/>, 
 	];
 	return (
 		<div className="">
-			<ProgressTracker />
+			<ProgressTracker page={page} />
 
 			<div className="">
 				{containerList[page]}
