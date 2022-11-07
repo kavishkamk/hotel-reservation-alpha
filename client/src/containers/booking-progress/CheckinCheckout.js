@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 
 // images
 import checkinImage from "../../assets/booking-progress/checkin.png"
@@ -10,10 +10,24 @@ import Container from "../../components/booking-progress/Container"
 import Topic from "../../components/booking-progress/Topic"
 import SelectDate from "../../components/booking-progress/SelectDate"
 
-const CheckinCheckout = () => {
-	const backHandler = () => {}
+const CheckinCheckout = (props) => {
+	// props
+	const page = props.page
+	const setPage = props.setPage
+	const formData = props.formData;
+	const setFormData = props.setFormData;
 
-	const nextHandler = () => {}
+	useEffect(() => {
+		console.log(formData)
+	}, [formData])
+
+	const backHandler = () => {
+		setPage(page - 1)
+	}
+
+	const nextHandler = () => {
+		// setPage(page + 1)
+	}
 
 	return (
 		<Container>
@@ -23,7 +37,11 @@ const CheckinCheckout = () => {
 				<img src={checkinImage} alt="check-in" />
 			</div>
 
-			<SelectDate />
+			{formData && 
+			<SelectDate 
+				formData={formData}
+				setFormData={setFormData}
+			/>}
 
 			<div className="flex flex-row mt-auto">
 				<BackButton onClick={backHandler} />

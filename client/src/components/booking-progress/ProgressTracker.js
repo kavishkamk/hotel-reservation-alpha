@@ -6,7 +6,7 @@ import {ReactComponent as LineMark} from "../../assets/booking-progress/line-mar
 
 const ProgressTracker = () => {
 	return (
-		<div className="flex flex-row w-fit mx-auto">
+		<div className="flex flex-row w-fit mx-auto my-10">
 
 			{/* date */}
 			<div className="flex flex-row items-center">

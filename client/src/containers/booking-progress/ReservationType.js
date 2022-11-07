@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 // images
 import offersImage from "../../assets/booking-progress/offers.png";
@@ -12,9 +12,21 @@ import NextButton from "../../components/booking-progress/NextButton";
 import Container from "../../components/booking-progress/Container";
 import Topic from "../../components/booking-progress/Topic";
 
-const ReservationType = () => {
+const ReservationType = (props) => {
 	const [selected, setSelected] = useState();
 	const ref = useRef();
+
+	// props
+	const page = props.page
+	const setPage = props.setPage
+	const formData = props.formData
+	const setFormData = props.setFormData
+
+	useEffect(() => {
+		setSelected(formData.type)
+		setFormData({...formData, type: selected})
+	}, [])
+	
 
 	const reservationTypesData = [
 		{
@@ -39,14 +51,11 @@ const ReservationType = () => {
 		},
 	];
 
-	const backHandler = () => {
-		console.log("back");
-	};
-
 	const nextHandler = () => {
+		// cannot go to the next pg until select an item
 		if(selected){
-			// cannot go to the next pg until select an item
-			console.log("next");
+			setFormData({ ...formData, type: selected });
+			setPage(page + 1)
 		}
 	};
 
@@ -85,7 +94,7 @@ const ReservationType = () => {
 			</div>
 
 			<div className="flex flex-row mt-auto">
-				<BackButton onClick={backHandler} />
+				{/* <BackButton onClick={backHandler} /> */}
 
 				<div className="ml-auto">
 					<NextButton onClick={nextHandler} />
