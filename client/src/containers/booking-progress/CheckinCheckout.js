@@ -26,7 +26,7 @@ const CheckinCheckout = (props) => {
 	}
 
 	const nextHandler = () => {
-		// setPage(page + 1)
+		setPage(page + 1)
 	}
 
 	return (

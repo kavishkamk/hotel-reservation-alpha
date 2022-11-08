@@ -5,18 +5,21 @@ import {
 	Routes,
 } from "react-router-dom";
 
+// pages
+import BookingPage from "./pages/BookingPage"
+
 // containers
 import ReservationType from "./containers/booking-progress/ReservationType"
 import CheckinCheckout from "./containers/booking-progress/CheckinCheckout"
 
 // testing components
 import CardContainer from "./components/cards/CardContainer"
-
-// pages
-import BookingPage from "./pages/BookingPage"
+import Dropdown from "./components/booking-progress/Dropdown"
 
 function App() {
   return (
+		// <Dropdown />
+
 		// <Router>
 		// 	<Routes>
 		// 		<Route exact path="/" element={<ReservationType />} />
@@ -25,9 +28,9 @@ function App() {
 		// </Router>
 
 		<div className="app">
-			{/* <CheckinCheckout /> */}
 			<BookingPage />
 		</div>
+
 
 		// <div className="flex flex-wrap">
 		// 	<CardContainer />
