@@ -5,7 +5,7 @@ import ReactCardFlip from "react-card-flip";
 import CardFront from "./CardFront"
 import CardBack from "./CardBack"
 
-const CardContainer = () => {
+const CardContainer = (props) => {
 	const [flipped, setFlipped] = useState(false);
 
 	const flip = () => {
@@ -16,8 +16,18 @@ const CardContainer = () => {
 	return (
 		<div className="">
 			<ReactCardFlip isFlipped={flipped}>
-				<CardFront onClick={flip} />
-				<CardBack onClick={flip} />
+				<CardFront 
+					title={props.title} 
+					image={props.image}
+					price={props.price}
+					onClick={flip} 
+				/>
+				<CardBack 
+					onClick={flip} 
+					title={props.title}
+					image={props.image}
+					description={props.description}
+				/>
 			</ReactCardFlip>
 		</div>
 	);

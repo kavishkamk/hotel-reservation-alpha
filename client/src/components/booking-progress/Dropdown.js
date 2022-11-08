@@ -8,8 +8,6 @@ const Dropdown = memo((props) => {
   let allSelections = []
 
   const searchHandler = () => {
-    console.log("selecteddddd")
-    console.log(allSelections)
     setSelectedHandler(allSelections);
 	};
   

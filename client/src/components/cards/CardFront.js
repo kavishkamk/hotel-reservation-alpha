@@ -1,7 +1,7 @@
 import React from 'react'
 
 // images
-import cardImage from "../../assets/cards/card-image.png"
+// import cardImage from "../../assets/cards/card-image.png"
 import starsImage from "../../assets/cards/5stars.png"
 import wifiIcon from "../../assets/cards/wifi.svg"
 import handIcon from "../../assets/cards/hand.svg"
@@ -12,7 +12,7 @@ const CardFront = (props) => {
 		<div onClick={props.onClick} className="drop-shadow-[0_9px_4px_rgba(107,113,203,1)] bg-white w-[90%] sm:w-fit mx-auto p-4 rounded-lg border border-[#2B3087]">
 			{/* title */}
 			<div className="text-center text-xl font-poppins text-textBlue font-bold filter-none">
-				staycation package
+				{props.title}
 			</div>
 
 			{/* stars */}
@@ -23,7 +23,7 @@ const CardFront = (props) => {
 			<div className="relative w-fit mx-auto">
 				{/* main card image */}
 				<div className="w-full">
-					<img src={cardImage} alt="card" className="sm:max-w-xs" />
+					<img src={props.image} alt="card" className="sm:max-w-xs" />
 				</div>
 
 				{/* facilities icons */}
@@ -48,7 +48,7 @@ const CardFront = (props) => {
 				{/* price */}
 				<div className="bg-black flex flex-row font-inter items-center justify-center gap-2 py-3 absolute bottom-0 left-0 right-0">
 					<div className="text-2xl text-[#0889FF] font-bold">
-						USD 105
+						Rs.{props.price}
 					</div>
 					<div className="text-white text-sm">/ Night</div>
 				</div>
