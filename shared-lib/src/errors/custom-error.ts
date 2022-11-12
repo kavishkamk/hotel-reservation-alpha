@@ -6,8 +6,11 @@
         serializeErrors: {message: string, field?: string}[] => this method will return error message in this format
 */
 
+import { ErrorTypes } from "./error-types";
+
 export abstract class CustomError extends Error {
     abstract statusCode: number;
+    abstract errorType: ErrorTypes
 
     constructor(message: string) {
         super(message);
