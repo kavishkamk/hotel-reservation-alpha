@@ -1,0 +1,47 @@
+[
+	{
+		"id": 1,
+		"name": "Go all-inclusive",
+		"description": "Cherish new beginnings, and holidays like it's your first time. Relish your stay with unrivaled benefits, while we ensure you a memorable stay with the highest levels of safety and service synonymous with us.",
+		"image": "https://imgur.com/diY7AYZ.png",
+		"price": "12500",
+		"inclusions": [
+			"15% savings on food and beverages",
+			"10% discount on laundry service",
+			"Buy 1 get 1 free on selected beverages",
+			"Valid only for stays until 30th November 2022."
+		],
+		"tags": [
+			"buy 1 get 1 free",
+			"food and beverages",
+			"laundry service"
+		]
+	},
+	{
+		"id": 2,
+		"name": "Dine and Stay on Seafood Sundays",
+		"description": "Treat yourself to a luxurious weekend inclusive of a seafood feast and exclusive value additions.",
+		"image": "https://imgur.com/h4j4gLa.png",
+		"price": "20500",
+		"inclusions": [
+			"15% savings on food and beverages",
+			"50% off on selected beverages during happy hour at Breeze Bar",
+			"Personal training at the gym (pre-booking are required)",
+			"10% discount on laundry service",
+			"Valid only for stays until 30th November 2022."
+		],
+		"tags": ["food and beverages", "laundry service", "gym"]
+	},
+	{
+		"id": 3,
+		"name": "A free meal upgrade",
+		"description": "An exciting escape to the Maldives awaits! Book now and enjoy a free meal upgrade and other exciting value additions. Discounts of up to 65% available.",
+		"image": "https://imgur.com/Vw4S2ux.png",
+		"price": "19000",
+		"inclusions": [
+			"Valid for Stays until 15th December 2022.",
+			"Cannot be combined with any other offer."
+		],
+		"tags": ["free meal"]
+	}
+]

@@ -81,7 +81,7 @@ const app = express();
 
 app.use(errorMiddleware);
 ```
-- validation result handling
+- validation result handling \
     this middleware use to handle the "[express-validator](https://express-validator.github.io/docs/)" validationResult \
     this middleware should use after setting the validations
 
