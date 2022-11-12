@@ -1,0 +1,48 @@
+[
+	{
+		"id": 1,
+		"name": "Room Rush",
+		"description": "Room Rush is back, giving you a chance to enjoy the luxurious spaces of our hotel and Villas. Hurry, book your stay online with Room Rush and receive amazing discounts.",
+		"image": "https://imgur.com/QbAcLl7.png",
+		"inclusions": [
+			"Offer applicable for 'Bed & Breakfast', 'Half Board' and 'Full Board' meal plans only.",
+			"Standard check-in/check-out of the respective hotel applies.",
+			"A fee of LKR 1,500 will be charged for an additional bed."
+		],
+		"tags": [
+			"rooms",
+			"Breakfast"
+		],
+		"price": 15000
+	},
+	{
+		"id": 2,
+		"name": "Flash Offer",
+		"description": "Call your friends and dust off your suitcases! Enjoy incredible rates at oue hotel for your stays until the 20th December 2022.",
+		"image": "https://imgur.com/ADsY2gC.png",
+		"inclusions": [
+			"For properties Oatlands by Jetwing & Broomfield by Jetwing, offer is valid only on Bed & breakfast basis."
+		],
+		"tags": ["Jetwing", "rooms", "Breakfast"],
+		"price": 22000
+	},
+	{
+		"id": 3,
+		"name": "Honeymoon Offer",
+		"description": "Book any of our standard rate plans and let us treat you to some extraordinary specials on your getaway! (Not applicable on promotional/ discounted rates)",
+		"image": "https://imgur.com/7IBKweo.png",
+		"inclusions": [
+			"Kottukal Beach House 2 nights",
+			"Fruit basket, chocolates on arrival",
+			"Photo shoot at the hotel",
+			"Minimum 02 nights stay",
+			"Free meal upgrade for the first anniversary stay"
+		],
+		"tags": [
+			"photo shoot",
+			"honeymoon offers",
+			"free meal"
+		],
+		"price": 35000
+	}
+]
