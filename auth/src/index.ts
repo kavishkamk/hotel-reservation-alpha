@@ -12,6 +12,18 @@ const start = () => {
         throw new Error("JWT_KEY must be defined");
     };
 
+    if (!process.env.MONGO_PASSWORD) {
+        throw new Error("MONGO URL must be defined");
+    };
+
+    if (!process.env.HOST_EMAIL) {
+        throw new Error("Host email should be defined");
+    };
+
+    if (!process.env.EMAIL_APP_PASSWORD) {
+        throw new Error("Host email app password should be defined");
+    };
+
     // connect to the testing database
     mongoose.connect(`mongodb+srv://alpha:${process.env.MONGO_PASSWORD}@alpha-db.j2hgeoj.mongodb.net/?retryWrites=true&w=majority`)
         .then(() => {
