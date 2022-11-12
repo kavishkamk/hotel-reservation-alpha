@@ -5,6 +5,7 @@
 
 import { CommonError } from "../errors/common-error";
 import { NextFunction, Request, Response } from "express";
+
 import { ErrorTypes } from "../errors/error-types";
 
 const requireAuthMiddleware = (req: Request, res: Response, next: NextFunction) => {

@@ -1,0 +1,8 @@
+[
+	{ "label": 1, "content": "Deluxe" },
+	{ "label": 2, "content": "King" },
+	{ "label": 3, "content": "AC" },
+	{ "label": 4, "content": "Queen" },
+	{ "label": 5, "content": "Executive" },
+	{ "label": 6, "content": "Suite" }
+]
