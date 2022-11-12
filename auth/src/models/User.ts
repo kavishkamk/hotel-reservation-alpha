@@ -14,6 +14,9 @@ interface IUser {
     firstName: string;
     lastName: string;
     email: string;
+    contactNumber: string;
+    address: string;
+    profileURL?: string;
     password: string;
     activeStatus: Boolean;
 };
@@ -30,16 +33,24 @@ interface UserDoc extends Document {
     firstName: string;
     lastName: string;
     email: string;
+    contactNumber: string;
+    address: string;
+    profileURL?: string;
     password: string;
     activeStatus: Boolean;
-}
+    otpCode?: Number;
+};
 
-const userSchema = new Schema({
+const userSchema = new Schema<UserDoc, UserModel>({
     firstName: { type: String, required: [true, "First Name required"] },
     lastName: { type: String, required: [true, "Last Name required"] },
     email: { type: String, required: [true, "Email required"], unique: true },
+    contactNumber: { type: String, required: [true, "Contact number required"] },
+    address: { type: String, required: [true, "Address required"] },
+    profileURL: { type: String },
     password: { type: String, required: [true, "Password required"] },
-    activeStatus: { type: Boolean, required: [true, "Account activation should be set"] }
+    activeStatus: { type: Boolean, required: [true, "Account activation should be set"], default: false },
+    otpCode: { type: Number }
 });
 
 // set email as unique
