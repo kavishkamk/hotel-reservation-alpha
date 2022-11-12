@@ -1,8 +1,11 @@
 import { ValidationError } from "express-validator";
 
 import { CustomError } from "./custom-error";
+import { ErrorTypes } from "./error-types";
 
 export class RequestValidationError extends CustomError {
+
+    errorType: ErrorTypes = ErrorTypes.INPUT_VALIDATION_ERROR;
 
     constructor(public statusCode: number, private validationErrors: ValidationError[]) {
         super("Validation Error");

@@ -1,3 +1,4 @@
+export * from "./errors/error-types";
 export * from "./errors/common-error";
 export * from "./errors/custom-error";
 export * from "./errors/request-validation-errors";

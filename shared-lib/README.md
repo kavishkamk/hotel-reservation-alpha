@@ -10,16 +10,40 @@
     npm install @alpha-lib/shared-lib
 ```
 
+## Error Format
+
+```
+ {
+    errors: {message: string; field?: string}[],
+    errorType: ErrorTypes
+ }
+```
+
+
+## ErrorTypes
+
+```
+NOT_ACTIVATED_ACCOUNT = "User Account Not Activated",
+EXISTING_USER = "User already exists",
+INPUT_VALIDATION_ERROR = "Input Validation Error",
+INTERNAL_SERVER_ERROR = "Internal Server Error",
+NOT_FOUND = "not found",
+NOT_AUTHERIZED = "Unautherized Activity"
+```
+
 ## contenet of the libreary
 
 ### error handling
 - comman error class 
 ```
+    CommonError(statusCode: number, errorTypes: ErrorTypes, errorMessage: string)
+```
+```
 import {CommonError} from "@alpha-lib/shared-lib"
 
-new CommonError(404, "route not found");
+new CommonError(404, ErrorTypes.NOT_FOUND, "route not found");
 ```
-- request validation class \
+- request validation class - return  INPUT_VALIDATION_ERROR\
 this method return the formatted error message for the "[express-validator](https://express-validator.github.io/docs/)" error result
 ```
 import {RequestValidationError} from "@alpha-lib/shared-lib"
@@ -77,6 +101,7 @@ app.use(errorMiddleware);
         requestValidationMiddleware
     );
 ```
+
 - current-user-middleware \
 this middleware used to get the current user details that are attached to jwt token in session \
 in the session has jwt token (req.session.jwt) verify user and then set payload as req.currentUser\
