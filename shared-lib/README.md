@@ -28,7 +28,8 @@ EXISTING_USER = "User already exists",
 INPUT_VALIDATION_ERROR = "Input Validation Error",
 INTERNAL_SERVER_ERROR = "Internal Server Error",
 NOT_FOUND = "not found",
-NOT_AUTHERIZED = "Unautherized Activity"
+NOT_AUTHERIZED = "Unautherized Activity",
+ALREADY_ACTIVATED_ACCOUNT = "Already Activated Account"
 ```
 
 ## contenet of the libreary
