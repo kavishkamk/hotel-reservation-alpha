@@ -8,17 +8,12 @@ import shareIcon from "../../assets/cards/share-icon.svg"
 import reviewIcon from "../../assets/cards/review-icon.svg"
 
 const CardBack = (props) => {
+	const bookClickHandler = props.bookClickHandler
+	const item = props.item
+	const hideBookBtn = props.hideBookBtn;
 
-	const shareHandler = ()=> {
-
-	}
-
-	const reviewHandler = ()=> {
-
-	}
-
-	const favHandler = ()=> {
-
+	const bookHandler = ()=> {
+		bookClickHandler(item)
 	}
 
 	return (
@@ -67,9 +62,14 @@ const CardBack = (props) => {
 					</div> */}
 
 					<div className="bg-black flex flex-row py-3 w-full justify-evenly">
-						<button className="font-poppins bg-[#4B51AC] text-white font-semibold w-fit px-3 py-2">
-							Book Now
-						</button>
+						{!hideBookBtn &&(
+							<button
+								onClick={bookHandler}
+								className="font-poppins bg-[#4B51AC] text-white font-semibold w-fit px-3 py-2"
+							>
+								Book Now
+							</button>
+						)}
 						<button className="font-poppins bg-[#10B981] text-white font-semibold w-fit px-3 py-2">
 							View More
 						</button>

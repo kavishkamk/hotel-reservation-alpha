@@ -49,6 +49,11 @@ const RestaurentSelect = (props) => {
 		[]
 	);
 
+	const bookClickHandler = (item)=> {
+		setFormData({...formData, item:item})
+		setPage(page + 1);
+	}
+
 	return (
 		<Container>
 			<Topic topic="Select Restaurent" />
@@ -65,8 +70,9 @@ const RestaurentSelect = (props) => {
 					<CardContainer
 						title={item.name}
 						image={item.image}
-						// price={item.price}
 						description={item.description}
+						bookClickHandler={bookClickHandler}
+						item={item}
 					/>
 				))}
 			</div>
@@ -74,9 +80,9 @@ const RestaurentSelect = (props) => {
 			<div className="flex flex-row mt-auto">
 				<BackButton onClick={backHandler} />
 
-				<div className="ml-auto">
+				{/* <div className="ml-auto">
 					<NextButton onClick={nextHandler} />
-				</div>
+				</div> */}
 			</div>
 		</Container>
 	);

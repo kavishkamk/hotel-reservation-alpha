@@ -8,25 +8,30 @@ import CardBack from "./CardBack"
 const CardContainer = (props) => {
 	const [flipped, setFlipped] = useState(false);
 
+	const item = props.item
+	const bookClickHandler = props.bookClickHandler
+
 	const flip = () => {
 		setFlipped(!flipped);
-		console.log("should flip")
 	};
 
 	return (
-		<div className="">
+		<div className="cursor-pointer">
 			<ReactCardFlip isFlipped={flipped}>
-				<CardFront 
-					title={props.title} 
+				<CardFront
+					title={props.title}
 					image={props.image}
 					price={props.price}
-					onClick={flip} 
+					onClick={flip}
 				/>
-				<CardBack 
-					onClick={flip} 
+				<CardBack
+					onClick={flip}
 					title={props.title}
 					image={props.image}
 					description={props.description}
+					item={item}
+					bookClickHandler={bookClickHandler}
+					hideBookBtn={props.hideBookBtn}
 				/>
 			</ReactCardFlip>
 		</div>

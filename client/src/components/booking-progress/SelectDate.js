@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 
 const SelectDate = (props) => {
 	const checkbtnRef = useRef();
-	const [checkStatus, setCheckStatus] = useState(false);
+	const [checkStatus, setCheckStatus] = useState(null);
 	const [checkinDate, setCheckinDate] = useState("");
 	const [checkoutDate, setCheckoutDate] = useState();
 	const [guests, setGuests] = useState();
@@ -12,7 +12,7 @@ const SelectDate = (props) => {
 	const formData = props.formData;
 	const setFormData = props.setFormData;
 
-	let availability = true;
+	let availability = false;
 
 	useEffect(() => {
 		console.log("form get ==> ");
@@ -62,12 +62,15 @@ const SelectDate = (props) => {
 			checkbtnRef.current.classList.remove(
 				"bg-lightPurple"
 			);
-			checkbtnRef.current.classList.add("bg-[#10B981]");
 
 			// ***********************************
 			// if selected dates available, display "available"
 			if (availability) {
+				checkbtnRef.current.classList.add("bg-[#10B981]");
 				setCheckStatus(true);
+			}else if(availability === false) {
+				checkbtnRef.current.classList.add("bg-red-400");
+				setCheckStatus(false);
 			}
 		}
 	};
@@ -82,6 +85,18 @@ const SelectDate = (props) => {
 		if (e.target.value < 1) e.target.value = 1;
 	};
 
+	const StatusDisplayHandler = (checkStatus) => {
+		let text;
+		if(checkStatus === null)
+			text = `CHECK AVAILABILITY`
+		else if(checkStatus === true) 
+			text = `AVAILABLE`
+		else if(checkStatus === false)
+			text = `NOT AVAILABLE`
+		
+			return text
+	}
+
 	return (
 		<div className="mx-auto w-full">
 			<div className="flex flex-col xl:flex-row rounded-lg py-5 md:p-10 my-5 bg-lightBlueGray w-full md:w-fit mx-auto xl:p-3">
@@ -93,7 +108,7 @@ const SelectDate = (props) => {
 						type="date"
 						id="checkin"
 						defaultValue={checkinDate}
-						className="bg-lightBlueGray w-fit text-[#10B981] font-semibold my-3 md:my-0 md:text-xl rounded-lg px-3 mx-2"
+						className="bg-lightBlueGray w-fit text-[#10B981] font-semibold my-3 md:my-0 md:text-lg rounded-lg px-3 mx-2"
 					/>
 				</div>
 
@@ -105,7 +120,7 @@ const SelectDate = (props) => {
 						type="date"
 						id="checkout"
 						defaultValue={checkoutDate}
-						className="bg-lightBlueGray w-fit text-[#10B981] font-semibold my-3 md:my-0 md:text-xl rounded-lg px-3 mx-2"
+						className="bg-lightBlueGray w-fit text-[#10B981] font-semibold my-3 md:my-0 md:text-lg rounded-lg px-3 mx-2"
 					/>
 				</div>
 
@@ -119,7 +134,7 @@ const SelectDate = (props) => {
 						min="1"
 						defaultValue={guests}
 						onKeyUp={GuestInputHandler}
-						className="bg-lightBlueGray w-[120px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0 md:text-xl "
+						className="bg-lightBlueGray w-[120px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0 md:text-lg "
 					/>
 				</div>
 
@@ -133,20 +148,18 @@ const SelectDate = (props) => {
 						min="1"
 						defaultValue={rooms}
 						onKeyUp={RoomsInputHandler}
-						className="bg-lightBlueGray w-[120px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0 md:text-xl "
+						className="bg-lightBlueGray w-[120px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0 md:text-lg "
 					/>
 				</div>
 
 				<button
 					onClick={checkHandler}
 					ref={checkbtnRef}
-					className="cursor-pointer hover:shadow-xl uppercase md:text-xl mx-auto text-center 
+					className="cursor-pointer hover:shadow-xl uppercase md:text-lg mx-auto text-center 
 				font-bold text-white bg-lightPurple rounded-xl h-auto px-3 flex items-center my-4 xl:my-0 py-3 xl:py-0"
 				>
 					<div className="cursor-pointer ">
-						{checkStatus === false
-							? `CHECK AVAILABILITY`
-							: `AVAILABLE`}
+						{StatusDisplayHandler(checkStatus)}
 					</div>
 				</button>
 			</div>

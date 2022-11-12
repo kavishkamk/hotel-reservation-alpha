@@ -7,6 +7,7 @@ import ProgressTracker from "../components/booking-progress/ProgressTracker";
 import CheckinCheckout from "../containers/booking-progress/CheckinCheckout";
 import ReservationType from "../containers/booking-progress/ReservationType";
 import ItemsFilter from "../containers/booking-progress/ItemsFilter";
+import Summary from "../containers/booking-progress/Summary"
 
 const BookingPage = () => {
 	const [page, setPage] = useState(0);
@@ -31,6 +32,12 @@ const BookingPage = () => {
 			setFormData={setFormData}
 		/>,
 		<ItemsFilter
+			page={page}
+			setPage={setPage}
+			formData={formData}
+			setFormData={setFormData}
+		/>,
+		<Summary
 			page={page}
 			setPage={setPage}
 			formData={formData}

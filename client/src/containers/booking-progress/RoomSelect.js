@@ -56,25 +56,33 @@ const RoomSelect = (props) => {
 		// prevent re-rendering the dropdown component when click on search button
 	}, [])
 
+	const bookClickHandler = (item) => {
+		setFormData({ ...formData, item: item });
+		setPage(page + 1);
+	};
+
 	return (
 		<Container>
 			<Topic topic="Select Room" />
 
 			<div className="w-full">
-				<Dropdown tags={tags} setSelectedHandler={setSelectedHandler} />
+				<Dropdown
+					tags={tags}
+					setSelectedHandler={setSelectedHandler}
+				/>
 			</div>
 
 			<div className="flex flex-wrap w-full justify-evenly gap-y-6 my-10">
-				{
-					searchResult.map((item)=> (
-						<CardContainer
-							title={item.name}	 
-							image={item.image}
-							price={item.price}
-							description={item.description}
-						/>
-					))
-				}
+				{searchResult.map((item) => (
+					<CardContainer
+						title={item.name}
+						image={item.image}
+						price={item.price}
+						description={item.description}
+						bookClickHandler={bookClickHandler}
+						item={item}
+					/>
+				))}
 			</div>
 
 			<div className="flex flex-row mt-auto">

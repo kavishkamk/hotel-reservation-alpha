@@ -18,28 +18,12 @@ import Dropdown from "./components/booking-progress/Dropdown"
 
 function App() {
   return (
-		// <Dropdown />
-
-		// <Router>
-		// 	<Routes>
-		// 		<Route exact path="/" element={<ReservationType />} />
-
-		// 	</Routes>
-		// </Router>
-
-		<div className="app">
-			<BookingPage />
-		</div>
-
-
-		// <div className="flex flex-wrap">
-		// 	<CardContainer />
-		// 	<CardContainer />
-		// 	<CardContainer />
-		// 	<CardContainer />
-		// 	<CardContainer />
-		// 	<CardContainer />
-		// </div>
+		<Router>
+			<Routes>
+				<Route exact path="/" element={<BookingPage />} />
+				{/* <Route path="/booking-summary" element={} /> */}
+			</Routes>
+		</Router>
 	);
 }
 
