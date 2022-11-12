@@ -24,24 +24,24 @@ const ItemsFilter = (props) => {
 				setFormData={setFormData}
 			/>
 		);
-	} else if (formData.type === 2) {
-		container = (
-			<PackageSelect
-				page={page}
-				setPage={setPage}
-				formData={formData}
-				setFormData={setFormData}
-			/>
-		);
-	} else if (formData.type === 3) {
-		container = (
-			<OfferSelect
-				page={page}
-				setPage={setPage}
-				formData={formData}
-				setFormData={setFormData}
-			/>
-		);
+	// } else if (formData.type === 2) {
+	// 	container = (
+	// 		<PackageSelect
+	// 			page={page}
+	// 			setPage={setPage}
+	// 			formData={formData}
+	// 			setFormData={setFormData}
+	// 		/>
+	// 	);
+	// } else if (formData.type === 3) {
+	// 	container = (
+	// 		<OfferSelect
+	// 			page={page}
+	// 			setPage={setPage}
+	// 			formData={formData}
+	// 			setFormData={setFormData}
+	// 		/>
+	// 	);
 	} else if (formData.type === 4) {
 		container = (
 			<RestaurentSelect

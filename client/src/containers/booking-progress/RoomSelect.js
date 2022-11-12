@@ -80,9 +80,9 @@ const RoomSelect = (props) => {
 			<div className="flex flex-row mt-auto">
 				<BackButton onClick={backHandler} />
 
-				<div className="ml-auto">
+				{/* <div className="ml-auto">
 					<NextButton onClick={nextHandler} />
-				</div>
+				</div> */}
 			</div>
 		</Container>
 	);

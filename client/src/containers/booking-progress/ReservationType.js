@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 
 // images
-import offersImage from "../../assets/booking-progress/offers.png";
-import packagesImage from "../../assets/booking-progress/packages.png";
+// import offersImage from "../../assets/booking-progress/offers.png";
+// import packagesImage from "../../assets/booking-progress/packages.png";
 import restaurentsImage from "../../assets/booking-progress/restaurents.png";
 import roomsImage from "../../assets/booking-progress/rooms.png";
 
 // components
-import BackButton from "../../components/booking-progress/BackButton";
+// import BackButton from "../../components/booking-progress/BackButton";
 import NextButton from "../../components/booking-progress/NextButton";
 import Container from "../../components/booking-progress/Container";
 import Topic from "../../components/booking-progress/Topic";
@@ -34,16 +34,16 @@ const ReservationType = (props) => {
 			image: roomsImage,
 			title: "Rooms",
 		},
-		{
-			id: 2,
-			image: packagesImage,
-			title: "Packages",
-		},
-		{
-			id: 3,
-			image: offersImage,
-			title: "Offers",
-		},
+		// {
+		// 	id: 2,
+		// 	image: packagesImage,
+		// 	title: "Packages",
+		// },
+		// {
+		// 	id: 3,
+		// 	image: offersImage,
+		// 	title: "Offers",
+		// },
 		{
 			id: 4,
 			image: restaurentsImage,

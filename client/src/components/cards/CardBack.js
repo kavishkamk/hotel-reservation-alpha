@@ -52,7 +52,7 @@ const CardBack = (props) => {
 				</div>
 
 				<div className=" absolute bottom-0 left-0 right-0">
-					<div className="flex flex-row w-full mx-auto justify-evenly items-center">
+					{/* <div className="flex flex-row w-full mx-auto justify-evenly items-center">
 						<div onClick={reviewHandler} className="cursor-pointer">
 							<img src={reviewIcon} alt="review" />
 						</div>
@@ -64,7 +64,7 @@ const CardBack = (props) => {
 						<div onClick={shareHandler} className="cursor-pointer">
 							<img src={shareIcon} alt="share" />
 						</div>
-					</div>
+					</div> */}
 
 					<div className="bg-black flex flex-row py-3 w-full justify-evenly">
 						<button className="font-poppins bg-[#4B51AC] text-white font-semibold w-fit px-3 py-2">

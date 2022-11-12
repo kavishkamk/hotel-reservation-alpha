@@ -6,6 +6,7 @@ const SelectDate = (props) => {
 	const [checkinDate, setCheckinDate] = useState("");
 	const [checkoutDate, setCheckoutDate] = useState();
 	const [guests, setGuests] = useState();
+	const [rooms, setRooms] = useState();
 
 	// props
 	const formData = props.formData;
@@ -21,8 +22,9 @@ const SelectDate = (props) => {
 			setCheckinDate(formData.checkin);
 			setCheckoutDate(formData.checkout);
 			setGuests(formData.guests);
+			setRooms(formData.rooms);
 		}
-	}, []);
+	}, [formData]);
 
 	// check for availability
 	const checkHandler = () => {
@@ -32,13 +34,21 @@ const SelectDate = (props) => {
 			document.getElementById("checkout").value;
 		const guestCountInput =
 			document.getElementById("guestCount").value;
+		const roomsCountInput =
+			document.getElementById("roomsCount").value;
 
 		// all the options are selected
-		if (checkinInput && checkoutInput && guestCountInput) {
+		if (
+			checkinInput &&
+			checkoutInput &&
+			guestCountInput &&
+			roomsCountInput
+		) {
 			console.log(
 				checkinInput,
 				checkoutInput,
-				guestCountInput
+				guestCountInput,
+				roomsCountInput
 			);
 
 			setFormData({
@@ -46,6 +56,7 @@ const SelectDate = (props) => {
 				checkin: checkinInput,
 				checkout: checkoutInput,
 				guests: guestCountInput,
+				rooms: roomsCountInput,
 			});
 
 			checkbtnRef.current.classList.remove(
@@ -58,12 +69,16 @@ const SelectDate = (props) => {
 			if (availability) {
 				setCheckStatus(true);
 			}
-
 		}
 	};
 
 	// control guest count
 	const GuestInputHandler = (e) => {
+		if (e.target.value < 1) e.target.value = 1;
+	};
+
+	// control rooms count
+	const RoomsInputHandler = (e) => {
 		if (e.target.value < 1) e.target.value = 1;
 	};
 
@@ -104,6 +119,20 @@ const SelectDate = (props) => {
 						min="1"
 						defaultValue={guests}
 						onKeyUp={GuestInputHandler}
+						className="bg-lightBlueGray w-[120px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0 md:text-xl "
+					/>
+				</div>
+
+				<div className="bg-lightBlueGray w-fit">
+					<div className="uppercase text-textBlue font-semibold text-sm px-3 py-2">
+						rooms
+					</div>
+					<input
+						type="number"
+						id="roomsCount"
+						min="1"
+						defaultValue={rooms}
+						onKeyUp={RoomsInputHandler}
 						className="bg-lightBlueGray w-[120px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0 md:text-xl "
 					/>
 				</div>
