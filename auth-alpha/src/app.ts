@@ -8,6 +8,8 @@ import { userRouter } from "./routes/user-routes";
 
 const app = express();
 
+app.set("trust proxy", true);
+
 app.use(json());
 
 app.use((req, res, next) => {
@@ -20,7 +22,7 @@ app.use((req, res, next) => {
 
 app.use(cookieSession({
     signed: false,
-    secure: false
+    secure: true
 }));
 
 app.use("/api/users/upload/images", express.static(path.join(__dirname, "upload", "images")));
