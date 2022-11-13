@@ -19,6 +19,7 @@ interface IUser {
     profileURL?: string;
     password: string;
     activeStatus: Boolean;
+    nicNumber: string;
 };
 
 // an interface that describe the properties
@@ -39,6 +40,7 @@ interface UserDoc extends Document {
     password: string;
     activeStatus: Boolean;
     otpCode?: Number;
+    nicNumber: string;
 };
 
 const userSchema = new Schema<UserDoc, UserModel>({
@@ -50,7 +52,8 @@ const userSchema = new Schema<UserDoc, UserModel>({
     profileURL: { type: String },
     password: { type: String, required: [true, "Password required"] },
     activeStatus: { type: Boolean, required: [true, "Account activation should be set"], default: false },
-    otpCode: { type: Number }
+    otpCode: { type: Number },
+    nicNumber: { type: String, required: [true, "NIC required"], unique: true }
 });
 
 // set email as unique

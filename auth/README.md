@@ -12,7 +12,7 @@
 
 ## routes
 
-### sign-up
+### 1. sign-up
 - POST request
 - if user creation success this send email with activation email to given email address
 ```
@@ -27,7 +27,8 @@
         contactNumber: string;
         address: string;
         password: string;
-        profileURL?: string;
+        nicNumber: string;
+        profilePic?: -;
     }
 ```
 
@@ -35,14 +36,17 @@
 \* but user account not activated \*
 ```
     {
-        userId: string;
-        firstName: string;
-        lastName: string;
-        email: string;
-        contactNumber: string;
-        address: string;
-        profileURL?: string;
-        activeStatus: Boolean;
+        user: {
+            userId: string;
+            firstName: string;
+            lastName: string;
+            email: string;
+            contactNumber: string;
+            address: string;
+            profileURL?: string;
+            activeStatus: Boolean;
+            nicNumber: string;
+        }
     }
 ```
 
@@ -54,7 +58,7 @@
 
 -  response INPUT_VALIDATION_ERROR (422 -> Input validation Error) 
 
-### sign-in
+### 2. sign-in
 - POST request
 - if user cridentias ok return the JWT token in cookie
 ```
@@ -70,14 +74,17 @@
 - response (200 status code) - if login success \
 ```
     {
-        userId: string;
-        firstName: string;
-        lastName: string;
-        email: string;
-        contactNumber: string;
-        address: string;
-        profileURL?: string;
-        activeStatus: Boolean;
+        user: {
+            userId: string;
+            firstName: string;
+            lastName: string;
+            email: string;
+            contactNumber: string;
+            address: string;
+            profileURL?: string;
+            activeStatus: Boolean;
+            nicNumber: string;
+        }
     }
 ```
 
@@ -90,12 +97,12 @@
 -  response INPUT_VALIDATION_ERROR (422 -> Input validation Error) 
 
 
-### request account activation otp
+### 3. request account activation otp
 
 - PATCH request
 - if user cridentias ok return the JWT token in cookie
 ```
-    PATCH -> api/users/requestactivation
+    PATCH -> api/users/requestotp
 ```
 
 ```
@@ -118,7 +125,7 @@
 
 - response ALREADY_ACTIVATED_ACCOUN (422 -> Input validation Error)
 
-### request for currentUser
+### 4. request for currentUser
 
 - GET request
 - for get the current user
@@ -136,7 +143,7 @@
     null
 ```
 
-### request for signout
+### 5. request for signout
 
 - POST request
 - for signout and unset cookie
@@ -153,7 +160,7 @@
 ```
 
 
-### request for activate account
+### 6. request for activate account
 - PATCH request
 - if activation success return JWT in cookie
 
@@ -170,14 +177,17 @@
 
 ```
     {
-       userId: string;
-        firstName: string;
-        lastName: string;
-        email: string;
-        contactNumber: string;
-        address: string;
-        profileURL?: string;
-        activeStatus: Boolean;
+        user: {
+            userId: string;
+            firstName: string;
+            lastName: string;
+            email: string;
+            contactNumber: string;
+            address: string;
+            profileURL?: string;
+            activeStatus: Boolean;
+            nicNumber: string;
+        }
     }
 ```
 
@@ -190,3 +200,65 @@
 - response INPUT_VALIDATION_ERROR (422 -> Input validation Error) 
 
 - response NOT_AUTHERIZED (422 -> Wrong OTP code)
+
+### 7. Edit profile 
+
+- PATCH request
+- if change the content user should be logged in and in cookies JWT token should be available
+- if email change account will be deactivated and OTP will be reserved to new email
+- that otp code can used to activate account
+
+```
+    PATCH -> api/users/editprofile (with cookie - cookie contain the jwt token)
+```
+
+```
+    {
+        firstName?: string;
+        lastName?: string;
+        email?: string;
+        contactNumber?: string;
+        address?: string;
+        password?: string;
+        newPassword?: string;
+        profilePic?: -;
+        nicNumber?: string;
+    }
+```
+
+- response (200 status code) - if account details changed
+
+```
+    {
+        user: {
+            userId: string;
+            firstName: string;
+            lastName: string;
+            email: string;
+            contactNumber: string;
+            address: string;
+            profileURL?: string;
+            activeStatus: Boolean;
+            nicNumber: string;
+        }
+    }
+```
+
+### Error Response
+
+- response NOT_FOUND (404 -> User Account not found)
+
+- response NOT_AUTHERIZED (401 -> Current password incorrect)
+
+- response INPUT_VALIDATION_ERROR (422 -> Input validation Error) 
+
+- response NOT_AUTHERIZED (422 -> Wrong OTP code)
+
+### 8. Image Request
+
+request image
+
+
+```
+api/users/upload/images/${image_name.extention}
+```
