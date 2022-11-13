@@ -1,10 +1,17 @@
 import { NextFunction, Request, Response } from "express";
+import fs from "fs";
 
 import { CustomError } from "../errors/custom-error";
 import { ErrorTypes } from "../errors/error-types";
 import { ResponseErrorFormat } from "../errors/response-error-format";
 
 const errorMiddleware = (error: Error, req: Request, res: Response, next: NextFunction) => {
+
+    if (req.file) {
+        fs.unlink(req.file.path, (error) => {
+            console.log(error);
+        });
+    }
 
     if (res.headersSent) {
         return next(error);

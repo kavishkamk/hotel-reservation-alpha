@@ -126,3 +126,16 @@ const app = express();
 
 app.use(currentUserMiddleware, requireAuthMiddleware);
 ```
+
+- file upload middleware
+
+this add image to "upload/images" folder. This folder should create in the server
+
+```
+    router.post(
+        "/signup",
+        fileUpload.single("profilePic")
+    );
+
+    const filePath = req.file.path;
+```
