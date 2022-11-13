@@ -1,11 +1,11 @@
 import React from 'react'
 
-const HomePage = () => {
+const AboutPage = () => {
 	return (
 		<div className="relative top-16">
-			home page
+			about page
 		</div>
 	)
 }
 
-export default HomePage
+export default AboutPage

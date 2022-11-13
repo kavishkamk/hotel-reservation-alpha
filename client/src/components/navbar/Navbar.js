@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Transition } from "@headlessui/react";
+import { useNavigate } from "react-router-dom";
 
 // components
 import NavBtn from "./NavBtn";
@@ -10,25 +11,50 @@ import Logo from "../../assets/home-page/logo.svg";
 
 const Navbar = () => {
 	const [isOpen, setIsOpen] = useState(false);
+	const navigate = useNavigate();
+
+	const navigateHandler = (route)=> {
+		if(route !== "/")
+			setIsOpen(!isOpen);
+			
+		navigate(route);
+	}
 
 	return (
 		<>
-			<div className="backdrop-blur-lg z-10 flex flex-row px-10 py-3 justify-between items-center fixed top-0 left-0 right-0">
-				<div className="w-48">
+			<div className="backdrop-blur-lg bg-white z-10 flex flex-row px-10 py-3 justify-between items-center fixed top-0 left-0 right-0">
+				<div onClick={() => navigateHandler("/")} className="cursor-pointer w-48">
 					<img src={Logo} alt="logo" />
 				</div>
 
 				<div className="flex-row hidden md:flex">
-					<NavBtn name="rooms" rounded="rounded-2xl" />
 					<NavBtn
+						onClick={() => navigateHandler("/rooms")}
+						name="rooms"
+						rounded="rounded-2xl"
+					/>
+					<NavBtn
+						onClick={() => navigateHandler("/restaurents")}
 						name="restaurents"
 						rounded="rounded-2xl"
 					/>
 
-					<NavBtn name="about us" />
-					<NavBtn name="contact us" />
-					<LogBtn name="Login" />
-					<LogBtn name="Register" />
+					<NavBtn
+						onClick={() => navigateHandler("/about-us")}
+						name="about us"
+					/>
+					<NavBtn
+						onClick={() => navigateHandler("/contact-us")}
+						name="contact us"
+					/>
+					<LogBtn
+						onClick={() => navigateHandler("/login")}
+						name="Login"
+					/>
+					<LogBtn
+						onClick={() => navigateHandler("/register")}
+						name="Register"
+					/>
 				</div>
 
 				{/* mobile menu icon */}
@@ -90,17 +116,37 @@ const Navbar = () => {
 			>
 				{(ref) => (
 					<div className="md:hidden" id="mobile-menu">
-						<div ref={ref} className="flex flex-col items-center gap-y-3 bg-gray-900 py-6">
-							<NavBtn name="rooms" rounded="rounded-2xl" />
+						<div
+							ref={ref}
+							className="flex flex-col items-center gap-y-3 bg-gray-900 py-6"
+						>
 							<NavBtn
+								onClick={() => navigateHandler("/rooms")}
+								name="rooms"
+								rounded="rounded-2xl"
+							/>
+							<NavBtn
+								onClick={() => navigateHandler("/restaurents")}
 								name="restaurents"
 								rounded="rounded-2xl"
 							/>
 
-							<NavBtn name="about us" />
-							<NavBtn name="contact us" />
-							<LogBtn name="Login" />
-							<LogBtn name="Register" />
+							<NavBtn
+								onClick={() => navigateHandler("/about-us")}
+								name="about us"
+							/>
+							<NavBtn
+								onClick={() => navigateHandler("/contact-us")}
+								name="contact us"
+							/>
+							<LogBtn
+								onClick={() => navigateHandler("/login")}
+								name="Login"
+							/>
+							<LogBtn
+								onClick={() => navigateHandler("/register")}
+								name="Register"
+							/>
 						</div>
 					</div>
 				)}
