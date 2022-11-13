@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@headlessui/react": "^1.7.4",
     "@heroicons/react": "^1.0.6",
     "@robertz65/lyte": "^0.0.8",
     "@testing-library/jest-dom": "^5.16.5",

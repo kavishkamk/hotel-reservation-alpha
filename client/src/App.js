@@ -7,23 +7,28 @@ import {
 
 // pages
 import BookingPage from "./pages/BookingPage"
+import HomePage from "./pages/HomePage"
 
 // containers
 import ReservationType from "./containers/booking-progress/ReservationType"
 import CheckinCheckout from "./containers/booking-progress/CheckinCheckout"
 
-// testing components
-import CardContainer from "./components/cards/CardContainer"
-import Dropdown from "./components/booking-progress/Dropdown"
+// components
+import Navbar from "./components/navbar/Navbar"
+import Footer from "./components/footer/Footer"
 
 function App() {
   return (
+		<>
+		<Navbar />
 		<Router>
 			<Routes>
-				<Route exact path="/" element={<BookingPage />} />
-				{/* <Route path="/booking-summary" element={} /> */}
+				<Route exact path="/" element={<HomePage />} />
+				<Route path="/booking-process" element={<BookingPage />} />
 			</Routes>
 		</Router>
+		<Footer />
+		</>
 	);
 }
 
