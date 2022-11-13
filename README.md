@@ -33,6 +33,5 @@
 ```
     thisisunsafe
 ```
-
-<img src="https://github.com/kavishkamk/hotel-reservation-alpha/tree/main/images/error-img.png" alt="Error" title="Ingress error">
+<img src="https://github.com/kavishkamk/hotel-reservation-alpha/blob/main/images/error-img.png" alt="Error" title="Ingress error">
 
