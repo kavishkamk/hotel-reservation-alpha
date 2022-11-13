@@ -21,11 +21,7 @@ const sendOTP = async (clientEmail: string) => {
         throw new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "error occured during verification code sending");
     };
 
-    try {
-        await saveOTP(clientEmail, otpCode);
-    } catch (err) {
-        throw err;
-    };
+    return otpCode;
 
 };
 
@@ -95,4 +91,4 @@ const verifyOTP = async (clientEmail: string, otpCode: number) => {
     return user;
 };
 
-export { sendOTP, verifyOTP };
+export { sendOTP, verifyOTP, saveOTP };

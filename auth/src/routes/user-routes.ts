@@ -1,8 +1,10 @@
 import { Router } from "express";
-import { body } from "express-validator";
-import { requestValidationMiddleware, currentUserMiddleware } from "@alpha-lib/shared-lib";
+import { body, oneOf } from "express-validator";
+import { requestValidationMiddleware, currentUserMiddleware, requireAuthMiddleware, fileUpload } from "@alpha-lib/shared-lib";
 
-import { signin, signout, signup, currentUser, requestAccoutActivationOTP, accountActivation } from "../controllers/user-controllers";
+import { signin, signout, signup, currentUser, requestAccoutActivationOTP, accountActivation, editUserDetails } from "../controllers/user-controllers";
+
+const MIN_PASSWORD_LENGHT = 8;
 
 const router = Router();
 
@@ -16,6 +18,7 @@ router.get(
 // sign up
 router.post(
     "/signup",
+    fileUpload.single("profilePic"),
     [
         body("firstName")
             .not()
@@ -33,8 +36,8 @@ router.post(
             .withMessage("Email must be valid"),
         body("password")
             .trim()
-            .isLength({ min: 8 })
-            .withMessage("Password should be at leadt 8 characters"),
+            .isLength({ min: MIN_PASSWORD_LENGHT })
+            .withMessage(`Password should be at leadt ${MIN_PASSWORD_LENGHT} characters`),
         body("address")
             .trim()
             .not()
@@ -43,7 +46,11 @@ router.post(
         body("contactNumber")
             .trim()
             .not()
-            .isEmpty()
+            .isEmpty(),
+        body("nicNumber")
+            .trim()
+            .isLength({ min: 9 })
+            .withMessage("NIC number required")
     ],
     requestValidationMiddleware,
     signup
@@ -69,7 +76,7 @@ router.post(
 
 // requst account activation otp
 router.patch(
-    "/requestactivation",
+    "/requestotp",
     [
         body("email")
             .trim()
@@ -101,5 +108,34 @@ router.patch(
 );
 
 router.post("/signout", signout);
+
+// get the JWT token data
+router.use(currentUserMiddleware);
+
+// after this middle ware only authenicated uses can access
+router.use(requireAuthMiddleware);
+
+// edit profile details
+router.patch("/editprofile",
+    fileUpload.single("profilePic"),
+    [
+        oneOf(
+            [
+                body("email")
+                    .not()
+                    .isEmpty()
+                    .normalizeEmail()
+                    .isEmail()
+                    .withMessage("Email should be valid"),
+                body("email")
+                    .trim()
+                    .isEmpty()
+                    .withMessage("Email should be valid")
+            ]
+        )
+    ],
+    requestValidationMiddleware,
+    editUserDetails
+);
 
 export { router as userRouter };
