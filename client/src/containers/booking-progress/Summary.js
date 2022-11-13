@@ -29,7 +29,8 @@ const Summary = (props) => {
 	return (
 		<div className="">
 			<Container>
-				<div className="flex flex-col xl:flex-row justify-between">
+				<Topic topic="Booking Summary" />
+				<div className="flex flex-col xl:flex-row justify-between my-5">
 					<CardContainer
 						title={item.name}
 						image={item.image}
@@ -60,8 +61,11 @@ const Summary = (props) => {
 					<BackButton onClick={backHandler} />
 
 					<div className="ml-auto">
-					<NextButton onClick={bookHandler} name="Book Now" />
-				</div>
+						<NextButton
+							onClick={bookHandler}
+							name="Book Now"
+						/>
+					</div>
 				</div>
 			</Container>
 		</div>

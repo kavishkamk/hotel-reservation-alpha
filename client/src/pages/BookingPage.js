@@ -46,7 +46,7 @@ const BookingPage = () => {
 	];
 	
 	return (
-		<div className="">
+		<div className="relative top-16">
 			<ProgressTracker page={page} />
 
 			<div className="">{containerList[page]}</div>
