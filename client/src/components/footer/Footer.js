@@ -5,8 +5,8 @@ import Socials from "../../assets/home-page/social-medias.png"
 
 const Footer = () => {
 	return (
-		<div className="bg-[#1E293B] mt-20">
-			<div className="flex flex-col text-center md:flex-row justify-between items-center px-10 font-poppins text-white py-5 text-xs">
+		<div className="bg-[#1E293B] relative py-10 mt-16">
+			<div className="flex flex-col text-center md:flex-row justify-between items-center px-10 font-poppins text-white my-auto text-xs">
 				<div className="">
 					All copyrights reserved by The Golden Aurora Hotel
 					- © 2022
