@@ -22,7 +22,7 @@ const Navbar = () => {
 
 	return (
 		<>
-			<div className="backdrop-blur-lg bg-white z-10 flex flex-row px-10 py-3 justify-between items-center fixed top-0 left-0 right-0">
+			<div className="backdrop-blur-lg bg-white z-50 flex flex-row px-10 py-3 justify-between items-center fixed top-0 left-0 right-0">
 				<div onClick={() => navigateHandler("/")} className="cursor-pointer w-48">
 					<img src={Logo} alt="logo" />
 				</div>
@@ -112,7 +112,7 @@ const Navbar = () => {
 				leave="transition ease-in duration-75 transform"
 				leaveFrom="opacity-100 scale-100"
 				leaveTo="opacity-0 scale-95"
-				className="absolute top-16 left-0 right-0 z-20"
+				className="fixed top-16 left-0 right-0 z-20"
 			>
 				{(ref) => (
 					<div className="md:hidden" id="mobile-menu">
