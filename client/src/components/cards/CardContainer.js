@@ -22,6 +22,7 @@ const CardContainer = (props) => {
 					title={props.title}
 					image={props.image}
 					price={props.price}
+					stars={props.stars}
 					onClick={flip}
 				/>
 				<CardBack

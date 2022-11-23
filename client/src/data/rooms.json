@@ -15,6 +15,7 @@
 		],
 		"image": "https://i.imgur.com/3Dpn0Ix.png",
 		"price": 18000,
+		"stars": 4,
 		"tags": [
 			"Deluxe", "King", "AC"
 		]
@@ -35,6 +36,7 @@
 		],
 		"image": "https://i.imgur.com/zJjvvPu.png",
 		"price": 10000,
+		"stars": 4,
 		"tags": ["Queen", "AC", "Executive"]
 	},
 	{
@@ -53,6 +55,7 @@
 		],
 		"image": "https://i.imgur.com/MiXVV9d.png",
 		"price": 12000,
+		"stars": 5,
 		"tags": ["King", "AC", "Executive"]
 	},
 	{
@@ -71,6 +74,7 @@
 		],
 		"image": "https://i.imgur.com/Q64dVXz.png",
 		"price": 15000,
+		"stars": 4,
 		"tags": ["Suite", "AC"]
 	}
 ]
