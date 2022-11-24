@@ -8,6 +8,12 @@ import handIcon from "../../assets/cards/hand.svg";
 import parkingIcon from "../../assets/cards/parking.svg";
 
 const CardFront = (props) => {
+	let starsDisplay = [];
+
+	for (let i = 0; i < props.stars; i++) {
+		starsDisplay.push(<div>&#11088;</div>)
+	}
+
 	return (
 		<div
 			onClick={props.onClick}
@@ -19,8 +25,11 @@ const CardFront = (props) => {
 			</div>
 
 			{/* stars */}
-			<div className="w-fit mx-auto">
-				<img src={starsImage} alt="stars" />
+			<div className="w-fit mx-auto flex flex-row">
+				{
+					starsDisplay
+				}
+				{/* <img src={starsImage} alt="stars" /> */}
 			</div>
 
 			<div className="relative w-fit mx-auto">

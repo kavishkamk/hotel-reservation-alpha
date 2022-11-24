@@ -78,6 +78,7 @@ const RoomSelect = (props) => {
 						title={item.name}
 						image={item.image}
 						price={item.price}
+						stars={item.stars}
 						description={item.description}
 						bookClickHandler={bookClickHandler}
 						item={item}

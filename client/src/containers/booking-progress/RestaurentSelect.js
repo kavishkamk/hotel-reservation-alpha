@@ -73,6 +73,7 @@ const RestaurentSelect = (props) => {
 						description={item.description}
 						bookClickHandler={bookClickHandler}
 						item={item}
+						stars={item.stars}
 					/>
 				))}
 			</div>

@@ -14,7 +14,7 @@ const Dropdown = memo((props) => {
 	return (
 		props.tags && (
 			<div className="flex flex-row gap-5">
-				<div className="w-[95%] mx-auto my-5">
+				<div className="w-[95%] mx-auto my-5 z-40">
 					<Selectable
 						width="100%"
 						multi

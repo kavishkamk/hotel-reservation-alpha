@@ -1,29 +1,56 @@
 import './App.css';
 import {
-	BrowserRouter as Router,
 	Route,
-	Routes,
+	Routes
 } from "react-router-dom";
 
 // pages
 import BookingPage from "./pages/BookingPage"
+import HomePage from "./pages/HomePage"
+import LoginPage from "./pages/LoginPage"
+import RegisterPage from "./pages/RegisterPage"
+import RoomsPage from "./pages/RoomsPage"
+import RestaurentsPage from "./pages/RestaurentsPage"
+import AboutPage from "./pages/AboutPage"
+import ContactPage from "./pages/ContactPage"
+import NotFoundPage from "./pages/NotFoundPage"
 
-// containers
-import ReservationType from "./containers/booking-progress/ReservationType"
-import CheckinCheckout from "./containers/booking-progress/CheckinCheckout"
-
-// testing components
-import CardContainer from "./components/cards/CardContainer"
-import Dropdown from "./components/booking-progress/Dropdown"
+// components
+import Navbar from "./components/navbar/Navbar"
+import Footer from "./components/footer/Footer"
 
 function App() {
   return (
-		<Router>
+		<>
+			<Navbar />
 			<Routes>
-				<Route exact path="/" element={<BookingPage />} />
-				{/* <Route path="/booking-summary" element={} /> */}
+				<Route exact path="/" element={<HomePage />} />
+				<Route
+					path="/booking-process"
+					element={<BookingPage />}
+				/>
+				<Route path="/login" element={<LoginPage />} />
+				<Route
+					path="/register"
+					element={<RegisterPage />}
+				/>
+				<Route path="/rooms" element={<RoomsPage />} />
+				<Route
+					path="/restaurents"
+					element={<RestaurentsPage />}
+				/>
+				<Route path="/about-us" element={<AboutPage />} />
+				<Route
+					path="/contact-us"
+					element={<ContactPage />}
+				/>
+
+				{/* not found */}
+				<Route path="*" element={<NotFoundPage />} />
+
 			</Routes>
-		</Router>
+			<Footer />
+		</>
 	);
 }
 
