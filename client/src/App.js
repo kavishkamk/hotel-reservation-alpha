@@ -1,7 +1,7 @@
 import "./App.css";
+import React, { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
-import { BrowserRouter } from "react-router-dom";
-import { DefaultProvider } from "./context/DefaultContext";
+import { DefaultContext } from "./context/DefaultContext";
 
 // pages
 import BookingPage from "./pages/BookingPage";
@@ -17,41 +17,70 @@ import NotFoundPage from "./pages/NotFoundPage";
 // components
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
+import PopupContainer from "./components/popup/PopupContainer";
 
 function App() {
+	const {
+		detailPopup,
+		details,
+		setDetailPopup_func,
+		details_title,
+		details_rate,
+		details_images,
+	} = useContext(DefaultContext);
+
+	const blurbgClick = () => {
+		setDetailPopup_func(!detailPopup);
+	};
+
 	return (
-		<DefaultProvider>
-			<BrowserRouter>
-				<Navbar />
+		<>
+			{/* blurred background when a detailPopup is showing */}
+			{detailPopup && (
+				<div
+					onClick={blurbgClick}
+					className="w-screen fixed top-0 bottom-0 backdrop-blur-sm z-50"
+				></div>
+			)}
 
-				<Routes>
-					<Route exact path="/" element={<HomePage />} />
-					<Route
-						path="/booking-process"
-						element={<BookingPage />}
-					/>
-					<Route path="/login" element={<LoginPage />} />
-					<Route
-						path="/register"
-						element={<RegisterPage />}
-					/>
-					<Route path="/rooms" element={<RoomsPage />} />
-					<Route
-						path="/restaurents"
-						element={<RestaurentsPage />}
-					/>
-					<Route path="/about-us" element={<AboutPage />} />
-					<Route
-						path="/contact-us"
-						element={<ContactPage />}
-					/>
+			{detailPopup && (
+				<PopupContainer
+					details={details}
+					title={details_title}
+					rate={details_rate}
+					images={details_images}
+				/>
+			)}
 
-					{/* not found */}
-					<Route path="*" element={<NotFoundPage />} />
-				</Routes>
-				<Footer />
-			</BrowserRouter>
-		</DefaultProvider>
+			<Navbar />
+
+			<Routes>
+				<Route exact path="/" element={<HomePage />} />
+				<Route
+					path="/booking-process"
+					element={<BookingPage />}
+				/>
+				<Route path="/login" element={<LoginPage />} />
+				<Route
+					path="/register"
+					element={<RegisterPage />}
+				/>
+				<Route path="/rooms" element={<RoomsPage />} />
+				<Route
+					path="/restaurents"
+					element={<RestaurentsPage />}
+				/>
+				<Route path="/about-us" element={<AboutPage />} />
+				<Route
+					path="/contact-us"
+					element={<ContactPage />}
+				/>
+
+				{/* 404 not found */}
+				<Route path="*" element={<NotFoundPage />} />
+			</Routes>
+			<Footer />
+		</>
 	);
 }
 

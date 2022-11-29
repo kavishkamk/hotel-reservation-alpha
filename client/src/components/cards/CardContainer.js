@@ -29,6 +29,7 @@ const CardContainer = (props) => {
 					onClick={flip}
 					title={props.title}
 					image={props.image}
+					stars={props.stars}
 					description={props.description}
 					item={item}
 					bookClickHandler={bookClickHandler}

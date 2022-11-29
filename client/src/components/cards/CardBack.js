@@ -1,20 +1,38 @@
-import React from 'react'
+import React, { useContext } from "react";
+import { DefaultContext } from "../../context/DefaultContext";
 
 // images
-import cardImage from "../../assets/cards/card-image.png"
-import starsImage from "../../assets/cards/5stars.png"
-import favIcon from "../../assets/cards/fav-icon.svg"
-import shareIcon from "../../assets/cards/share-icon.svg"
-import reviewIcon from "../../assets/cards/review-icon.svg"
+import cardImage from "../../assets/cards/card-image.png";
+import starsImage from "../../assets/cards/5stars.png";
+import favIcon from "../../assets/cards/fav-icon.svg";
+import shareIcon from "../../assets/cards/share-icon.svg";
+import reviewIcon from "../../assets/cards/review-icon.svg";
 
 const CardBack = (props) => {
-	const bookClickHandler = props.bookClickHandler
-	const item = props.item
+	const bookClickHandler = props.bookClickHandler;
+	const item = props.item;
 	const hideBookBtn = props.hideBookBtn;
 
-	const bookHandler = ()=> {
-		bookClickHandler(item)
-	}
+	const {
+		setDetails_func,
+		setDetailPopup_func,
+		detailPopup,
+		setDetails_title_func,
+		setDetails_images_func,
+		setDetails_rate_func,
+	} = useContext(DefaultContext);
+
+	const bookHandler = () => {
+		bookClickHandler(item);
+	};
+
+	const viewMoreHandler = () => {
+		setDetails_func(props.item.details);
+		setDetails_title_func(props.title)
+		setDetails_rate_func(props.stars)
+		setDetailPopup_func(!detailPopup);
+		setDetails_images_func(props.item.images)
+	};
 
 	return (
 		<div
@@ -62,7 +80,7 @@ const CardBack = (props) => {
 					</div> */}
 
 					<div className="bg-black flex flex-row py-3 w-full justify-evenly">
-						{!hideBookBtn &&(
+						{!hideBookBtn && (
 							<button
 								onClick={bookHandler}
 								className="font-poppins bg-[#4B51AC] text-white font-semibold w-fit px-3 py-2"
@@ -70,7 +88,10 @@ const CardBack = (props) => {
 								Book Now
 							</button>
 						)}
-						<button className="font-poppins bg-[#10B981] text-white font-semibold w-fit px-3 py-2">
+						<button
+							onClick={viewMoreHandler}
+							className="font-poppins bg-[#10B981] text-white font-semibold w-fit px-3 py-2"
+						>
 							View More
 						</button>
 					</div>
@@ -78,6 +99,6 @@ const CardBack = (props) => {
 			</div>
 		</div>
 	);
-}
+};
 
-export default CardBack
+export default CardBack;

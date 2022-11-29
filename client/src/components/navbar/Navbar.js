@@ -22,7 +22,7 @@ const Navbar = () => {
 
 	return (
 		<>
-			<div className="backdrop-blur-lg bg-white z-50 flex flex-row px-10 py-3 justify-between items-center fixed top-0 left-0 right-0">
+			<div className="backdrop-blur-lg bg-white z-30 flex flex-row px-10 py-3 justify-between items-center fixed top-0 left-0 right-0">
 				<div onClick={() => navigateHandler("/")} className="cursor-pointer w-48">
 					<img src={Logo} alt="logo" />
 				</div>

@@ -49,39 +49,50 @@ const RoomsPage = () => {
 		// parse the selected tags to the backend
 	};
 
-	return (
-		<div className="relative top-16 bg-[#E2E8F0]">
-			<div className="ml-10 font-poppins text-xl font-bold text-textBlue py-4">Rooms</div>
-			<div className="flex flex-col md:flex-row items-start">
-				<Search
-					tags={roomsTags}
-					selectedTags={selectedTags}
-					setSelectedTags={setSelectedTags}
-					onClick={() => searchHandler()}
-				/>
+	const viewMoreHandler = ()=> {
 
-				<div className="">
-					<SelectDate
-						formData={formData}
-						setFormData={setFormData}
+	}
+
+	return (
+		<>
+			<div className="relative top-16 bg-[#E2E8F0]">
+				<div className="ml-10 font-poppins text-xl font-bold text-textBlue py-4">
+					Rooms
+				</div>
+				<div className="flex flex-col md:flex-row items-start">
+					<Search
+						tags={roomsTags}
+						selectedTags={selectedTags}
+						setSelectedTags={setSelectedTags}
+						onClick={() => searchHandler()}
 					/>
 
-					<div className="flex flex-wrap justify-left gap-y-6 gap-x-2 mx-5 my-5">
-						{searchResult.map((item) => (
-							<CardContainer
-								title={item.name}
-								image={item.image}
-								price={item.price}
-								stars={item.stars}
-								description={item.description}
-								// bookClickHandler={bookClickHandler}
-								item={item}
-							/>
-						))}
+					<div className="">
+						<SelectDate
+							formData={formData}
+							setFormData={setFormData}
+						/>
+
+						<div className="flex flex-wrap justify-left gap-y-6 gap-x-2 mx-5 my-5">
+							{searchResult.map((item) => (
+								<CardContainer
+									title={item.name}
+									image={item.image}
+									price={item.price}
+									stars={item.stars}
+									description={item.description}
+									// bookClickHandler={bookClickHandler}
+									viewMoreHandler={viewMoreHandler}
+									item={item}
+								/>
+							))}
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+
+			
+		</>
 	);
 };
 
