@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Navigate } from "react-router-dom";
 
 // components
 import SelectDate from "../components/booking-progress/SelectDate";
@@ -19,6 +20,8 @@ const RoomsPage = () => {
 	const [selectedTags, setSelectedTags] = useState([]);
 	const [searchResult, setSearchResult] =
 		useState(roomData);
+	const [bookStatus, setBookStatus] = useState(false)
+	const [item, setItem] = useState([])
 
 	const roomsTags = [
 		{
@@ -49,12 +52,26 @@ const RoomsPage = () => {
 		// parse the selected tags to the backend
 	};
 
-	const viewMoreHandler = ()=> {
-
+	let redirect;
+	const bookClickHandler = (item)=> {
+		setItem(item)
+		setFormData({...formData, item})
+		setBookStatus(true)
 	}
+
+	useEffect(()=> {
+		console.log(formData)
+	},[formData])
 
 	return (
 		<>
+			{bookStatus && (
+				<Navigate
+					to="/booking-process"
+					state={{ page: 3, formData: formData, backHide: true }}
+					replace={false}
+				/>
+			)}
 			<div className="relative top-16 bg-[#E2E8F0]">
 				<div className="ml-10 font-poppins text-xl font-bold text-textBlue py-4">
 					Rooms
@@ -81,8 +98,7 @@ const RoomsPage = () => {
 									price={item.price}
 									stars={item.stars}
 									description={item.description}
-									// bookClickHandler={bookClickHandler}
-									viewMoreHandler={viewMoreHandler}
+									bookClickHandler={bookClickHandler}
 									item={item}
 								/>
 							))}
@@ -90,8 +106,6 @@ const RoomsPage = () => {
 					</div>
 				</div>
 			</div>
-
-			
 		</>
 	);
 };

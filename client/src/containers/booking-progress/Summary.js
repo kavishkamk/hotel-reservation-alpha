@@ -16,6 +16,7 @@ const Summary = (props) => {
 	const setFormData = props.setFormData;
 	const item = formData.item
 
+	console.log("inside summary ===>>")
 	console.log(formData)
 
 	const backHandler = () => {
@@ -35,6 +36,7 @@ const Summary = (props) => {
 						title={item.name}
 						image={item.image}
 						description={item.description}
+						item={item}
 						hideBookBtn={true}
 					/>
 					<div className="w-full px-4 my-6 xl:my-0">
@@ -58,7 +60,7 @@ const Summary = (props) => {
 				</div>
 
 				<div className="flex flex-row mt-auto pt-5">
-					<BackButton onClick={backHandler} />
+					{!props.backHide && (<BackButton onClick={backHandler} />)}
 
 					<div className="ml-auto">
 						<NextButton
