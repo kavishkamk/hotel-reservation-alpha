@@ -6,7 +6,7 @@ import Topic from "../components/booking-progress/Topic"
 
 const ProfilePage = () => {
 	return (
-		<div className="relative top-16 bg-[#E2E8F0] py-10 pl-10">
+		<div className="relative top-16 bg-[#E2E8F0] py-10 pl-10 min-h-[calc(100vh-10rem)]">
 			<Topic topic="Profile Details" />
 			<div className="flex flex-col md:flex-row items-start md:justify-between">
 				<ProfileEdit />

@@ -72,7 +72,7 @@ const RestaurentsPage = () => {
 					replace={false}
 				/>
 			)}
-			<div className="relative top-16 bg-[#E2E8F0]">
+			<div className="relative top-16 bg-[#E2E8F0] min-h-[calc(100vh-10rem)]">
 				<div className="ml-10 font-poppins text-xl font-bold text-textBlue py-4">
 					Restaurents
 				</div>

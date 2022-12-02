@@ -72,7 +72,7 @@ const BookingPage = (props) => {
 	];
 
 	return (
-		<div className="relative top-16">
+		<div className="relative top-16 min-h-[calc(100vh-10rem)]">
 			<ProgressTracker page={page} />
 
 			<div className="">{containerList[page]}</div>

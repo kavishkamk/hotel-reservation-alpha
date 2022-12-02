@@ -4,8 +4,7 @@ import img from "../../assets/home-page/bg.png"
 const About = () => {
 	return (
 		<div className="">
-
-			<div className="bg-white border-b-8 border-b-[#6B71CB] px-5">
+			<div className="bg-white border-b-8 border-b-[#6B71CB] px-5 min-h-[calc(100vh-10rem)]">
 				<div className="font-poppins text-xl md:text-4xl font-extrabold text-textBlue py-6 border-textBlue border-b-4 w-[90%] md:max-w-lg text-center mx-auto">
 					We are
 				</div>
