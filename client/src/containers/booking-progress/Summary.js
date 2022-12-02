@@ -23,7 +23,9 @@ const Summary = (props) => {
 		setPage(page - 1);
 	};
 
-	const bookHandler = () => {};
+	const nextHandler = () => {
+		setPage(page + 1)
+	};
 
 	return (
 		<div className="">
@@ -82,7 +84,7 @@ const Summary = (props) => {
 
 					<div className="ml-auto">
 						<NextButton
-							onClick={bookHandler}
+							onClick={nextHandler}
 							name="Book Now"
 						/>
 					</div>

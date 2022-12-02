@@ -17,9 +17,8 @@ const SelectDate = (props) => {
 
 	if(formData.meal){
 		selectedMeal = formData.meal
-	}else {
-		formData.meal = []
 	}
+	
 	let availability = true;
 
 	const mealsList = [
