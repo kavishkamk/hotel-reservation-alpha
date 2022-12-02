@@ -13,6 +13,7 @@ import RestaurentsPage from "./pages/RestaurentsPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import ProfilePage from "./pages/ProfilePage"
 
 // components
 import Navbar from "./components/navbar/Navbar";
@@ -74,6 +75,10 @@ function App() {
 				<Route
 					path="/contact-us"
 					element={<ContactPage />}
+				/>
+				<Route
+					path="/profile"
+					element={<ProfilePage />}
 				/>
 
 				{/* 404 not found */}
