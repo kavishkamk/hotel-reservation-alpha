@@ -6,10 +6,11 @@
 */
 
 import { CustomError } from "./custom-error";
+import { ErrorTypes } from "./error-types";
 
 export class CommonError extends CustomError {
 
-    constructor(public statusCode: number, message: string) {
+    constructor(public statusCode: number, public errorType: ErrorTypes, message: string) {
         super(message);
 
         Object.setPrototypeOf(this, CommonError.prototype);

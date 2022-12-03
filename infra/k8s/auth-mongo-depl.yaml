@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alpha-auth-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alpha-auth-mongo
+  template:
+    metadata:
+      labels:
+        app: alpha-auth-mongo
+    spec:
+      containers:
+        - name: alpha-auth-mongo
+          image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alpha-auth-mongo-srv
+spec:
+  selector:
+    app: alpha-auth-mongo
+  ports:
+    - name: alpha-auth-mongo
+      protocol: TCP
+      port: 27017
+      targetPort: 27017

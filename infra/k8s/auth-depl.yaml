@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alpha-auth-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alpha-auth
+  template:
+    metadata:
+      labels:
+        app: alpha-auth
+    spec:
+      containers:
+        - name: alpha-auth
+          #image: kavishkamk/hotel-reservation-alpha-auth
+          image: us.gcr.io/ticketing-dev-367104/auth-alpha
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+            - name: HOST_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: host-email
+                  key: HOST_EMAIL
+            - name: EMAIL_APP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: email-app-pwd
+                  key: EMAIL_APP_PASSWORD
+            - name: MONGO_URI
+              value: mongodb://alpha-auth-mongo-srv:27017/auth
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alpha-auth-srv
+spec:
+  selector:
+    app: alpha-auth
+  ports:
+    - name: alpha-auth
+      protocol: TCP
+      port: 4000
+      targetPort: 4000

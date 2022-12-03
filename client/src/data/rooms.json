@@ -1,0 +1,80 @@
+[
+	{
+		"id": 1,
+		"name": "Deluxe Room",
+		"description": "Expect straightforward elegance and restful comfort in our 30-35 sqm deluxe bedrooms. You have the option of booking a king-sized bed or two single beds, whichever suits your needs.",
+		"amenities": [
+			"Fresh linens replaced daily",
+			"Room service up to 11:00pm",
+			"Wireless Internet",
+			"HD flat screen television with cable",
+			"Individually controlled air conditioning",
+			"An in-room safe",
+			"Hot and cold rainfall shower",
+			"A mini bar"
+		],
+		"image": "https://i.imgur.com/3Dpn0Ix.png",
+		"price": 18000,
+		"stars": 4,
+		"tags": [
+			"Deluxe", "King", "AC"
+		]
+	},
+	{
+		"id": 2,
+		"name": "Executive Garden Room",
+		"description": "The Executive Garden Room is a 40-48 sqm room that comes with a relaxing pocket garden. This room is perfect for guests who prefer to take the party upstairs after hours.",
+		"amenities": [
+			"Fresh linens replaced daily",
+			"Room service up to 11:00pm",
+			"Wireless Internet",
+			"HD flat screen television with cable",
+			"Individually controlled air conditioning",
+			"An in-room safe",
+			"Hot and cold rainfall shower",
+			"A mini bar"
+		],
+		"image": "https://i.imgur.com/zJjvvPu.png",
+		"price": 10000,
+		"stars": 4,
+		"tags": ["Queen", "AC", "Executive"]
+	},
+	{
+		"id": 3,
+		"name": "Executive Varenda Room",
+		"description": "The Executive Veranda Room features a panoramic view of General Santos City. The 40-48-sqm room comes with balcony area that is perfect for morning coffee.",
+		"amenities": [
+			"Fresh linens replaced daily",
+			"Room service up to 11:00pm",
+			"Wireless Internet",
+			"HD flat screen television with cable",
+			"Individually controlled air conditioning",
+			"An in-room safe",
+			"Hot and cold rainfall shower",
+			"A mini bar"
+		],
+		"image": "https://i.imgur.com/MiXVV9d.png",
+		"price": 12000,
+		"stars": 5,
+		"tags": ["King", "AC", "Executive"]
+	},
+	{
+		"id": 4,
+		"name": "One Bedroom Suite",
+		"description": "This 63-sqm suite is a definite treat for larger groups and families. It comes with a comfortable common living room area and a bathtub.",
+		"amenities": [
+			"Fresh linens replaced daily",
+			"Room service up to 11:00pm",
+			"Wireless Internet",
+			"HD flat screen television with cable",
+			"Individually controlled air conditioning",
+			"An in-room safe",
+			"Hot and cold rainfall shower",
+			"A mini bar"
+		],
+		"image": "https://i.imgur.com/Q64dVXz.png",
+		"price": 15000,
+		"stars": 4,
+		"tags": ["Suite", "AC"]
+	}
+]
