@@ -11,6 +11,7 @@ import jwt from "jsonwebtoken";
 interface UserPayload {
     id: string;
     email: string;
+    isAdmin?: Boolean;
 };
 
 // to set the currentUser as a Express Request properties

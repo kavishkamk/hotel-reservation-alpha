@@ -9,3 +9,4 @@ export * from "./middleware/request-validation-middleware";
 export * from "./middleware/current-user-middleware";
 export * from "./middleware/require-auth-middleware";
 export * from "./middleware/file-upload-middleware";
+export * from "./middleware/require-admin-access";
