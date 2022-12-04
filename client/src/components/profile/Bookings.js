@@ -52,8 +52,8 @@ const Bookings = (props) => {
 				})}
 			</div>
 
-			<div className="-mx-8 md:mx-0 min-w-full max-w-80">
-				<TabsContent status={tabsList[selected-1].name} />
+			<div className="-mx-8 md:mx-0 min-w-full max-h-[calc(100vh-20rem)]">
+				<TabsContent status={tabsList[selected - 1].name} />
 			</div>
 		</div>
 	);
