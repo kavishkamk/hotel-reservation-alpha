@@ -1,7 +1,6 @@
 import React from 'react'
 
 const Input = (props) => {
-	console.log(props.readonly)
 
 	return (
 		<div className="">

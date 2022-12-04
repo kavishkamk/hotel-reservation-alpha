@@ -6,7 +6,7 @@ const SelectDate = (props) => {
 	const checkbtnRef = useRef();
 	const [checkStatus, setCheckStatus] = useState(null);
 	const [date, setDate] = useState("");
-	const [guests, setGuests] = useState();
+	const [Tables, setTables] = useState();
 	const [meal, setMeal] = useState([]);
 
 	let selectedMeal = [];
@@ -33,7 +33,7 @@ const SelectDate = (props) => {
 
 		if (formData.date) {
 			setDate(formData.date);
-			setGuests(formData.guests);
+			setTables(formData.Tables);
 			setMeal(formData.meal);
 		}
 	}, [formData]);
@@ -41,13 +41,13 @@ const SelectDate = (props) => {
 	// check for availability
 	const checkHandler = async() => {
 		const dateInput = document.getElementById("date").value;
-		const guestCountInput =
-			document.getElementById("guestCount").value;
+		const TableCountInput =
+			document.getElementById("TableCount").value;
 		const mealInput = selectedMeal
 
 		// all the options are selected
-		if (dateInput && guestCountInput && mealInput) {
-			// console.log(dateInput, guestCountInput, mealInput);
+		if (dateInput && TableCountInput && mealInput) {
+			// console.log(dateInput, TableCountInput, mealInput);
 
 			await setMeal(selectedMeal)
 			// console.log("after set meal => ")
@@ -56,7 +56,7 @@ const SelectDate = (props) => {
 			setFormData({
 				...formData,
 				date: dateInput,
-				guests: guestCountInput,
+				Tables: TableCountInput,
 				meal: mealInput,
 			});
 
@@ -76,8 +76,8 @@ const SelectDate = (props) => {
 		}
 	}
 
-	// control guest count
-	const GuestInputHandler = (e) => {
+	// control tables count
+	const TableInputHandler = (e) => {
 		if (e.target.value < 1) e.target.value = 1;
 	};
 
@@ -121,14 +121,14 @@ const SelectDate = (props) => {
 
 				<div className="bg-lightBlueGray w-fit">
 					<div className="uppercase text-textBlue font-semibold text-sm px-3 py-2">
-						guests
+						Tables
 					</div>
 					<input
 						type="number"
-						id="guestCount"
+						id="TableCount"
 						min="1"
-						defaultValue={guests}
-						onKeyUp={GuestInputHandler}
+						defaultValue={Tables}
+						onKeyUp={TableInputHandler}
 						className="bg-lightBlueGray w-[120px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0 md:text-lg "
 					/>
 				</div>

@@ -16,10 +16,16 @@ const ProfileEdit = (props) => {
 
 	useEffect(()=> {
 		if(readOnly && edit) setReadOnly(false)
+		else setReadOnly(true)
 	},[edit])
 
 	const editHandler= ()=> {
 		setEdit(true)
+	}
+
+	const saveHandler = ()=> {
+		// send the edits to the DB
+		setEdit(false)
 	}
 
 	return (
@@ -77,7 +83,7 @@ const ProfileEdit = (props) => {
 					Edit details
 				</button>
 
-				<button className="bg-green-600 text-white font-semibold px-6 py-2 my-4">
+				<button onClick={saveHandler} className="bg-green-600 text-white font-semibold px-6 py-2 my-4">
 					Save
 				</button>
 			</div>
