@@ -1,0 +1,59 @@
+[
+	{
+		"id": 1,
+		"checkIn": "2022-12-23",
+		"checkOut": "2022-12-26",
+		"room": "Executive Varenda Room",
+		"cost": 12000
+	},
+	{
+		"id": 2,
+		"checkIn": "2022-12-31",
+		"checkOut": "2023-01-03",
+		"room": "Executive Garden Room",
+		"cost": 10000
+	},
+	{
+		"id": 3,
+		"date": "2022-12-23",
+		"restaurent": "Sky Lounge",
+		"tables": 2,
+		"meal": "dinner"
+	},
+	{
+		"id": 4,
+		"date": "2022-12-26",
+		"restaurent": "Tenku",
+		"tables": 1,
+		"meal": "lunch"
+	},
+
+	{
+		"id": 1,
+		"checkIn": "2022-12-23",
+		"checkOut": "2022-12-26",
+		"room": "Executive Varenda Room",
+		"cost": 12000
+	},
+	{
+		"id": 2,
+		"checkIn": "2022-12-31",
+		"checkOut": "2023-01-03",
+		"room": "Executive Garden Room",
+		"cost": 10000
+	},
+	{
+		"id": 3,
+		"date": "2022-12-23",
+		"restaurent": "Sky Lounge",
+		"tables": 2,
+		"meal": "dinner"
+	},
+	{
+		"id": 4,
+		"date": "2022-12-26",
+		"restaurent": "Tenku",
+		"tables": 1,
+		"meal": "lunch"
+	}
+]

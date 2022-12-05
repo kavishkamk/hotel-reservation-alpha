@@ -6,7 +6,7 @@ const AboutPage = () => {
 		<div className="relative top-16">
 			<About />
 		</div>
-	)
+	);
 }
 
 export default AboutPage

@@ -2,7 +2,7 @@ import React from 'react'
 
 const Contact = () => {
 	return (
-		<section className=" bg-textBlue text-gray-50 font-poppins py-10 border-b-8 border-b-[#6B71CB]">
+		<section className="min-h-[calc(100vh-10rem)] bg-textBlue text-gray-50 font-poppins py-10 border-b-8 border-b-[#6B71CB]">
 			<div className="grid max-w-6xl grid-cols-1 px-6 mx-auto lg:px-8 md:grid-cols-2 md:divide-x items-center">
 				<div className="py-6 md:py-0 md:px-6">
 					<h1 className="text-4xl font-bold">

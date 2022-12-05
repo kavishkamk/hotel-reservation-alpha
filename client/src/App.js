@@ -1,28 +1,60 @@
-import './App.css';
-import {
-	Route,
-	Routes
-} from "react-router-dom";
+import "./App.css";
+import React, { useContext } from "react";
+import { Route, Routes } from "react-router-dom";
+import { DefaultContext } from "./context/DefaultContext";
 
 // pages
-import BookingPage from "./pages/BookingPage"
-import HomePage from "./pages/HomePage"
-import LoginPage from "./pages/LoginPage"
-import RegisterPage from "./pages/RegisterPage"
-import RoomsPage from "./pages/RoomsPage"
-import RestaurentsPage from "./pages/RestaurentsPage"
-import AboutPage from "./pages/AboutPage"
-import ContactPage from "./pages/ContactPage"
-import NotFoundPage from "./pages/NotFoundPage"
+import BookingPage from "./pages/BookingPage";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import RoomsPage from "./pages/RoomsPage";
+import RestaurentsPage from "./pages/RestaurentsPage";
+import AboutPage from "./pages/AboutPage";
+import ContactPage from "./pages/ContactPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import ProfilePage from "./pages/ProfilePage"
 
 // components
-import Navbar from "./components/navbar/Navbar"
-import Footer from "./components/footer/Footer"
+import Navbar from "./components/navbar/Navbar";
+import Footer from "./components/footer/Footer";
+import PopupContainer from "./components/popup/PopupContainer";
 
 function App() {
-  return (
+	const {
+		detailPopup,
+		details,
+		setDetailPopup_func,
+		details_title,
+		details_rate,
+		details_images,
+	} = useContext(DefaultContext);
+
+	const blurbgClick = () => {
+		setDetailPopup_func(!detailPopup);
+	};
+
+	return (
 		<>
+			{/* blurred background when a detailPopup is showing */}
+			{detailPopup && (
+				<div
+					onClick={blurbgClick}
+					className="w-screen fixed top-0 bottom-0 backdrop-blur-sm z-50"
+				></div>
+			)}
+
+			{detailPopup && (
+				<PopupContainer
+					details={details}
+					title={details_title}
+					rate={details_rate}
+					images={details_images}
+				/>
+			)}
+
 			<Navbar />
+
 			<Routes>
 				<Route exact path="/" element={<HomePage />} />
 				<Route
@@ -44,10 +76,13 @@ function App() {
 					path="/contact-us"
 					element={<ContactPage />}
 				/>
+				<Route
+					path="/profile"
+					element={<ProfilePage />}
+				/>
 
-				{/* not found */}
+				{/* 404 not found */}
 				<Route path="*" element={<NotFoundPage />} />
-
 			</Routes>
 			<Footer />
 		</>

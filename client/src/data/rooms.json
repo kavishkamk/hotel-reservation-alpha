@@ -3,38 +3,96 @@
 		"id": 1,
 		"name": "Deluxe Room",
 		"description": "Expect straightforward elegance and restful comfort in our 30-35 sqm deluxe bedrooms. You have the option of booking a king-sized bed or two single beds, whichever suits your needs.",
-		"amenities": [
-			"Fresh linens replaced daily",
-			"Room service up to 11:00pm",
-			"Wireless Internet",
-			"HD flat screen television with cable",
-			"Individually controlled air conditioning",
-			"An in-room safe",
-			"Hot and cold rainfall shower",
-			"A mini bar"
+		"details": [
+			{
+				"topic": "Features",
+				"content": [
+					"Each room offers 42 sqm / 452 sqf of luxury.",
+					"Memorable views of the lake and city.",
+					"Large, modern bathroom with walk-in shower and separate bathtub.",
+					"Wi-Fi.",
+					"Signature bed with 300-thread-count lightweight duvet."
+				]
+			},
+			{
+				"topic": "Bath & Personal Care",
+				"content": [
+					"Walk-in shower and/or separate bathtub",
+					"Bathroom mirror",
+					"Plush bathrobes and slippers",
+					"300 thread count linen",
+					"Pillow menu with hypoallergenic options",
+					"Iron and ironing board"
+				]
+			},
+			{
+				"topic": "Media & Entertainment",
+				"content": [
+					"High-speed Internet access",
+					"Flatscreen TV",
+					"Wide selection of international and local television channels"
+				]
+			},
+			{
+				"topic": "Refreshments",
+				"content": [
+					"Minibar",
+					"Water",
+					"Tea and coffee making facilities"
+				]
+			}
 		],
 		"image": "https://i.imgur.com/3Dpn0Ix.png",
+		"images": [
+			"https://imgur.com/TUa5mu0.png",
+			"https://imgur.com/ShevdYs.png",
+			"https://imgur.com/1LX56gs.png"
+		],
 		"price": 18000,
 		"stars": 4,
-		"tags": [
-			"Deluxe", "King", "AC"
-		]
+		"tags": ["Deluxe", "King", "AC"]
 	},
 	{
 		"id": 2,
 		"name": "Executive Garden Room",
 		"description": "The Executive Garden Room is a 40-48 sqm room that comes with a relaxing pocket garden. This room is perfect for guests who prefer to take the party upstairs after hours.",
-		"amenities": [
-			"Fresh linens replaced daily",
-			"Room service up to 11:00pm",
-			"Wireless Internet",
-			"HD flat screen television with cable",
-			"Individually controlled air conditioning",
-			"An in-room safe",
-			"Hot and cold rainfall shower",
-			"A mini bar"
+		"details": [
+			{
+				"topic": "Features",
+				"content": [
+					"Each room offers 42 sqm / 452 sqf of luxury.",
+					"Memorable views of the lake and city.",
+					"Large, modern bathroom with walk-in shower and separate bathtub.",
+					"Wi-Fi.",
+					"Signature bed with 300-thread-count lightweight duvet."
+				]
+			},
+			{
+				"topic": "Bath & Personal Care",
+				"content": [
+					"Walk-in shower and/or separate bathtub",
+					"Bathroom mirror",
+					"Plush bathrobes and slippers",
+					"300 thread count linen",
+					"Pillow menu with hypoallergenic options",
+					"Iron and ironing board"
+				]
+			},
+			{
+				"topic": "Media & Entertainment",
+				"content": [
+					"High-speed Internet access",
+					"Flatscreen TV",
+					"Wide selection of international and local television channels"
+				]
+			}
 		],
 		"image": "https://i.imgur.com/zJjvvPu.png",
+		"images": [
+			"https://imgur.com/iKqoeoS.png",
+			"https://imgur.com/Ppfcwmp.png",
+			"https://imgur.com/xq0qHOT.png"
+		],
 		"price": 10000,
 		"stars": 4,
 		"tags": ["Queen", "AC", "Executive"]
@@ -43,17 +101,43 @@
 		"id": 3,
 		"name": "Executive Varenda Room",
 		"description": "The Executive Veranda Room features a panoramic view of General Santos City. The 40-48-sqm room comes with balcony area that is perfect for morning coffee.",
-		"amenities": [
-			"Fresh linens replaced daily",
-			"Room service up to 11:00pm",
-			"Wireless Internet",
-			"HD flat screen television with cable",
-			"Individually controlled air conditioning",
-			"An in-room safe",
-			"Hot and cold rainfall shower",
-			"A mini bar"
+		"details": [
+			{
+				"topic": "Features",
+				"content": [
+					"Each room offers 42 sqm / 452 sqf of luxury.",
+					"Memorable views of the lake and city.",
+					"Large, modern bathroom with walk-in shower and separate bathtub.",
+					"Wi-Fi.",
+					"Signature bed with 300-thread-count lightweight duvet."
+				]
+			},
+			{
+				"topic": "Bath & Personal Care",
+				"content": [
+					"Walk-in shower and/or separate bathtub",
+					"Bathroom mirror",
+					"Plush bathrobes and slippers",
+					"300 thread count linen",
+					"Pillow menu with hypoallergenic options",
+					"Iron and ironing board"
+				]
+			},
+			{
+				"topic": "Media & Entertainment",
+				"content": [
+					"High-speed Internet access",
+					"Flatscreen TV",
+					"Wide selection of international and local television channels"
+				]
+			}
 		],
 		"image": "https://i.imgur.com/MiXVV9d.png",
+		"images": [
+			"https://imgur.com/iKqoeoS.png",
+			"https://imgur.com/Ppfcwmp.png",
+			"https://imgur.com/xq0qHOT.png"
+		],
 		"price": 12000,
 		"stars": 5,
 		"tags": ["King", "AC", "Executive"]
@@ -62,17 +146,43 @@
 		"id": 4,
 		"name": "One Bedroom Suite",
 		"description": "This 63-sqm suite is a definite treat for larger groups and families. It comes with a comfortable common living room area and a bathtub.",
-		"amenities": [
-			"Fresh linens replaced daily",
-			"Room service up to 11:00pm",
-			"Wireless Internet",
-			"HD flat screen television with cable",
-			"Individually controlled air conditioning",
-			"An in-room safe",
-			"Hot and cold rainfall shower",
-			"A mini bar"
+		"details": [
+			{
+				"topic": "Features",
+				"content": [
+					"Each room offers 42 sqm / 452 sqf of luxury.",
+					"Memorable views of the lake and city.",
+					"Large, modern bathroom with walk-in shower and separate bathtub.",
+					"Wi-Fi.",
+					"Signature bed with 300-thread-count lightweight duvet."
+				]
+			},
+			{
+				"topic": "Bath & Personal Care",
+				"content": [
+					"Walk-in shower and/or separate bathtub",
+					"Bathroom mirror",
+					"Plush bathrobes and slippers",
+					"300 thread count linen",
+					"Pillow menu with hypoallergenic options",
+					"Iron and ironing board"
+				]
+			},
+			{
+				"topic": "Media & Entertainment",
+				"content": [
+					"High-speed Internet access",
+					"Flatscreen TV",
+					"Wide selection of international and local television channels"
+				]
+			}
 		],
 		"image": "https://i.imgur.com/Q64dVXz.png",
+		"images": [
+			"https://imgur.com/iKqoeoS.png",
+			"https://imgur.com/Ppfcwmp.png",
+			"https://imgur.com/xq0qHOT.png"
+		],
 		"price": 15000,
 		"stars": 4,
 		"tags": ["Suite", "AC"]

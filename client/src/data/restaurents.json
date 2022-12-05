@@ -4,16 +4,82 @@
 		"name": "Tenku",
 		"description": "Tenku is an authentic Japanese restaurant, headed by internationally-acclaimed Japanese Master Chef Toshiyuki Okabe. Serving the most genuine Japanese cuisine and boasting panoramic views of Colombo, the restaurant is named 'Tenku', translating to 'sky' in Japanese.The restaurant features over 50 varieties of sushi and sashimi, a private teppanyaki room, and the largest collection of Sakes in the city.",
 		"image": "https://imgur.com/NuxTaYT.png",
-		"stars":4,
-		"tags": [
-			"Japanese", "restaurent"
-		]
+		"images": [
+			"https://imgur.com/g2ezNVk.png",
+			"https://imgur.com/qDrcNJc.png",
+			"https://imgur.com/sWWZCoj.png"
+		],
+		"details": [
+			{
+				"topic": "Price Range",
+				"content": ["LKR.2,000 - LKR.30,000"]
+			},
+			{
+				"topic": "Cuisines",
+				"content": ["Chinese"]
+			},
+			{
+				"topic": "Special Diets",
+				"content": [
+					"Vegetarian Friendly",
+					"Vegan Options",
+					"Gluten Free Options"
+				]
+			},
+			{
+				"topic": "Meals",
+				"content": ["Lunch", "Dinner"]
+			},
+			{
+				"topic": "Features",
+				"content": [
+					"Takeout, Reservations, Private Dining, and Seating", "Parking Available", "Validated Parking", "Valet Parking", "Highchairs Available", "Wheelchair Accessible", "Serves Alcohol", "Full Bar", "Free Wifi", "Accepts Credit Cards", "Table Service"
+				]
+			}
+		],
+		"stars": 4,
+		"tags": ["Japanese", "restaurent"]
 	},
 	{
 		"id": 2,
 		"name": "Sky Lounge",
 		"description": "Sky Lounge is our chique rooftop bar. Boasting views of the city and coastline below, Sky Lounge offers curated entertainment that changes as the night progresses to suit the mood. Additionally, an impressive A la carte Tapas menu and a number of cocktails carefully crafted by our in-house mixologists, offer guests just the right atmosphere to wind down and enjoy the night.",
 		"image": "https://imgur.com/SVXnQxy.png",
+		"images": [
+			"https://imgur.com/sWWZCoj.png",
+			"https://imgur.com/5be4BGh.png",
+			"https://imgur.com/IdUEfcm.png"
+		],
+		"details": [
+			{
+				"topic": "Price Range",
+				"content": ["LKR.2,000 - LKR.30,000"]
+			},
+			{
+				"topic": "Cuisines",
+				"content": ["Chinese"]
+			},
+			{
+				"topic": "Meals",
+				"content": ["Lunch", "Dinner"]
+			},
+			{
+				"topic": "Features",
+				"content": [
+					"Takeout, Reservations, Private Dining, and Seating",
+					"Parking Available",
+					"Validated Parking",
+					"Valet Parking",
+					"Highchairs Available",
+					"Wheelchair Accessible",
+					"Serves Alcohol",
+					"Full Bar",
+					"Free Wifi",
+					"Accepts Credit Cards",
+					"Table Service"
+				]
+			}
+		],
 		"stars": 5,
 		"tags": ["bar", "rooftop"]
 	}

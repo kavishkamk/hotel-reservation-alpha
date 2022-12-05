@@ -107,11 +107,13 @@ const ProgressTracker = (props) => {
 				style={{
 					width:
 						page === 0
-							? "25%"
+							? "20%"
 							: page === 1
-							? "50%"
+							? "40%"
 							: page === 2
-							? "75%"
+							? "60%"
+							: page === 3
+							? "80%"
 							: "100%",
 				}}
 			></div>
