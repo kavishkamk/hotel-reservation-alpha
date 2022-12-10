@@ -48,7 +48,8 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
     // generate JWT key
     const userJWT = jwt.sign({
         id: exsistingUser.id,
-        email: exsistingUser.email
+        email: exsistingUser.email,
+        isAdmin: exsistingUser.isAdmin
     } as UserPayload, process.env.JWT_KEY!);
 
     // set jwt in session
@@ -67,7 +68,8 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
                 contactNumber: exsistingUser.contactNumber,
                 profileURL: exsistingUser.profileURL,
                 activeStatus: exsistingUser.activeStatus,
-                nicNumber: exsistingUser.nicNumber
+                nicNumber: exsistingUser.nicNumber,
+                isAdmin: exsistingUser.isAdmin
             }
         });
 };
@@ -75,7 +77,7 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
 // signup
 const signup = async (req: Request, res: Response, next: NextFunction) => {
 
-    const { firstName, lastName, email, password, address, contactNumber, nicNumber } = req.body;
+    const { firstName, lastName, email, password, address, contactNumber, nicNumber, isAdmin } = req.body;
 
     let existingUser;
 
@@ -109,9 +111,24 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
         nicNumber
     });
 
+    console.log("OKKKKKK")
+
+    if (isAdmin) {
+        console.log("I am admin")
+        if (req.currentUser?.isAdmin) {
+            console.log("for set")
+            user.set({ isAdmin: isAdmin });
+            console.log("success")
+        } else {
+            return next(new CommonError(401, ErrorTypes.NOT_AUTHERIZED, "Not autherized to create admin"));
+        }
+    };
+
+
     try {
         user = await user.save();
     } catch (err) {
+        console.log(err);
         return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Signup Failed, Please try again later"));
     };
 
@@ -126,7 +143,8 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
                 contactNumber: user.contactNumber,
                 profileURL: user.profileURL,
                 activeStatus: user.activeStatus,
-                nicNumber: user.nicNumber
+                nicNumber: user.nicNumber,
+                isAdmin: user.isAdmin
             }
         });
 };
@@ -192,6 +210,7 @@ const accountActivation = async (req: Request, res: Response, next: NextFunction
         id: user.id,
         email: user.email,
         active: user.activeStatus,
+        isAdmin: user.isAdmin
     } as UserPayload, process.env.JWT_KEY!);
 
     // set jwt in session
@@ -210,7 +229,8 @@ const accountActivation = async (req: Request, res: Response, next: NextFunction
                 contactNumber: user.contactNumber,
                 profileURL: user.profileURL,
                 activeStatus: user.activeStatus,
-                nicNumber: user.nicNumber
+                nicNumber: user.nicNumber,
+                isAdmin: user.isAdmin
             }
         });
 };
@@ -315,7 +335,8 @@ const editUserDetails = async (req: Request, res: Response, next: NextFunction) 
                 contactNumber: existingUser.contactNumber,
                 profileURL: existingUser.profileURL,
                 activeStatus: existingUser.activeStatus,
-                nicNumber: existingUser.nicNumber
+                nicNumber: existingUser.nicNumber,
+                isAdmin: existingUser.isAdmin
             }
         });
 };

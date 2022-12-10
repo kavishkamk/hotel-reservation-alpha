@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { body, oneOf } from "express-validator";
-import { requestValidationMiddleware, currentUserMiddleware, requireAuthMiddleware, fileUpload } from "@alpha-lib/shared-lib";
+import { requestValidationMiddleware, currentUserMiddleware, requireAuthMiddleware, fileUpload, requireAdminAccess } from "@alpha-lib/shared-lib";
 
 import { signin, signout, signup, currentUser, requestAccoutActivationOTP, accountActivation, editUserDetails } from "../controllers/user-controllers";
 
@@ -13,47 +13,6 @@ router.get(
     "/currentuser",
     currentUserMiddleware,
     currentUser
-);
-
-// sign up
-router.post(
-    "/signup",
-    fileUpload.single("profilePic"),
-    [
-        body("firstName")
-            .not()
-            .isEmpty()
-            .trim()
-            .withMessage("First Name Required"),
-        body("lastName")
-            .not()
-            .isEmpty()
-            .trim()
-            .withMessage("Last Name Required"),
-        body("email")
-            .isEmail()
-            .normalizeEmail()
-            .withMessage("Email must be valid"),
-        body("password")
-            .trim()
-            .isLength({ min: MIN_PASSWORD_LENGHT })
-            .withMessage(`Password should be at leadt ${MIN_PASSWORD_LENGHT} characters`),
-        body("address")
-            .trim()
-            .not()
-            .isEmpty()
-            .withMessage("Address is required"),
-        body("contactNumber")
-            .trim()
-            .not()
-            .isEmpty(),
-        body("nicNumber")
-            .trim()
-            .isLength({ min: 9 })
-            .withMessage("NIC number required")
-    ],
-    requestValidationMiddleware,
-    signup
 );
 
 // sign in
@@ -111,6 +70,47 @@ router.post("/signout", signout);
 
 // get the JWT token data
 router.use(currentUserMiddleware);
+
+// sign up
+router.post(
+    "/signup",
+    fileUpload.single("profilePic"),
+    [
+        body("firstName")
+            .not()
+            .isEmpty()
+            .trim()
+            .withMessage("First Name Required"),
+        body("lastName")
+            .not()
+            .isEmpty()
+            .trim()
+            .withMessage("Last Name Required"),
+        body("email")
+            .isEmail()
+            .normalizeEmail()
+            .withMessage("Email must be valid"),
+        body("password")
+            .trim()
+            .isLength({ min: MIN_PASSWORD_LENGHT })
+            .withMessage(`Password should be at leadt ${MIN_PASSWORD_LENGHT} characters`),
+        body("address")
+            .trim()
+            .not()
+            .isEmpty()
+            .withMessage("Address is required"),
+        body("contactNumber")
+            .trim()
+            .not()
+            .isEmpty(),
+        body("nicNumber")
+            .trim()
+            .isLength({ min: 9 })
+            .withMessage("NIC number required")
+    ],
+    requestValidationMiddleware,
+    signup
+);
 
 // after this middle ware only authenicated uses can access
 router.use(requireAuthMiddleware);

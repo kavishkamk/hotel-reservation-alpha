@@ -29,6 +29,7 @@
         password: string;
         nicNumber: string;
         profilePic?: -;
+        isAdmin?: boolaen;
     }
 ```
 
@@ -46,6 +47,7 @@
             profileURL?: string;
             activeStatus: Boolean;
             nicNumber: string;
+            isAdmin?: boolaen;
         }
     }
 ```
@@ -53,6 +55,8 @@
 ### Error Response
 
 - response NOT_ACTIVATED_ACCOUNT (401 -> Account is not activated)
+
+- response NOT_AUTHERIZED (401 -> Don't have access to create admin)
 
 -  response EXISTING_USER (422 -> Signup Fail, User Alrady Exist, Please use another email) 
 
@@ -84,6 +88,7 @@
             profileURL?: string;
             activeStatus: Boolean;
             nicNumber: string;
+            isAdmin?: boolaen;
         }
     }
 ```
@@ -187,6 +192,7 @@
             profileURL?: string;
             activeStatus: Boolean;
             nicNumber: string;
+            isAdmin?: boolaen;
         }
     }
 ```
@@ -240,6 +246,7 @@
             profileURL?: string;
             activeStatus: Boolean;
             nicNumber: string;
+            isAdmin?: boolaen;
         }
     }
 ```
