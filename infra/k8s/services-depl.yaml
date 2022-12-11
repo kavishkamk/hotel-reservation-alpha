@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: services-alpha-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: services-alpha
+  template:
+    metadata:
+      labels:
+        app: services-alpha
+    spec:
+      containers:
+        - name: services-alpha
+          # image: kavishkamk/hotel-reservation-alpha-services
+          image: us.gcr.io/ticketing-dev-367104/services-alpha
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+            - name: MONGO_URI
+              value: mongodb://alpha-services-mongo-srv:27017/services
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alpha-services-srv
+spec:
+  selector:
+    app: services-alpha
+  ports:
+    - name: services-alpha
+      protocol: TCP
+      port: 4000
+      targetPort: 4000
