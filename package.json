@@ -1,0 +1,22 @@
+{
+  "name": "hotel-reservation-alpha",
+  "version": "1.0.0",
+  "description": "test1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kavishkamk/hotel-reservation-alpha.git"
+  },
+  "author": "Sasila Jayathilaka",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kavishkamk/hotel-reservation-alpha/issues"
+  },
+  "homepage": "https://github.com/kavishkamk/hotel-reservation-alpha#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
