@@ -1,14 +1,14 @@
 import { requestValidationMiddleware, requireAdminAccess, requireAuthMiddleware } from "@alpha-lib/shared-lib";
 import { Router } from "express";
-import { body, validationResult } from "express-validator";
+import { body } from "express-validator";
 
-import { createTag, deleteTag, getTags, updateTag } from "../controllers/tag-controllers";
+import { createRestaurentTag, deleteRestaurentTag, getRestaurentTags, updateRestaurentTag } from "../controllers/restaurent-tag-controller";
 
 const router = Router();
 
 router.get(
     "/",
-    getTags
+    getRestaurentTags
 );
 
 // after this route, to proferm operation user should log in to the system
@@ -27,7 +27,7 @@ router.post(
             .withMessage("Tag Name Required")
     ],
     requestValidationMiddleware,
-    createTag
+    createRestaurentTag
 );
 
 router.patch(
@@ -45,7 +45,7 @@ router.patch(
             .withMessage("Tag Name required")
     ],
     requestValidationMiddleware,
-    updateTag
+    updateRestaurentTag
 );
 
 router.delete(
@@ -58,7 +58,7 @@ router.delete(
             .withMessage("Id required"),
     ],
     requestValidationMiddleware,
-    deleteTag
+    deleteRestaurentTag
 );
 
-export { router as tagRouter };
+export { router as restaurentTagRouter };

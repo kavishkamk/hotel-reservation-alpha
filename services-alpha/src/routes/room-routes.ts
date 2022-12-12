@@ -2,7 +2,6 @@ import { requestValidationMiddleware } from "@alpha-lib/shared-lib";
 import { Router } from "express";
 import { body } from "express-validator";
 
-
 import { createRoom, deleteRoomType, getRooms } from "../controllers/room-controller";
 
 const router = Router();

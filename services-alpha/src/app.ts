@@ -4,7 +4,8 @@ import { currentUserMiddleware, errorMiddleware, unhandledRouteMiddleware } from
 import cookieSession from "cookie-session";
 
 import { roomRoutes } from "./routes/room-routes";
-import { tagRouter } from "./routes/tag-routes";
+import { roomTypeTagRouter } from "./routes/roomtype-tag-routes";
+import { restaurentTagRouter } from "./routes/restaurent-tag-routes";
 
 const app = express();
 
@@ -19,7 +20,8 @@ app.use(cookieSession({
 app.use(currentUserMiddleware);
 
 app.use("/api/services/rooms", roomRoutes);
-app.use("/api/services/tags", tagRouter);
+app.use("/api/services/tags", roomTypeTagRouter);
+app.use("/api/services/restaurents", restaurentTagRouter);
 
 app.use(unhandledRouteMiddleware);
 

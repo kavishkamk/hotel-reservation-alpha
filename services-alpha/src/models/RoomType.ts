@@ -1,6 +1,6 @@
 import { Document, Model, Schema, model, Types } from "mongoose";
 
-import { TagDoc } from "./Tag";
+import { TagDoc } from "./RoomTypeTag";
 
 // interfact that describe the attributes
 // required to create room type

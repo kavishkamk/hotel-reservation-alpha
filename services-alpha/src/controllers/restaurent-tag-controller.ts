@@ -1,21 +1,21 @@
 import { NextFunction, Request, Response } from "express";
 import { CommonError, ErrorTypes } from "@alpha-lib/shared-lib";
 
-import { Tag } from "../models/Tag";
+import { RestaurentTag } from "../models/RestaurentTags";
 
-const getTags = async (req: Request, res: Response) => {
+const getRestaurentTags = async (req: Request, res: Response) => {
 
-    const tags = await Tag.find().exec();
+    const tags = await RestaurentTag.find().exec();
 
     res.status(200).json({ tags });
 
 };
 
-const createTag = async (req: Request, res: Response, next: NextFunction) => {
+const createRestaurentTag = async (req: Request, res: Response, next: NextFunction) => {
 
     const { tagName } = req.body;
 
-    const tag = Tag.build({
+    const tag = RestaurentTag.build({
         tagName
     });
 
@@ -28,12 +28,12 @@ const createTag = async (req: Request, res: Response, next: NextFunction) => {
 
 };
 
-const updateTag = async (req: Request, res: Response, next: NextFunction) => {
+const updateRestaurentTag = async (req: Request, res: Response, next: NextFunction) => {
 
     const { id, tagName } = req.body;
 
     // find tag
-    const tag = await Tag.findById(id).exec();
+    const tag = await RestaurentTag.findById(id).exec();
 
     if (!tag) {
         return next(new CommonError(404, ErrorTypes.NOT_FOUND, "tag not found"));
@@ -58,19 +58,19 @@ const updateTag = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 // only for development
-const deleteTag = async (req: Request, res: Response, next: NextFunction) => {
+const deleteRestaurentTag = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.body;
 
     // delete tag
-    const result = await Tag.deleteOne({ _id: id });
+    const result = await RestaurentTag.deleteOne({ _id: id });
 
     res.status(200).json({ deleteCount: result });
 
 };
 
 export {
-    createTag,
-    updateTag,
-    getTags,
-    deleteTag
+    createRestaurentTag,
+    getRestaurentTags,
+    updateRestaurentTag,
+    deleteRestaurentTag
 };
