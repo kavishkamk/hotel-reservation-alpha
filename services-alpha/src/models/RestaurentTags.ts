@@ -43,6 +43,6 @@ restaurentTagSchema.statics.build = (attrs: RestaurentTagAttrs) => {
 };
 
 // create ticket model
-const RestaurentTag = model<RestaurentTagDoc, TagModel>("RestaurentTag", restaurentTagSchema);
+const RestaurentTag = model<RestaurentTagDoc, TagModel>("Restaurenttag", restaurentTagSchema);
 
 export { RestaurentTag, RestaurentTagDoc };
