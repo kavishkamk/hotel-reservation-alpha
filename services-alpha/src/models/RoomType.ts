@@ -1,32 +1,34 @@
-import { Document, Model, Schema, model } from "mongoose";
+import { Document, Model, Schema, model, Types } from "mongoose";
 
 import { TagDoc } from "./Tag";
 
 // interfact that describe the attributes
 // required to create room type
 interface RoomTypeAttrs {
-    name: string;
+    roomType: string;
     numberOfRooms: number;
     description: string;
     imageURL: string;
     price: number;
-    start: number;
+    stars: number;
     amenities: string[];
-    tags: TagDoc[]
+    tags: TagDoc[];
+    maxGuest: number;
 };
 
 // interface that describe properties
 // Room Type document has
 interface RoomTypeDoc extends Document {
-    name: string;
+    roomType: string;
     numberOfRooms: number;
     description: string;
     imageURL: string;
     price: number;
-    start: number;
+    stars: number;
     amenities: string[];
-    tags: TagDoc[],
-    version: number
+    tags: TagDoc[];
+    version: number;
+    maxGuest: number;
 };
 
 // interface that describe properties
@@ -37,7 +39,7 @@ interface RoomTypeModel extends Model<RoomTypeDoc> {
 
 // create schema
 const roomTypeSchema = new Schema({
-    name: { type: String, required: [true, "name Required"] },
+    roomType: { type: String, required: [true, "name Required"] },
     numberOfRooms: {
         type: Number,
         required: [true, "numberOfRooms Required"],
@@ -47,7 +49,7 @@ const roomTypeSchema = new Schema({
         type: String,
         required: [true, "description reqiured"]
     },
-    imageURI: {
+    imageURL: {
         type: String,
         required: [true, "image url required"]
     },
@@ -56,7 +58,7 @@ const roomTypeSchema = new Schema({
         required: [true, "price requried"],
         min: [0, "price should be > 0"]
     },
-    start: {
+    stars: {
         type: Number,
         required: [true, "number of start required"],
         min: [0, "number of stars > 0"]
@@ -69,11 +71,16 @@ const roomTypeSchema = new Schema({
     ],
     tags: [
         {
-            type: Schema.Types.ObjectId,
+            type: Types.ObjectId,
             ref: "Tag",
             required: [true, "tag required"]
         }
-    ]
+    ],
+    maxGuest: {
+        type: Number,
+        required: [true, "max Guest required"],
+        min: [0, "Number of max guest should be grater than 0"]
+    }
 }, {
     toJSON: {
         getters: true,

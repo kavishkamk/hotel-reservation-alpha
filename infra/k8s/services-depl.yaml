@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: services-alpha-depl
+  name: alpha-services-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: services-alpha
+      app: alpha-services
   template:
     metadata:
       labels:
-        app: services-alpha
+        app: alpha-services
     spec:
       containers:
-        - name: services-alpha
+        - name: alpha-services
           # image: kavishkamk/hotel-reservation-alpha-services
           image: us.gcr.io/ticketing-dev-367104/services-alpha
           env:
@@ -31,9 +31,9 @@ metadata:
   name: alpha-services-srv
 spec:
   selector:
-    app: services-alpha
+    app: alpha-services
   ports:
-    - name: services-alpha
+    - name: alpha-services
       protocol: TCP
       port: 4000
       targetPort: 4000

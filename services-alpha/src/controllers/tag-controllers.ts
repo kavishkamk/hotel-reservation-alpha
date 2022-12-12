@@ -5,15 +5,13 @@ import { Tag } from "../models/Tag";
 
 const getTags = async (req: Request, res: Response) => {
 
-    console.log(req.currentUser)
-
     const tags = await Tag.find().exec();
 
     res.status(200).json({ tags });
 
 };
 
-const createTag = async (req: Request, res: Response) => {
+const createTag = async (req: Request, res: Response, next: NextFunction) => {
 
     const { tagName } = req.body;
 
@@ -21,8 +19,11 @@ const createTag = async (req: Request, res: Response) => {
         tagName
     });
 
-    await tag.save();
-
+    try {
+        await tag.save();
+    } catch (err) {
+        return next(err)
+    }
     res.status(201).json({ tag: tag });
 
 };
@@ -46,7 +47,11 @@ const updateTag = async (req: Request, res: Response, next: NextFunction) => {
     // update version
     tag.increment();
 
-    await tag.save();
+    try {
+        await tag.save();
+    } catch (err) {
+        return next(err);
+    }
 
     res.status(200).json({ tag });
 
