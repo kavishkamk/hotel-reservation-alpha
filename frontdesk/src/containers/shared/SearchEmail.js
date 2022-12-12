@@ -9,7 +9,7 @@ const SearchEmail = (props) => {
 	};
 
 	return (
-		<fieldset className="w-2/3 mx-auto space-y-1 text-gray-900">
+		<fieldset className="w-2/3 mx-auto space-y-1 text-gray-900 shadow-lg">
 			<label for="Search" className="hidden">
 				Search
 			</label>

@@ -37,7 +37,7 @@ const ClientRegistration = (props) => {
 	}
 
 	return (
-		<div className="w-full p-5 bg-white my-2">
+		<div className="w-full p-5 bg-white my-2 rounded-lg shadow-lg">
 			<div className="my-2 font-bold text-lg text-center text-black">
 				Client Registration
 			</div>
