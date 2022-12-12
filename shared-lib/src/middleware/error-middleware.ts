@@ -24,7 +24,7 @@ const errorMiddleware = (error: Error, req: Request, res: Response, next: NextFu
         return res.status(error.statusCode).json(errorResponse);
     }
 
-    errorResponse = { errors: [{ message: "Something went wrong" }], errorType: ErrorTypes.INTERNAL_SERVER_ERROR };
+    errorResponse = { errors: [{ message: error.message || "Something went wrong" }], errorType: ErrorTypes.INTERNAL_SERVER_ERROR };
     res.status(500).json(errorResponse);
 };
 
