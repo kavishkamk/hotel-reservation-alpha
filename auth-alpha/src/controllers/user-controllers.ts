@@ -111,14 +111,9 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
         nicNumber
     });
 
-    console.log("OKKKKKK")
-
     if (isAdmin) {
-        console.log("I am admin")
         if (req.currentUser?.isAdmin) {
-            console.log("for set")
             user.set({ isAdmin: isAdmin });
-            console.log("success")
         } else {
             return next(new CommonError(401, ErrorTypes.NOT_AUTHERIZED, "Not autherized to create admin"));
         }

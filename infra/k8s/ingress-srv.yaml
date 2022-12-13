@@ -17,3 +17,10 @@ spec:
                 name: alpha-auth-srv
                 port:
                   number: 4000
+          - path: /api/services
+            pathType: Prefix
+            backend:
+              service:
+                name: alpha-services-srv
+                port:
+                  number: 4000
