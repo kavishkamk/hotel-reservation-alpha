@@ -15,7 +15,7 @@ interface RestaurentTagDoc extends Document {
 
 // this is interface that descrive the properties
 // Tag model has
-interface TagModel extends Model<RestaurentTagDoc> {
+interface RestaurentTagModel extends Model<RestaurentTagDoc> {
     build: (attrs: RestaurentTagAttrs) => RestaurentTagDoc;
 };
 
@@ -43,6 +43,6 @@ restaurentTagSchema.statics.build = (attrs: RestaurentTagAttrs) => {
 };
 
 // create ticket model
-const RestaurentTag = model<RestaurentTagDoc, TagModel>("Restaurenttag", restaurentTagSchema);
+const RestaurentTag = model<RestaurentTagDoc, RestaurentTagModel>("Restaurenttag", restaurentTagSchema);
 
 export { RestaurentTag, RestaurentTagDoc };

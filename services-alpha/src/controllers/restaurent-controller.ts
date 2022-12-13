@@ -7,7 +7,7 @@ const getRestaurent = async (req: Request, res: Response, next: NextFunction) =>
     let restaurent;
 
     try {
-        restaurent = await RestaurentType.find().populate("restaurenttags").exec();
+        restaurent = await RestaurentType.find().populate("tags.restaurenttags").exec();
     } catch (err) {
         return next(err);
     };
