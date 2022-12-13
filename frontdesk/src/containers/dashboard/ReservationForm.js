@@ -89,7 +89,7 @@ const ReservationForm = () => {
 			/>
 
 			{/* selecting rooms or restaurents */}
-			<div className="flex flex-col gap-y-5">
+			<div className="flex flex-col gap-y-5 font-manrope">
 				{availableRooms.length > 0 && (
 					<div className="">
 						<div className="font-semibold">Rooms</div>
@@ -173,7 +173,7 @@ const ReservationForm = () => {
 
 			{totalAmount > 0 && (
 				<div className="w-full flex items-center justify-center">
-					<button className="bg-green-600 text-white px-8 py-2">
+					<button className="bg-green-600 text-white font-bold px-8 py-2">
 						Submit
 					</button>
 				</div>

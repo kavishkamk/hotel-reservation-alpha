@@ -137,7 +137,7 @@ const SelectRoomAvailability = (props) => {
 			<div className="w-full flex items-center justify-center">
 				<button
 					onClick={checkHandler}
-					className="bg-textBlue text-white px-4 py-2"
+					className="bg-textBlue text-white font-bold px-4 py-2"
 				>
 					Check Availability
 				</button>

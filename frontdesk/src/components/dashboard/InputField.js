@@ -16,16 +16,26 @@ const InputField = (props) => {
 			>
 				{props.title}
 			</label>
-			<input
-				id={props.id}
-				type={props.type}
-				placeholder={props.title}
-				value={props.value}
-				value={props.input}
-				onChange={handleInputChange}
-				readOnly={readonly}
-				className="w-2/3 my-2 py-1 px-2 rounded-md focus:ring focus:ring-opacity-75 focus:ring-indigo-400 border-gray-700 text-gray-900 bg-[#E2E8F0]"
-			/>
+			{props.input ? (
+				<input
+					id={props.id}
+					type={props.type}
+					placeholder={props.title}
+					value={props.input}
+					onChange={handleInputChange}
+					readOnly={readonly}
+					className="w-2/3 my-2 py-1 px-2 rounded-md focus:ring focus:ring-opacity-75 focus:ring-indigo-400 border-gray-700 text-gray-900 bg-[#E2E8F0]"
+				/>
+			) : (
+				<input
+					id={props.id}
+					type={props.type}
+					placeholder={props.title}
+					value={props.value}
+					readOnly={readonly}
+					className="w-2/3 my-2 py-1 px-2 rounded-md focus:ring focus:ring-opacity-75 focus:ring-indigo-400 border-gray-700 text-gray-900 bg-[#E2E8F0]"
+				/>
+			)}
 		</div>
 	);
 }

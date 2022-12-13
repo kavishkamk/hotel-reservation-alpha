@@ -1,6 +1,7 @@
 import './App.css';
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
+import {DefaultContext} from "./context/DefaultContext"
 
 import Navbar from "./components/navbar/Navbar"
 import Footer from "./components/footer/Footer"
@@ -11,11 +12,14 @@ import CheckinPage from "./pages/CheckinPage"
 import CheckoutPage from "./pages/CheckoutPage"
 import BookingPage from "./pages/BookingPage"
 import NotFoundPage from "./pages/NotFoundPage"
+import PrintPage from "./pages/PrintPage"
 
 function App() {
+	const {path} = useContext(DefaultContext)
+
   return (
 		<>
-			<Navbar />
+			<Navbar currentPath={path} />
 
 			<Routes>
 				<Route path="/" element={<DashboardPage />} />
@@ -32,7 +36,8 @@ function App() {
 					element={<BookingPage />}
 				/>
 				<Route path="/login" element={<LoginPage />} />
-
+				<Route path="/print" element={<PrintPage />} />
+				
 				{/* 404 not found */}
 				<Route path="*" element={<NotFoundPage />} />
 			</Routes>

@@ -6,7 +6,7 @@ const TotalCounts = () => {
 	const paymentsCount = 54
 
 	return (
-		<div className="flex flex-row pt-2">
+		<div className="flex flex-row pt-2 font-manrope">
 			<div className="flex flex-row items-center justify-between w-full mx-32 py-1 px-4 bg-black text-white font-bold">
 				<div className="">Total Clients</div>
 				<div className="">{clientsCount}</div>

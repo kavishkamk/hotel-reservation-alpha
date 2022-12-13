@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Logo from "../../assets/logo.svg"
 import Navbtn from "./Navbtn"
 
-const Navbar = () => {
+const Navbar = (props) => {
 	const navigate = useNavigate();
 
 	const navigateHandler = (route) => {
@@ -23,18 +23,26 @@ const Navbar = () => {
 				<Navbtn
 					onClick={() => navigateHandler("/")}
 					name="Dashboard"
+					path="/"
+					currentPath={props.currentPath}
 				/>
 				<Navbtn
 					onClick={() => navigateHandler("/checkin")}
 					name="Check-in"
+					path="/checkin"
+					currentPath={props.currentPath}
 				/>
 				<Navbtn
 					onClick={() => navigateHandler("/checkout")}
 					name="Check-out"
+					path="/checkout"
+					currentPath={props.currentPath}
 				/>
 				<Navbtn
 					onClick={() => navigateHandler("/booking")}
 					name="Booking"
+					path="/booking"
+					currentPath={props.currentPath}
 				/>
 
 			</div>

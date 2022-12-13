@@ -39,7 +39,7 @@ const ClientRegistration = (props) => {
 	return (
 		<div className="w-full p-5 bg-white my-2 rounded-lg shadow-lg">
 			<div className="my-2 font-bold text-lg text-center text-black">
-				Client Registration
+				{!props.topic ? "Client Registration" : props.topic}
 			</div>
 			<div className="flex flex-col">
 				<Input
@@ -93,7 +93,10 @@ const ClientRegistration = (props) => {
 			</div>
 
 			{Object.keys(props.clientData).length === 0 && (
-				<div onClick={clientRegisterHandler} className="mx-auto w-fit mt-5">
+				<div
+					onClick={clientRegisterHandler}
+					className="mx-auto w-fit mt-5"
+				>
 					<button className="bg-textBlue text-white font-semibold px-8 py-2">
 						Register
 					</button>

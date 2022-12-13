@@ -1,11 +1,15 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import PageContainer from "../components/page/PageContainer"
 import TotalCounts from "../containers/dashboard/TotalCounts"
 import ClientRegistration from "../containers/dashboard/ClientRegistration"
 import ReservationForm from "../containers/dashboard/ReservationForm"
 import SearchEmail from "../containers/shared/SearchEmail"
+import { DefaultContext} from "../context/DefaultContext"
 
 const DashboardPage = () => {
+	const {path, setPath_func} = useContext(DefaultContext)
+	setPath_func()
+	
 	const [email, setEmail] = useState()
 	const [clientData, setClientData] = useState({
 		"First Name": "Nimal",
@@ -32,7 +36,7 @@ const DashboardPage = () => {
 				<TotalCounts />
 			</div>
 
-			<div className="flex flex-row w-full items-start pt-2">
+			<div className="flex flex-row w-full items-start pt-2 font-manrope">
 				<div className="w-1/2 pl-10">
 					<SearchEmail onClick={searchHandler} />
 					<ClientRegistration email={email} clientData={clientData} clientRegister={clientRegisterHandler} />
