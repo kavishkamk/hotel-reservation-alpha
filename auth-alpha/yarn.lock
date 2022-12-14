@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@alpha-lib/shared-lib@^1.0.17":
-  version "1.0.17"
-  resolved "https://registry.yarnpkg.com/@alpha-lib/shared-lib/-/shared-lib-1.0.17.tgz#99e2728aa87ab0a56813497e6a75b2a098d01be7"
-  integrity sha512-60v6F3gOBQelzMrIs2ltBSr1yGwbhP0fyDAwrz9aV+4Uxs+Y4eejCjnTMsm0CLCoF/h2ApaaSMReYzeXVnOskQ==
+"@alpha-lib/shared-lib@^1.0.18":
+  version "1.0.18"
+  resolved "https://registry.yarnpkg.com/@alpha-lib/shared-lib/-/shared-lib-1.0.18.tgz#500804cf1c1144207940d1239e6a47526da535d2"
+  integrity sha512-l6+Wjk75Ny2vXY5bVj2LcphpDvAW50ajKkBvpY03sodzvPsQrxoQC5mvGw/Zr4M8+lOjDKepz/AQuqkXXi6R+g==
   dependencies:
     "@types/cookie-session" "^2.0.44"
     "@types/express" "^4.17.14"
@@ -18,6 +18,7 @@
     express-validator "^6.14.2"
     jsonwebtoken "^8.5.1"
     multer "^1.4.5-lts.1"
+    node-nats-streaming "^0.3.2"
     uuid "^9.0.0"
 
 "@aws-crypto/ie11-detection@^2.0.0":
@@ -1317,6 +1318,11 @@ glob@^7.1.3:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
+google-protobuf@^3.11.2:
+  version "3.21.2"
+  resolved "https://registry.yarnpkg.com/google-protobuf/-/google-protobuf-3.21.2.tgz#4580a2bea8bbb291ee579d1fefb14d6fa3070ea4"
+  integrity sha512-3MSOYFO5U9mPGikIYCzK0SaThypfGgS6bHqrUGXG3DPHCrb+txNqeEcns1W0lkGfk0rCyNXm7xB9rMxnCiZOoA==
+
 has-symbols@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/has-symbols/-/has-symbols-1.0.3.tgz#bb7b2c4349251dce87b125f7bdf874aa7c8b39f8"
@@ -1660,10 +1666,27 @@ multer@^1.4.5-lts.1:
     type-is "^1.6.4"
     xtend "^4.0.0"
 
+nats@^1.4.9:
+  version "1.4.12"
+  resolved "https://registry.yarnpkg.com/nats/-/nats-1.4.12.tgz#11a988d5041d95dfb1b6ac1e37c0cfb57b171579"
+  integrity sha512-Jf4qesEF0Ay0D4AMw3OZnKMRTQm+6oZ5q8/m4gpy5bTmiDiK6wCXbZpzEslmezGpE93LV3RojNEG6dpK/mysLQ==
+  dependencies:
+    nuid "^1.1.4"
+    ts-nkeys "^1.0.16"
+
 negotiator@0.6.3:
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.3.tgz#58e323a72fedc0d6f9cd4d31fe49f51479590ccd"
   integrity sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==
+
+node-nats-streaming@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/node-nats-streaming/-/node-nats-streaming-0.3.2.tgz#a6d1b77eae837495856893f573e3d78184b39833"
+  integrity sha512-exeT+FwGYW3UbBSzu8a7ykwWoY6R/vjQLr1RoZ1gnoJ9F66WVvpMZQWCZzLxlf9XRpJTTygcp6P1+WRw9h07Sg==
+  dependencies:
+    google-protobuf "^3.11.2"
+    nats "^1.4.9"
+    nuid "^1.1.4"
 
 nodemailer@^6.8.0:
   version "6.8.0"
@@ -1674,6 +1697,11 @@ normalize-path@^3.0.0, normalize-path@~3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"
   integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
+
+nuid@^1.1.4:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/nuid/-/nuid-1.1.6.tgz#a3b5a1df155f6615fed1dbd39ad3dbf9d2e0b82b"
+  integrity sha512-Eb3CPCupYscP1/S1FQcO5nxtu6l/F3k0MQ69h7f5osnsemVk5pkc8/5AyalVT+NCfra9M71U8POqF6EZa6IHvg==
 
 object-assign@^4.1.1:
   version "4.1.1"
@@ -1974,6 +2002,13 @@ tree-kill@^1.2.2:
   resolved "https://registry.yarnpkg.com/tree-kill/-/tree-kill-1.2.2.tgz#4ca09a9092c88b73a7cdc5e8a01b507b0790a0cc"
   integrity sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==
 
+ts-nkeys@^1.0.16:
+  version "1.0.16"
+  resolved "https://registry.yarnpkg.com/ts-nkeys/-/ts-nkeys-1.0.16.tgz#b0c6e7c4f16f976c7e7ddb6982fc789a2f971248"
+  integrity sha512-1qrhAlavbm36wtW+7NtKOgxpzl+70NTF8xlz9mEhiA5zHMlMxjj3sEVKWm3pGZhHXE0Q3ykjrj+OSRVaYw+Dqg==
+  dependencies:
+    tweetnacl "^1.0.3"
+
 ts-node-dev@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ts-node-dev/-/ts-node-dev-2.0.0.tgz#bdd53e17ab3b5d822ef519928dc6b4a7e0f13065"
@@ -2033,6 +2068,11 @@ tsscmp@1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/tsscmp/-/tsscmp-1.0.6.tgz#85b99583ac3589ec4bfef825b5000aa911d605eb"
   integrity sha512-LxhtAkPDTkVCMQjt2h6eBVY28KCjikZqZfMcC15YBeNjkgUpdCfBu5HoiOTDu86v6smE8yOjyEktJ8hlbANHQA==
+
+tweetnacl@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-1.0.3.tgz#ac0af71680458d8a6378d0d0d050ab1407d35596"
+  integrity sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==
 
 type-is@^1.6.4, type-is@~1.6.18:
   version "1.6.18"

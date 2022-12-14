@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
+import { RestaurentCreatedPublisher } from "../events/publishers/restaurent-created-publisher";
 
 import { RestaurentType } from "../models/RestaurentType";
+import { natsWrapper } from "../nats-wrapper";
 
 const getRestaurent = async (req: Request, res: Response, next: NextFunction) => {
 
@@ -35,6 +37,14 @@ const createRestaurent = async (req: Request, res: Response, next: NextFunction)
     } catch (err) {
         return next(err);
     };
+
+    new RestaurentCreatedPublisher(natsWrapper.client).publish({
+        id: restaurentSet.id,
+        restaurentType: restaurentSet.restaurentType,
+        numberOfTables: restaurentSet.numberOfTables,
+        maxGuest: restaurentSet.maxGuest,
+        version: restaurentSet.version
+    });
 
     res.status(201).json({ roomType: restaurentSet });
 

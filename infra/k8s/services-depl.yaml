@@ -17,6 +17,14 @@ spec:
           # image: kavishkamk/hotel-reservation-alpha-services
           image: us.gcr.io/ticketing-dev-367104/services-alpha
           env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: http://nats-srv:4222
+            - name: NATS_CLUSTER_ID
+              value: alphahotelreservation
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:

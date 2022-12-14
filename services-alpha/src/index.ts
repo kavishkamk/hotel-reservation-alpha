@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import { natsWrapper } from "./nats-wrapper";
+
 import { app } from "./app";
 
 const port = 4000;
@@ -13,15 +15,44 @@ const start = () => {
         throw new Error("MONGO_URI must befined");
     };
 
-    mongoose.connect(process.env.MONGO_URI)
+    if (!process.env.NATS_CLIENT_ID) {
+        throw new Error("NATS_CLIENT_ID must be defined");
+    };
+
+    if (!process.env.NATS_URL) {
+        throw new Error("JNATS_URL must be defined");
+    };
+
+    if (!process.env.NATS_CLUSTER_ID) {
+        throw new Error("NATS_CLUSTER_ID must be defined");
+    };
+
+    // connect to the nats-streaming-server
+    natsWrapper.connect(process.env.NATS_CLUSTER_ID, process.env.NATS_CLIENT_ID, process.env.NATS_URL)
         .then(() => {
-            app.listen(port, () => {
-                console.log("Succesfully connected to the Database");
-                console.log("Services start on port : " + port);
+            // gracefull shout down
+            natsWrapper.client.on("close", () => {
+                console.log("NATS connection closed");
+                process.exit();
             });
+
+            process.on("SIGTERM", () => natsWrapper.client.close());
+            process.on("SIGINT", () => natsWrapper.client.close());
+
+            mongoose.connect(process.env.MONGO_URI!)
+                .then(() => {
+                    app.listen(port, () => {
+                        console.log("Succesfully connected to the Database");
+                        console.log("Services start on port : " + port);
+                    });
+                })
+                .catch(err => {
+                    console.log("DB connection Failed. Could not connect to the database: " + err)
+                });
+
         })
-        .catch(err => {
-            console.log("DB connection Failed. Could not connect to the database: " + err)
+        .catch((err) => {
+            console.error("Could not connect to the NATS Streaming Server : " + err);
         });
 
 };
