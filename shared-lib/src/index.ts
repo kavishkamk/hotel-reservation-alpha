@@ -11,6 +11,7 @@ export * from "./middleware/require-auth-middleware";
 export * from "./middleware/file-upload-middleware";
 export * from "./middleware/require-admin-access";
 
+export * from "./events/types/order-status";
 export * from "./events/Subjects";
 export * from "./events/base-listener";
 export * from "./events/base-publisher";
