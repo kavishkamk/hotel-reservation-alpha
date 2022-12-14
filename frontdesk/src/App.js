@@ -19,7 +19,7 @@ function App() {
 
   return (
 		<>
-			<Navbar currentPath={path} />
+			{path !== "/print" && (<Navbar currentPath={path} />)}
 
 			<Routes>
 				<Route path="/" element={<DashboardPage />} />
@@ -42,7 +42,7 @@ function App() {
 				<Route path="*" element={<NotFoundPage />} />
 			</Routes>
 
-			<Footer />
+			{path !== "/print" && (<Footer />)}
 		</>
 	);
 }

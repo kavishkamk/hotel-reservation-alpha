@@ -4,7 +4,8 @@ import Input from "../dashboard/InputField";
 
 const SummaryContainer = (props) => {
 	const paidHandler = () => {
-		window.print();
+		console.log("should print")
+		// window.print();
 	};
 
 	const checkinHandler = () => {};
@@ -55,7 +56,7 @@ const SummaryContainer = (props) => {
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					<button className="bg-textBlue text-white font-bold text-base px-6 py-1">
+					<button onClick={paidHandler} className="bg-textBlue text-white font-bold text-base px-6 py-1">
 						Paid
 					</button>
 				</Link>

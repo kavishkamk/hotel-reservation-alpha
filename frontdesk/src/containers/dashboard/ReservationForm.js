@@ -128,7 +128,7 @@ const ReservationForm = () => {
 					</div>
 				)}
 
-				{availableRestaurents.length > 0 && (
+				{/* {availableRestaurents.length > 0 && (
 					<div className="">
 						<div className="font-semibold">Restaurents</div>
 						<div className="">
@@ -159,7 +159,7 @@ const ReservationForm = () => {
 							})}
 						</div>
 					</div>
-				)}
+				)} */}
 			</div>
 
 			<div className="w-full text-center flex flex-row items-center justify-between pr-5 my-3">
