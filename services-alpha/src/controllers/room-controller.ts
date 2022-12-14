@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
+import { RoomTypeCreatedPublisher } from "../events/publishers/room-type-created-publisher";
 import { RoomType } from "../models/RoomType";
+import { natsWrapper } from "../nats-wrapper";
 
 const getRooms = async (req: Request, res: Response, next: NextFunction) => {
 
@@ -36,6 +38,15 @@ const createRoom = async (req: Request, res: Response, next: NextFunction) => {
     } catch (err) {
         return next(err);
     };
+
+    await new RoomTypeCreatedPublisher(natsWrapper.client).publish({
+        id: roomSet.id,
+        roomType: roomSet.roomType,
+        numberOfRooms: roomSet.numberOfRooms,
+        price: roomSet.price,
+        maxGuest: roomSet.maxGuest,
+        version: roomType.version
+    });
 
     res.status(201).json({ roomType: roomSet });
 
