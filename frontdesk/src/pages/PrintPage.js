@@ -1,10 +1,13 @@
-import React from 'react'
-import {useLocation} from "react-router-dom"
+import React, {useState} from 'react'
+// import {useLocation} from "react-router-dom"
 import LogoImage from "../assets/logo.svg"
 
 const PrintPage = (props) => {
-	const location = useLocation();
-	// console.log(location.state.data)
+	const [printStatus, setPrintStatus] = useState(false)
+
+	// const tokenString = sessionStorage.getItem("loginStatus");
+	// const loginStatus = JSON.parse(tokenString);
+	// console.log(loginStatus)
 
 	const today = new Date().toLocaleString();
 	// 12/14/2022, 11:01:47 AM
@@ -28,7 +31,15 @@ const PrintPage = (props) => {
 		total: 120000
 	};
 
-	// window.print()
+	const printHandler = async ()=> {
+		await setPrintStatus(true)
+		await window.print()
+		await setPrintStatus(false)
+	}
+
+	const closeHandler = async ()=> {
+		window.close()
+	}
 
 	return (
 		<div className="max-w-2xl mx-auto p-4">
@@ -180,7 +191,7 @@ const PrintPage = (props) => {
 									<p>Nights</p>
 								</td>
 								<td className="p-2 text-right">
-									<p>{"x "+ reservationDetails.nights}</p>
+									<p>{"x " + reservationDetails.nights}</p>
 								</td>
 							</tr>
 
@@ -196,6 +207,23 @@ const PrintPage = (props) => {
 					</table>
 				</div>
 			</div>
+
+			{!printStatus && (
+				<div className="w-full flex items-center justify-between">
+					<button
+						onClick={closeHandler}
+						className="w-fit bg-red-600 text-white font-poppins font-bold px-10 py-2 mt-3"
+					>
+						Close
+					</button>
+					<button
+						onClick={printHandler}
+						className="w-fit bg-green-600 text-white font-poppins font-bold px-10 py-2 mt-3"
+					>
+						Print
+					</button>
+				</div>
+			)}
 		</div>
 	);
 }

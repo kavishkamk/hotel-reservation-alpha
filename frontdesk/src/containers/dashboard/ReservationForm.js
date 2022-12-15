@@ -4,8 +4,8 @@ import SelectRoomAvailability from "../../components/dashboard/SelectRoomAvailab
 const ReservationForm = () => {
 	const [formData, setFormData] = useState();
 	const [selectedRooms, setSelectedRooms] = useState([]);
-	const [selectedRestaurents, setSelectedRestaurents] =
-		useState([]);
+	// const [selectedRestaurents, setSelectedRestaurents] =
+	// 	useState([]);
 	const [totalAmount, setTotalAmount] = useState(0);
 
 	useEffect(() => {
@@ -30,20 +30,20 @@ const ReservationForm = () => {
 		},
 	];
 
-	const availableRestaurents = [
-		{
-			id: 1,
-			name: "Restaurant 1",
-		},
-		{
-			id: 2,
-			name: "Restaurant 2",
-		},
-		{
-			id: 3,
-			name: "Restaurant 3",
-		},
-	];
+	// const availableRestaurents = [
+	// 	{
+	// 		id: 1,
+	// 		name: "Restaurant 1",
+	// 	},
+	// 	{
+	// 		id: 2,
+	// 		name: "Restaurant 2",
+	// 	},
+	// 	{
+	// 		id: 3,
+	// 		name: "Restaurant 3",
+	// 	},
+	// ];
 
 	const roomCheckHandler = (event, id, room) => {
 		const status = event.target.checked;
@@ -60,26 +60,26 @@ const ReservationForm = () => {
 		}
 	};
 
-	const restaurentCheckHandler = (
-		event,
-		name,
-		restaurent
-	) => {
-		const status = event.target.checked;
+	// const restaurentCheckHandler = (
+	// 	event,
+	// 	name,
+	// 	restaurent
+	// ) => {
+	// 	const status = event.target.checked;
 
-		if (status === true) {
-			setSelectedRestaurents([
-				...selectedRestaurents,
-				restaurent,
-			]);
-		} else {
-			setSelectedRestaurents((current) =>
-				current.filter(
-					(restaurent) => restaurent.name !== name
-				)
-			);
-		}
-	};
+	// 	if (status === true) {
+	// 		setSelectedRestaurents([
+	// 			...selectedRestaurents,
+	// 			restaurent,
+	// 		]);
+	// 	} else {
+	// 		setSelectedRestaurents((current) =>
+	// 			current.filter(
+	// 				(restaurent) => restaurent.name !== name
+	// 			)
+	// 		);
+	// 	}
+	// };
 
 	return (
 		<div className="w-full p-5 bg-white rounded-lg shadow-lg max-h-[calc(100vh-10rem)] overflow-y-auto">

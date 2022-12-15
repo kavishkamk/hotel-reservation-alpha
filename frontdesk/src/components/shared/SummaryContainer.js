@@ -5,10 +5,18 @@ import Input from "../dashboard/InputField";
 const SummaryContainer = (props) => {
 	const paidHandler = () => {
 		console.log("should print")
+		// sessionStorage.setItem(
+		// 	"loginStatus", true
+		// );
+		window.open("/print", "_blank", 'height=full')
 		// window.print();
 	};
 
+	const additionalHandler = ()=> {}
+
 	const checkinHandler = () => {};
+
+	const checkoutHandler = () => {};
 
 	return (
 		<div className="bg-white drop-shadow-2xl rounded-xl p-3 text-xs">
@@ -49,24 +57,46 @@ const SummaryContainer = (props) => {
 				value={props.item.price}
 			/>
 
-			<div className="flex flex-row items-center justify-evenly my-3">
-				<Link
-					to="/print"
-					state={{data: props.item}}
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<button onClick={paidHandler} className="bg-textBlue text-white font-bold text-base px-6 py-1">
-						Paid
+			{!props.checkout && (
+				<div className="flex flex-row items-center justify-evenly my-3">
+					{/* <Link
+						to="/print"
+						// state={{data: props.item}}
+						target="_blank"
+						rel="noopener noreferrer"
+					> */}
+						<button
+							onClick={paidHandler}
+							className="bg-textBlue text-white font-bold text-base px-6 py-1"
+						>
+							Paid
+						</button>
+					{/* </Link> */}
+					<button
+						onClick={checkinHandler}
+						className="bg-textBlue text-white font-bold text-base px-6 py-1"
+					>
+						Check-in
 					</button>
-				</Link>
-				<button
-					onClick={checkinHandler}
-					className="bg-textBlue text-white font-bold text-base px-6 py-1"
-				>
-					Check-in
-				</button>
-			</div>
+				</div>
+			)}
+
+			{props.checkout && (
+				<div className="flex flex-row items-center justify-evenly my-3">
+					<button
+						onClick={additionalHandler}
+						className="bg-textBlue text-white font-bold text-base px-6 py-1"
+					>
+						Additional
+					</button>
+					<button
+						onClick={checkoutHandler}
+						className="bg-textBlue text-white font-bold text-base px-6 py-1"
+					>
+						Check-out
+					</button>
+				</div>
+			)}
 		</div>
 	);
 };

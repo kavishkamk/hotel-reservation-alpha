@@ -10,7 +10,7 @@ const BookingSummary = (props) => {
 
 			<div className="flex flex-col gap-y-5">
 				{props.reservations.map((order) => (
-					<SummaryContainer item={order} />
+					<SummaryContainer item={order} checkout={props.checkout} />
 				))}
 			</div>
 		</div>
