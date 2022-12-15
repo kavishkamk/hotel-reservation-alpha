@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { natsWrapper } from "./nats-wrapper";
 
 import { app } from "./app";
+import { RoomTypeCreatedListner } from "./events/listeners/room-type-created-listener";
 
 const port = 4000;
 
@@ -35,6 +36,8 @@ const start = () => {
                 console.log("NATS connection closed");
                 process.exit();
             });
+
+            new RoomTypeCreatedListner(natsWrapper.client).listen();
 
             process.on("SIGTERM", () => natsWrapper.client.close());
             process.on("SIGINT", () => natsWrapper.client.close());

@@ -31,7 +31,7 @@ spec:
                   name: jwt-secret
                   key: JWT_KEY
             - name: MONGO_URI
-              value: mongodb://alpha-booking-mongo-srv:27017/auth
+              value: mongodb://alpha-booking-mongo-srv:27017/booking
 ---
 apiVersion: v1
 kind: Service
