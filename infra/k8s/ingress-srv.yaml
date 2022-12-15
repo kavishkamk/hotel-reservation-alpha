@@ -24,3 +24,10 @@ spec:
                 name: alpha-services-srv
                 port:
                   number: 4000
+          - path: /api/booking
+            pathType: Prefix
+            backend:
+              service:
+                name: alpha-booking-srv
+                port:
+                  number: 4000

@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: alpha-services-mongo-depl
+  name: alpha-booking-mongo-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: alpha-services-mongo
+      app: alpha-booking-mongo
   template:
     metadata:
       labels:
-        app: alpha-services-mongo
+        app: alpha-booking-mongo
     spec:
       containers:
-        - name: alpha-service-mongo
+        - name: alpha-booking-mongo
           image: mongo
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: alpha-services-mongo-srv
+  name: alpha-booking-mongo-srv
 spec:
   selector:
-    app: alpha-services-mongo
+    app: alpha-booking-mongo
   ports:
-    - name: alpha-services-mongo
+    - name: alpha-booking-mongo
       protocol: TCP
       port: 27017
       targetPort: 27017

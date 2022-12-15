@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alpha-booking-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alpha-booking
+  template:
+    metadata:
+      labels:
+        app: alpha-booking
+    spec:
+      containers:
+        - name: alpha-booking
+          #image: kavishkamk/hotel-reservation-alpha-booking
+          image: us.gcr.io/ticketing-dev-367104/booking-alpha
+          env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: http://nats-srv:4222
+            - name: NATS_CLUSTER_ID
+              value: alphahotelreservation
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+            - name: MONGO_URI
+              value: mongodb://alpha-booking-mongo-srv:27017/booking
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alpha-booking-srv
+spec:
+  selector:
+    app: alpha-booking
+  ports:
+    - name: alpha-booking
+      protocol: TCP
+      port: 4000
+      targetPort: 4000
