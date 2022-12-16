@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import PageContainer from "../components/page/PageContainer";
 import { DefaultContext } from "../context/DefaultContext";
+import TabsContent from "../containers/booking/TabsContent"
 
 const BookingPage = () => {
 	const [selected, setSelected] = useState(1);
@@ -60,7 +61,7 @@ const BookingPage = () => {
 			</div>
 
 			<div className="-mx-8 md:mx-0 min-w-full max-h-[calc(100vh-20rem)] font-manrope">
-				{/* <TabsContent status={tabsList[selected - 1].name} /> */}
+				<TabsContent tab={selected} />
 			</div>
 		</PageContainer>
 	);
