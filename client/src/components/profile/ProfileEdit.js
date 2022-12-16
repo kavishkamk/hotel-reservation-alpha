@@ -29,7 +29,7 @@ const ProfileEdit = (props) => {
 	}
 
 	return (
-		<div className="py-4 md:py-10">
+		<div className="py-4 md:py-10 font-poppins">
 			<Input
 				id="firstname"
 				label="First Name"

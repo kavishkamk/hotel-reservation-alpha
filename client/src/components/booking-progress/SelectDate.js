@@ -98,7 +98,7 @@ const SelectDate = (props) => {
 	}
 
 	return (
-		<div className="mx-auto w-full">
+		<div className="mx-auto w-full font-inter">
 			<div className="flex flex-col xl:flex-row rounded-lg py-5 md:p-10 my-5 bg-lightBlueGray w-full md:w-fit mx-auto xl:p-3">
 				<div className="bg-lightBlueGray w-fit">
 					<div className="uppercase text-textBlue font-semibold text-sm px-3 py-2">
