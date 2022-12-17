@@ -18,4 +18,5 @@ export * from "./events/base-publisher";
 export * from "./events/restaurent-created-event";
 export * from "./events/room-type-created-event";
 export * from "./events/room-type-reservation-event";
-export * from "./events/expiration-compleate-event";
+export * from "./events/room-expiration-compleate-event";
+export * from "./events/resturent-expiration-compleate-event";
