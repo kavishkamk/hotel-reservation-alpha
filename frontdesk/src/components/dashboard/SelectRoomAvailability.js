@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 
-const SelectDate = (props) => {
+const SelectRoomAvailability = (props) => {
 	const checkbtnRef = useRef();
 	const [checkStatus, setCheckStatus] = useState(null);
 	const [checkinDate, setCheckinDate] = useState("");
@@ -18,12 +18,12 @@ const SelectDate = (props) => {
 		console.log("form get ==> ");
 		console.log(formData);
 
-		if (formData.checkin) {
-			setCheckinDate(formData.checkin);
-			setCheckoutDate(formData.checkout);
-			setGuests(formData.guests);
-			setRooms(formData.rooms);
-		}
+		// if (formData.checkin) {
+		// 	setCheckinDate(formData.checkin);
+		// 	setCheckoutDate(formData.checkout);
+		// 	setGuests(formData.guests);
+		// 	// setRooms(formData.rooms);
+		// }
 	}, [formData]);
 
 	// check for availability
@@ -52,26 +52,11 @@ const SelectDate = (props) => {
 			);
 
 			setFormData({
-				...formData,
 				checkin: checkinInput,
 				checkout: checkoutInput,
 				guests: guestCountInput,
 				rooms: roomsCountInput,
 			});
-
-			checkbtnRef.current.classList.remove(
-				"bg-lightPurple"
-			);
-
-			// ***********************************
-			// if selected dates available, display "available"
-			if (availability) {
-				checkbtnRef.current.classList.add("bg-[#10B981]");
-				setCheckStatus(true);
-			}else if(availability === false) {
-				checkbtnRef.current.classList.add("bg-red-400");
-				setCheckStatus(false);
-			}
 		}
 	};
 
@@ -85,21 +70,18 @@ const SelectDate = (props) => {
 		if (e.target.value < 1) e.target.value = 1;
 	};
 
-	const StatusDisplayHandler = (checkStatus) => {
-		let text;
-		if(checkStatus === null)
-			text = `CHECK AVAILABILITY`
-		else if(checkStatus === true) 
-			text = `AVAILABLE`
-		else if(checkStatus === false)
-			text = `NOT AVAILABLE`
-		
-			return text
-	}
+	// const StatusDisplayHandler = (checkStatus) => {
+	// 	let text;
+	// 	if (checkStatus === null) text = `CHECK AVAILABILITY`;
+	// 	else if (checkStatus === true) text = `AVAILABLE`;
+	// 	else if (checkStatus === false) text = `NOT AVAILABLE`;
+
+	// 	return text;
+	// };
 
 	return (
-		<div className="mx-auto w-full font-inter">
-			<div className="flex flex-col xl:flex-row rounded-lg py-5 md:p-10 my-5 bg-lightBlueGray w-full md:w-fit mx-auto xl:p-3">
+		<div className="mx-auto w-full">
+			<div className="flex flex-row items-center justify-evenly rounded-lg mb-2 pb-2 bg-lightBlueGray w-full mx-auto">
 				<div className="bg-lightBlueGray w-fit">
 					<div className="uppercase text-textBlue font-semibold text-sm px-3 py-2">
 						Check in
@@ -108,7 +90,7 @@ const SelectDate = (props) => {
 						type="date"
 						id="checkin"
 						defaultValue={checkinDate}
-						className="bg-lightBlueGray w-fit text-[#10B981] font-semibold my-3 md:my-0 md:text-lg rounded-lg px-3 mx-2"
+						className="bg-lightBlueGray w-fit text-[#10B981] font-semibold my-0 rounded-lg px-3 mx-2"
 					/>
 				</div>
 
@@ -120,7 +102,7 @@ const SelectDate = (props) => {
 						type="date"
 						id="checkout"
 						defaultValue={checkoutDate}
-						className="bg-lightBlueGray w-fit text-[#10B981] font-semibold my-3 md:my-0 md:text-lg rounded-lg px-3 mx-2"
+						className="bg-lightBlueGray w-fit text-[#10B981] font-semibold my-0 rounded-lg px-3 mx-2"
 					/>
 				</div>
 
@@ -134,7 +116,7 @@ const SelectDate = (props) => {
 						min="1"
 						defaultValue={guests}
 						onKeyUp={GuestInputHandler}
-						className="bg-lightBlueGray w-[120px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0 md:text-lg "
+						className="bg-lightBlueGray w-[100px] text-[#10B981] font-semibold px-3 mx-2 my-0"
 					/>
 				</div>
 
@@ -148,23 +130,20 @@ const SelectDate = (props) => {
 						min="1"
 						defaultValue={rooms}
 						onKeyUp={RoomsInputHandler}
-						className="bg-lightBlueGray w-[120px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0 md:text-lg "
+						className="bg-lightBlueGray w-[100px] text-[#10B981] font-semibold px-3 mx-2 my-0"
 					/>
 				</div>
-
+			</div>
+			<div className="w-full flex items-center justify-center">
 				<button
 					onClick={checkHandler}
-					ref={checkbtnRef}
-					className="cursor-pointer hover:shadow-xl uppercase md:text-lg mx-auto text-center 
-				font-bold text-white bg-lightPurple rounded-xl h-auto px-3 flex items-center my-4 xl:my-0 py-3 xl:py-0"
+					className="bg-textBlue text-white font-bold px-4 py-2"
 				>
-					<div className="cursor-pointer ">
-						{StatusDisplayHandler(checkStatus)}
-					</div>
+					Check Availability
 				</button>
 			</div>
 		</div>
 	);
 };
 
-export default SelectDate;
+export default SelectRoomAvailability;
