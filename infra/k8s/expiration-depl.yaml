@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alpha-expiration-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alpha-expiration
+  template:
+    metadata:
+      labels:
+        app: alpha-expiration
+    spec:
+      containers:
+        - name: alpha-expiration
+          # image: kavishkamk/hotel-reservation-alpha-expiration
+          image: us.gcr.io/ticketing-dev-367104/expiration-alpha
+          env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: http://nats-srv:4222
+            - name: NATS_CLUSTER_ID
+              value: alphahotelreservation
+            - name: REDIS_HOST
+              value: alpha-expiration-srv
