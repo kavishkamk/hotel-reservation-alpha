@@ -1,4 +1,5 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
+import cors from "cors";
 import { json } from "body-parser";
 import { unhandledRouteMiddleware, errorMiddleware } from "@alpha-lib/shared-lib";
 import cookieSession from "cookie-session";
@@ -10,20 +11,31 @@ const app = express();
 
 app.set("trust proxy", true);
 
-app.use(json());
+const allowedOrigins = ['http://localhost:3000', "*"];
 
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    // res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    res.setHeader("Access-Control-Allow-Headers", "*")
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
-    next();
-});
+const options: cors.CorsOptions = {
+    origin: allowedOrigins
+};
+
+// Then pass these options to cors:
+app.use(cors(options))
 
 app.use(cookieSession({
     signed: false,
     secure: true
 }));
+
+// app.use(cors);
+
+app.use(json());
+
+// app.use((req: Request, res: Response, next: NextFunction) => {
+//     res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+//     // res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+//     res.setHeader("Access-Control-Allow-Headers", "*");
+//     res.setHeader("Access-Control-Allow-Methods", "*");
+//     next();
+// });
 
 app.use("/api/users/upload/images", express.static(path.join(__dirname, "upload", "images")));
 

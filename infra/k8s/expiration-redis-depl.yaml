@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alpha-expiration-redis-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alpha-expiration-redis
+  template:
+    metadata:
+      labels:
+        app: alpha-expiration-redis
+    spec:
+      containers:
+        - name: alpha-expiration-redis
+          image: redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alpha-expiration-srv
+spec:
+  selector:
+    app: alpha-expiration-redis
+  ports:
+    - name: alpha-expiration-redis
+      protocol: TCP
+      port: 6379
+      targetPort: 6379

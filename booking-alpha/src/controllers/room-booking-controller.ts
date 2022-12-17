@@ -4,6 +4,8 @@ import { NextFunction, Request, Response } from "express";
 import { RoomType } from "../models/RoomType";
 import { Order } from "../models/Order";
 import { OrderTracker } from "../models/OrderTracker";
+import { RoomTypeReservationCreatedPublisher } from "../events/publishers/room-type-reservation-created-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const EXPIRATION_WINDOW_SECOND = 15 * 60;
 
@@ -134,7 +136,18 @@ const createRoomBooking = async (req: Request, res: Response, next: NextFunction
         return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Reservation Fail. Plase try again later"));
     };
 
-    // track records
+    // publish ticket created event
+    new RoomTypeReservationCreatedPublisher(natsWrapper.client).publish({
+        id: booking.id,
+        status: booking.status,
+        userId: booking.userId,
+        version: booking.version,
+        expiresAt: booking.expiresAt.toISOString(),
+        roomType: {
+            id: booking.roomType.id,
+            price: booking.totalPrice
+        }
+    });
 
     res.json({ booking });
 };
