@@ -45,7 +45,7 @@ const orderTrackerSchema = new Schema({
         min: [0, "number of awaiting rooms should be > 0"]
     },
     day: {
-        type: Schema.Types.Date,
+        type: Date,
         require: [true, "day required"],
     }
 });

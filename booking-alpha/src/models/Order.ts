@@ -15,7 +15,7 @@ interface IOrder {
     expiresAt: Date;
     numberOfPersons: number;
     fromDate: Date;
-    toData: Date;
+    toDate: Date;
 };
 
 // this is the interface that describe
@@ -30,7 +30,7 @@ interface OrderDoc extends Document {
     expiresAt: Date;
     numberOfPersons: number;
     fromDate: Date;
-    toData: Date;
+    toDate: Date;
     version: number;
 };
 
@@ -75,11 +75,11 @@ const orderSchema = new Schema({
         type: Schema.Types.Date
     },
     fromDate: {
-        type: Schema.Types.Date,
+        type: Date,
         require: [true, "from date required"],
     },
     toDate: {
-        type: Schema.Types.Date,
+        type: Date,
         require: [true, "to date required"],
     },
     roomType: {

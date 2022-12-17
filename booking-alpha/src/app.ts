@@ -4,6 +4,7 @@ import { currentUserMiddleware, errorMiddleware, unhandledRouteMiddleware } from
 import cookieSession from "cookie-session";
 
 import { roomBookingRouter } from "./routes/room-booking-routes";
+import { roomTypeRouter } from "./routes/room-type-routes";
 
 const app = express();
 
@@ -17,7 +18,8 @@ app.use(cookieSession({
 // decode and set the current user result to response
 app.use(currentUserMiddleware);
 
-app.use("/apis/booking/room-booking", roomBookingRouter);
+app.use("/api/booking/room-types", roomTypeRouter);
+app.use("/api/booking/room-booking", roomBookingRouter);
 
 app.use(unhandledRouteMiddleware);
 

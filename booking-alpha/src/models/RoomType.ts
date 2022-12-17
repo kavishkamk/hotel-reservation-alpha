@@ -76,7 +76,7 @@ roomTypeSchema.statics.build = (event: { id: string, version: number }) => {
 // set statics method to build
 roomTypeSchema.statics.build = (attrs: RoomTypeAttrs) => {
     return new RoomType({
-        id: attrs.id,
+        _id: attrs.id,
         roomType: attrs.roomType,
         numberOfRooms: attrs.numberOfRooms,
         price: attrs.price,
