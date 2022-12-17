@@ -1,48 +1,91 @@
-import './App.css';
-import React, { useContext, useState, useEffect } from "react";
+import "./App.css";
+import React, {
+	useContext,
+	useState,
+	useEffect,
+} from "react";
 import { Route, Routes } from "react-router-dom";
-import {DefaultContext} from "./context/DefaultContext"
+import { DefaultContext } from "./context/DefaultContext";
+import { ProtectedRoute } from "./ProtectedRoute";
 
-import Navbar from "./components/navbar/Navbar"
-import Footer from "./components/footer/Footer"
-
-import DashboardPage from "./pages/DashboardPage"
-import LoginPage from "./pages/LoginPage"
-import CheckinPage from "./pages/CheckinPage"
-import CheckoutPage from "./pages/CheckoutPage"
-import BookingPage from "./pages/BookingPage"
-import NotFoundPage from "./pages/NotFoundPage"
-import PrintPage from "./pages/PrintPage"
+import Navbar from "./components/navbar/Navbar";
+import Footer from "./components/footer/Footer";
+import DashboardPage from "./pages/DashboardPage";
+import LoginPage from "./pages/LoginPage";
+import CheckinPage from "./pages/CheckinPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import BookingPage from "./pages/BookingPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import PrintPage from "./pages/PrintPage";
 
 function App() {
-	const {path} = useContext(DefaultContext)
+	const { path } = useContext(DefaultContext);
 
-  return (
+	return (
 		<>
-			{path !== "/print" && (<Navbar currentPath={path} />)}
+			{path !== "/print" && <Navbar currentPath={path} />}
 
 			<Routes>
-				<Route path="/" element={<DashboardPage />} />
 				<Route
+					exact
+					path="/"
+					element={
+						<ProtectedRoute>
+							<DashboardPage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					exact
 					path="/checkin"
-					element={<CheckinPage />}
+					element={
+						<ProtectedRoute>
+							<CheckinPage />
+						</ProtectedRoute>
+					}
 				/>
 				<Route
+					exact
 					path="/checkout"
-					element={<CheckoutPage />}
+					element={
+						<ProtectedRoute>
+							<CheckoutPage />
+						</ProtectedRoute>
+					}
 				/>
 				<Route
+					exact
 					path="/booking"
-					element={<BookingPage />}
+					element={
+						<ProtectedRoute>
+							<BookingPage />
+						</ProtectedRoute>
+					}
 				/>
-				<Route path="/login" element={<LoginPage />} />
-				<Route path="/print" element={<PrintPage />} />
-				
+				<Route
+					exact
+					path="/login"
+					element={
+						<ProtectedRoute>
+							<LoginPage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					exact
+					path="/print"
+					element={
+						<ProtectedRoute>
+							<PrintPage />
+						</ProtectedRoute>
+					}
+				/>
+
 				{/* 404 not found */}
 				<Route path="*" element={<NotFoundPage />} />
 			</Routes>
 
-			{path !== "/print" && (<Footer />)}
+			{path !== "/print" && <Footer />}
 		</>
 	);
 }
