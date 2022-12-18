@@ -11,7 +11,8 @@ export enum Subjects {
     RestaurentReservationCreated = "restaurentReservation:created",
     RestaurentReservationCancelled = "restaurentReservation:cancelled",
 
-    ExpirationCompleate = "expiration:compleate",
+    RoomExpirationCompleate = "roomExpiration:compleate",
+    RestaurentExpirationCompleate = "restaurentExpiration:compleate",
 
     PaymentCreated = "payment:created"
 };

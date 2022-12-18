@@ -17,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@alpha-lib/shared-lib": "^1.0.22",
+    "@alpha-lib/shared-lib": "^1.0.25",
     "bull": "^4.10.2",
     "node-nats-streaming": "^0.3.2",
     "ts-node-dev": "^2.0.0",

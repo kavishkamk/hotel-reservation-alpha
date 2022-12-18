@@ -1,5 +1,6 @@
 import { ReservationStatus } from "@alpha-lib/shared-lib";
 import { Document, model, Model, Schema } from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 import { RoomTypeDoc } from "./RoomType";
 
@@ -86,17 +87,18 @@ const orderSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'RoomType'
     }
+}, {
+    toJSON: {
+        getters: true,
+        transform(doc, ret, options) {
+            delete ret._id
+        },
+    }
 });
 
 orderSchema.set("versionKey", "version");
 
-orderSchema.pre("save", function (done) {
-    this.$where = {
-        version: this.get("version") - 1
-    };
-
-    done();
-});
+orderSchema.plugin(updateIfCurrentPlugin);
 
 orderSchema.statics.build = (attrs: IOrder) => {
     return new Order(attrs);

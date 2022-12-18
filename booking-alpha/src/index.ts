@@ -3,6 +3,7 @@ import { natsWrapper } from "./nats-wrapper";
 
 import { app } from "./app";
 import { RoomTypeCreatedListner } from "./events/listeners/room-type-created-listener";
+import { RoomExpirationCompleateListner } from "./events/listeners/room-expiration-compleate-listnear";
 
 const port = 4000;
 
@@ -38,6 +39,7 @@ const start = () => {
             });
 
             new RoomTypeCreatedListner(natsWrapper.client).listen();
+            new RoomExpirationCompleateListner(natsWrapper.client).listen();
 
             process.on("SIGTERM", () => natsWrapper.client.close());
             process.on("SIGINT", () => natsWrapper.client.close());
