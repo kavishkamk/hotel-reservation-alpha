@@ -1,13 +1,22 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { useNavigate } from "react-router-dom";
 import Logo from "../../assets/logo.svg"
 import Navbtn from "./Navbtn"
+import {DefaultContext} from "../../context/DefaultContext"
+import Auth from "../../functions/Auth"
 
 const Navbar = (props) => {
+	const {setSure_func, setSureStatus_func} = useContext(DefaultContext)
+
 	const navigate = useNavigate();
 
 	const navigateHandler = (route) => {
 		navigate(route);
+	};
+
+	const logoutHandler = () => {
+		setSure_func("Are you sure you want to log out?", "Log out")
+		setSureStatus_func()
 	};
 
 	return (
@@ -19,33 +28,40 @@ const Navbar = (props) => {
 				<img src={Logo} alt="logo" />
 			</div>
 
-			<div className="flex flex-row gap-x-20 items-center justify-evenly">
-				<Navbtn
-					onClick={() => navigateHandler("/")}
-					name="Dashboard"
-					path="/"
-					currentPath={props.currentPath}
-				/>
-				<Navbtn
-					onClick={() => navigateHandler("/checkin")}
-					name="Check-in"
-					path="/checkin"
-					currentPath={props.currentPath}
-				/>
-				<Navbtn
-					onClick={() => navigateHandler("/checkout")}
-					name="Check-out"
-					path="/checkout"
-					currentPath={props.currentPath}
-				/>
-				<Navbtn
-					onClick={() => navigateHandler("/booking")}
-					name="Booking"
-					path="/booking"
-					currentPath={props.currentPath}
-				/>
+			{Auth.isAuthenticated() && (
+				<div className="flex flex-row gap-x-20 items-center justify-evenly">
+					<Navbtn
+						onClick={() => navigateHandler("/")}
+						name="Dashboard"
+						path="/"
+						currentPath={props.currentPath}
+					/>
+					<Navbtn
+						onClick={() => navigateHandler("/checkin")}
+						name="Check-in"
+						path="/checkin"
+						currentPath={props.currentPath}
+					/>
+					<Navbtn
+						onClick={() => navigateHandler("/checkout")}
+						name="Check-out"
+						path="/checkout"
+						currentPath={props.currentPath}
+					/>
+					<Navbtn
+						onClick={() => navigateHandler("/booking")}
+						name="Booking"
+						path="/booking"
+						currentPath={props.currentPath}
+					/>
 
-			</div>
+					<Navbtn
+						onClick={logoutHandler}
+						name="Log out"
+						currentPath={props.currentPath}
+					/>
+				</div>
+			)}
 		</div>
 	);
 }

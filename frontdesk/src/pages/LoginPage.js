@@ -7,7 +7,14 @@ import {DefaultContext} from "../context/DefaultContext"
 import {useNavigate} from "react-router-dom"
 
 const LoginPage = () => {
-	const {setMessage_func, setMessageStatus_func} = useContext(DefaultContext)
+	const {
+		setMessage_func,
+		setMessageStatus_func,
+		path,
+		setPath_func,
+	} = useContext(DefaultContext);
+
+	setPath_func();
 	const navigate = useNavigate()
 
 	const loginHandler = async (email, password)=> {

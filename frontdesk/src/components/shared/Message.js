@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { DefaultContext } from "../../context/DefaultContext";
 
 const Message = () => {
-	const { setMessageStatus_func, message } =
+	const { setMessageStatus_func, message, sure } =
 		useContext(DefaultContext);
 
 	const notifCloseHandler = () => {
