@@ -82,7 +82,7 @@ const ReservationForm = () => {
 	// };
 
 	return (
-		<div className="w-full p-5 bg-white rounded-lg shadow-lg max-h-[calc(100vh-10rem)] overflow-y-auto">
+		<div className="w-full p-5 bg-white rounded-lg shadow-lg max-h-[calc(100vh-10rem)] min-h-[calc(100vh-10rem)] overflow-y-auto">
 			<SelectRoomAvailability
 				formData={formData}
 				setFormData={setFormData}
