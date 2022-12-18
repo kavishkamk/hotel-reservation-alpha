@@ -2,6 +2,8 @@ import { CommonError, ErrorTypes, Listener, ReservationStatus, RoomExpirationCom
 import { Message } from "node-nats-streaming";
 import { Order } from "../../models/Order";
 import { OrderTracker } from "../../models/OrderTracker";
+import { natsWrapper } from "../../nats-wrapper";
+import { RoomTypeReservationCancelledPublisher } from "../publishers/room-type-reservation-cancelled-publisher";
 
 import { QueueGroupName } from "./queue-group-name";
 
@@ -10,7 +12,7 @@ export class RoomExpirationCompleateListner extends Listener<RoomExpirationCompl
     queueGroupName = QueueGroupName;
 
     async onMessage(data: RoomExpirationCompleateEvent['data'], msg: Message) {
-        const reservation = await Order.findById(data.orderId).populate("roomType");
+        let reservation = await Order.findById(data.orderId).populate("roomType");
 
         if (!reservation) {
             console.log("Reservation not found for expiration(form booking  service) - something wrong");
@@ -27,11 +29,19 @@ export class RoomExpirationCompleateListner extends Listener<RoomExpirationCompl
         });
 
         try {
-            await reservation.save();
+            reservation = await reservation.save();
         } catch (err) {
             console.log("RoomReservation Event Expiration fail when saving");
             return;
         }
+
+        await new RoomTypeReservationCancelledPublisher(natsWrapper.client).publish({
+            id: reservation.id,
+            version: reservation.version,
+            ticket: {
+                id: reservation.roomType.id
+            }
+        });
 
         msg.ack();
 

@@ -3,6 +3,7 @@ import { natsWrapper } from "./nats-wrapper";
 
 import { app } from "./app";
 import { RoomTypeOrderCreatedListnear } from "./events/listnears/room-type-order-created-listnear";
+import { RoomTypeOrderCancelledListnear } from "./events/listnears/room-type-order-cancelled-listener";
 
 const port = 4000;
 
@@ -41,6 +42,7 @@ const start = () => {
             process.on("SIGINT", () => natsWrapper.client.close());
 
             new RoomTypeOrderCreatedListnear(natsWrapper.client).listen();
+            new RoomTypeOrderCancelledListnear(natsWrapper.client).listen();
 
             mongoose.connect(process.env.MONGO_URI!)
                 .then(() => {

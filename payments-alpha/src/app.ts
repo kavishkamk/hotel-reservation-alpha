@@ -3,7 +3,8 @@ import cors from "cors";
 import { json } from "body-parser";
 import { currentUserMiddleware, errorMiddleware, unhandledRouteMiddleware } from "@alpha-lib/shared-lib";
 import cookieSession from "cookie-session";
-
+import { paymentsRouter } from "./routes/payments-routes";
+import path from "path";
 
 const app = express();
 
@@ -36,7 +37,9 @@ app.use(cookieSession({
 // decode and set the current user result to response
 app.use(currentUserMiddleware);
 
+app.use("/api/payments/upload/images", express.static(path.join(__dirname, "upload", "images")));
 
+app.use("/api/payments", paymentsRouter);
 
 app.use(unhandledRouteMiddleware);
 
