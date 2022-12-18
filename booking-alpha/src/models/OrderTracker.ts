@@ -48,6 +48,13 @@ const orderTrackerSchema = new Schema({
         type: Date,
         require: [true, "day required"],
     }
+}, {
+    toJSON: {
+        getters: true,
+        transform(doc, ret, options) {
+            delete ret._id
+        },
+    }
 });
 
 orderTrackerSchema.set("versionKey", "version");

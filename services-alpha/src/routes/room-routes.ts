@@ -1,4 +1,4 @@
-import { requestValidationMiddleware } from "@alpha-lib/shared-lib";
+import { requestValidationMiddleware, requireAuthMiddleware, requireAdminAccess } from "@alpha-lib/shared-lib";
 import { Router } from "express";
 import { body } from "express-validator";
 
@@ -10,6 +10,12 @@ router.get(
     "/",
     getRooms
 );
+
+// after this route, to proferm operation user should log in to the system
+router.use(requireAuthMiddleware);
+
+// after this route, to preform operation admin access required
+router.use(requireAdminAccess);
 
 router.post(
     "/",

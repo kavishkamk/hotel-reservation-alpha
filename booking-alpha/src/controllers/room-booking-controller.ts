@@ -7,9 +7,13 @@ import { OrderTracker } from "../models/OrderTracker";
 import { RoomTypeReservationCreatedPublisher } from "../events/publishers/room-type-reservation-created-publisher";
 import { natsWrapper } from "../nats-wrapper";
 
-const EXPIRATION_WINDOW_SECOND = 15 * 60;
+const EXPIRATION_WINDOW_SECOND = 2 * 60;
 
 const createRoomBooking = async (req: Request, res: Response, next: NextFunction) => {
+
+    // if (req.currentUser!.isAdmin) {
+    //     return next(new CommonError(401, ErrorTypes.NOT_AUTHERIZED, "Don't have access to use this route"));
+    // };
 
     const { roomTypeId, numberOfRooms, numberOfPersons, fromDate, toDate } = req.body;
     console.log(new Date(fromDate), new Date(toDate));
@@ -115,7 +119,7 @@ const createRoomBooking = async (req: Request, res: Response, next: NextFunction
     expiration.setSeconds(expiration.getSeconds() + EXPIRATION_WINDOW_SECOND);
 
     // create a booking
-    const booking = Order.build({
+    let booking = Order.build({
         userId: req.currentUser!.id,
         roomType: roomTypeObj,
         numberOfRooms,
@@ -131,7 +135,7 @@ const createRoomBooking = async (req: Request, res: Response, next: NextFunction
     console.log(new Date(booking.toDate.getFullYear(), booking.toDate.getMonth(), booking.toDate.getDate()));
 
     try {
-        await booking.save();
+        booking = await booking.save();
     } catch (err) {
         return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Reservation Fail. Plase try again later"));
     };

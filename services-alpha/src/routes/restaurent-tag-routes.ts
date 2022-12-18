@@ -15,7 +15,7 @@ router.get(
 router.use(requireAuthMiddleware);
 
 // after this route, to preform operation admin access required
-// router.use(requireAdminAccess);
+router.use(requireAdminAccess);
 
 router.post(
     "/",
