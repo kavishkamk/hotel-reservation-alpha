@@ -28,8 +28,8 @@ const start = () => {
         throw new Error("MongoDB url should be defined");
     };
 
-    // connect to the testing database 
-    // mongoose.connect(`mongodb+srv://alpha:${process.env.MONGO_PASSWORD}@alpha-db.j2hgeoj.mongodb.net/?retryWrites=true&w=majority`)
+    //connect to the testing database 
+    // mongoose.connect(`mongodb+srv://alpha:<password>@alpha-db.j2hgeoj.mongodb.net/?retryWrites=true&w=majority`)
     //     .then(() => {
     //         console.log("Succesfully connected to the Database");
     //         app.listen(port, () => {
