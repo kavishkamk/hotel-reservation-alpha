@@ -11,19 +11,19 @@ class Auth {
 		);
 	}
 
-	saveOfficerFullData(officer) {
+	saveUser(officer) {
 		sessionStorage.setItem(
-			"officerFullData",
+			"user",
 			JSON.stringify(officer)
 		);
 	}
 
-	getOfficerFullData() {
+	getUser() {
 		const tokenString = sessionStorage.getItem(
-			"officerFullData"
+			"user"
 		);
-		const officer = JSON.parse(tokenString);
-		return officer;
+		const user = JSON.parse(tokenString);
+		return user;
 	}
 
 	// get the login status from the session
@@ -41,32 +41,12 @@ class Auth {
 		sessionStorage.removeItem("loginStatus");
 	}
 
-	// save the id and password of the user
-	saveLoginData(id, pswd) {
-		const data = { id: id, pswd: pswd };
-		sessionStorage.setItem(
-			"loginData",
-			JSON.stringify(data)
-		);
-	}
-
-	// parse the id and password to check authentication
-	getLoginData() {
-		const tokenString = sessionStorage.getItem("loginData");
-		const loginData = JSON.parse(tokenString);
-
-		const demoData = { id: "123", pswd: "zzz" };
-
-		// if loginData is undefined, send the demo data
-		return loginData ? loginData : demoData;
-	}
-
-	login(cb, id, pswd, officer) {
+	login(cb, user) {
 		this.authenticated = true;
 		this.saveSession(true);
-		this.saveLoginData(id, pswd);
+		// this.saveLoginData(id, pswd);
 
-		this.saveOfficerFullData(officer);
+		this.saveUser(user);
 		cb();
 		// callback function
 	}

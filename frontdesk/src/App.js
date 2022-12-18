@@ -10,6 +10,7 @@ import { ProtectedRoute } from "./ProtectedRoute";
 
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
+import Message from "./components/shared/Message"
 import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/LoginPage";
 import CheckinPage from "./pages/CheckinPage";
@@ -19,12 +20,13 @@ import NotFoundPage from "./pages/NotFoundPage";
 import PrintPage from "./pages/PrintPage";
 
 function App() {
-	const { path } = useContext(DefaultContext);
+	const { path, messageStatus } = useContext(DefaultContext);
 
 	return (
 		<>
 			{path !== "/print" && <Navbar currentPath={path} />}
-
+			{messageStatus && <Message />}
+			
 			<Routes>
 				<Route
 					exact
@@ -65,11 +67,7 @@ function App() {
 				<Route
 					exact
 					path="/login"
-					element={
-						<ProtectedRoute>
-							<LoginPage />
-						</ProtectedRoute>
-					}
+					element={<LoginPage />}
 				/>
 				<Route
 					exact
