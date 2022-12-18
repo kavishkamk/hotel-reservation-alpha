@@ -20,3 +20,5 @@ export * from "./events/room-type-created-event";
 export * from "./events/room-type-reservation-event";
 export * from "./events/room-expiration-compleate-event";
 export * from "./events/resturent-expiration-compleate-event";
+export * from "./events/room-reservation-cancelled-event";
+export * from "./events/restaurent-reservation-cancelled-event";

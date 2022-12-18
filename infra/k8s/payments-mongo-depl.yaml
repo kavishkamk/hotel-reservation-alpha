@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alpha-payments-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alpha-payments-mongo
+  template:
+    metadata:
+      labels:
+        app: alpha-payments-mongo
+    spec:
+      containers:
+        - name: alpha-payments-mongo
+          image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alpha-payments-mongo-srv
+spec:
+  selector:
+    app: alpha-payments-mongo
+  ports:
+    - name: alpha-payments-mongo
+      protocol: TCP
+      port: 27017
+      targetPort: 27017

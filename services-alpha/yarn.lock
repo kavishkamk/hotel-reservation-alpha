@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@alpha-lib/shared-lib@^1.0.21":
-  version "1.0.21"
-  resolved "https://registry.yarnpkg.com/@alpha-lib/shared-lib/-/shared-lib-1.0.21.tgz#2e54a4d33513ef016e88985ba7ef118f442605c8"
-  integrity sha512-jUkaaUDnbEhAO369t1nlfEyOchtanr5mzD6kvh2ITSyiGHAVDf9o85bQRP6CZZPxrjxwHbKeeRp6GTYnHOReWQ==
+"@alpha-lib/shared-lib@^1.0.27":
+  version "1.0.27"
+  resolved "https://registry.yarnpkg.com/@alpha-lib/shared-lib/-/shared-lib-1.0.27.tgz#70a43ecb6d48bc36c89d3cf652126afae2cb9a54"
+  integrity sha512-F335FIsZxUKmMigwyKB5Vw11mzVUkBoLP6GEkEcHvv1HH9btosErCW4MpOKRxFASvVCHUuNpZ3YOCQ57e2JO6g==
   dependencies:
     "@types/cookie-session" "^2.0.44"
     "@types/express" "^4.17.14"
