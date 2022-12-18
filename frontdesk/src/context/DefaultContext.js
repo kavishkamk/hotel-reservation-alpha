@@ -6,14 +6,44 @@ const DefaultContext = React.createContext(false);
 // context provider
 const DefaultProvider = ({ children }) => {
 	const [path, setPath] = useState(window.location.pathname)
+	const [messageStatus, setMessageStatus] = useState(false)
+	const [message, setMessage] = useState({})
+	const [sureStatus, setSureStatus] = useState(false)
+	const [sure, setSure] = useState({})
 
 	const setPath_func = ()=> {
 		setPath(window.location.pathname)
 	}
 
+	const setMessageStatus_func = ()=> {
+		setMessageStatus(!messageStatus)
+	}
+
+	const setMessage_func = (status, message)=> {
+		setMessage({
+			status: status,
+			message: message
+		})
+	}
+
+	const setSure_func = (message, btnName)=> {
+		setSure({
+			message: message,
+			btnName: btnName
+		})
+	}
+
+	const setSureStatus_func = () => {
+		setSureStatus(!sureStatus)
+	}
+
 	return (
 		<DefaultContext.Provider value={{
-			path, setPath_func
+			path, setPath_func,
+			messageStatus, setMessageStatus_func,
+			message, setMessage_func,
+			sureStatus, setSureStatus_func,
+			sure, setSure_func,
 		}}>
 			{children}
 		</DefaultContext.Provider>
