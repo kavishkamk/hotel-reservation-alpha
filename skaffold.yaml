@@ -40,3 +40,11 @@ build:
         manual:
           - dest: .
             src: "src/**/*.ts"
+    - image: us.gcr.io/ticketing-dev-367104/payments-alpha
+      context: payments-alpha
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.ts"
