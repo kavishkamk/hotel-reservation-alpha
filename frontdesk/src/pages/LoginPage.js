@@ -1,7 +1,7 @@
 import React, {useContext} from 'react'
 import Login from "../components/auth/Login"
 import PageContainer from "../components/page/PageContainer";
-import Login__connection from "../connections/Login"
+import Auth__connection from "../connections/Auth";
 import Auth from "../functions/Auth"
 import {DefaultContext} from "../context/DefaultContext"
 import {useNavigate} from "react-router-dom"
@@ -21,8 +21,11 @@ const LoginPage = () => {
 		console.log(email)
 		console.log(password)
 
-		const result = await Login__connection.loginHandler(email, password)
-		console.log(result)
+		const result = await Auth__connection.loginHandler(
+			email,
+			password
+		);
+		// console.log(result)
 
 		if(result.status === false){
 			setMessage_func(false, result.message)
@@ -38,7 +41,6 @@ const LoginPage = () => {
 	return (
 		<PageContainer>
 			<Login onClick={loginHandler} />
-			{/* <Login /> */}
 		</PageContainer>
 	);
 }

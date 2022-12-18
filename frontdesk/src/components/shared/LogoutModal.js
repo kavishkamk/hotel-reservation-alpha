@@ -1,19 +1,31 @@
 import React, { useContext } from "react";
 import { DefaultContext } from "../../context/DefaultContext";
-import Auth from "../../functions/Auth"
-import {useNavigate} from "react-router-dom"
+import Auth from "../../functions/Auth";
+import { useNavigate } from "react-router-dom";
+import Auth__connection from "../../connections/Auth";
 
 const LogoutModal = () => {
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 
-	const { sure, setSureStatus_func } =
-		useContext(DefaultContext);
+	const {
+		sure,
+		setSureStatus_func,
+		setMessage_func,
+		setMessageStatus_func,
+	} = useContext(DefaultContext);
 
-	const logoutHandler = () => {
-		Auth.logout(()=> {
-			setSureStatus_func();
-			navigate("/")
-		})
+	const logoutHandler = async () => {
+		const result = await Auth__connection.logoutHandler();
+
+		if (result) {
+			Auth.logout(() => {
+				navigate("/");
+			});
+		}else {
+			setMessage_func(false, "Something went wrong");
+			setMessageStatus_func();
+		}
+		setSureStatus_func();
 	};
 
 	const cancelHandler = () => {

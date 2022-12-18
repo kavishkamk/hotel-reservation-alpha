@@ -1,6 +1,6 @@
 import * as main from "./main-url"
 
-class Login__connection {
+class Auth__connection {
 
 	async loginHandler(email, password) {
 		const thisUrl = main.url + "/users/signin"
@@ -36,6 +36,19 @@ class Login__connection {
 
 		return value
 	}
+
+	async logoutHandler() {
+		const thisUrl = main.url + "/users/signout"
+		const res = await fetch(thisUrl, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+		});
+		const data = await res.json();
+    console.log(data)
+		if(Object.keys(data).length === 0){
+			return true
+		}else return false
+	}
 }
 
-export default new Login__connection()
+export default new Auth__connection();
