@@ -1,7 +1,79 @@
-import React from 'react'
-import registerImage from "../../assets/auth/register.png"
+import React, { useContext } from "react";
+import registerImage from "../../assets/auth/register.png";
+import Auth__connection from "../../connections/Auth";
+import { DefaultContext } from "../../context/DefaultContext";
+import {useNavigate} from "react-router-dom"
 
 const Registration = () => {
+	const navigate = useNavigate()
+
+	const { setMessage_func, setMessageStatus_func } =
+		useContext(DefaultContext);
+
+	const emailConfirmHandler = async () => {
+		const fname =
+			document.getElementById("firstname").value;
+		const lname = document.getElementById("lastname").value;
+		const address =
+			document.getElementById("address").value;
+		const nic = document.getElementById("nic").value;
+		const phoneNo =
+			document.getElementById("phoneNo").value;
+		const email = document.getElementById("email").value;
+		const password =
+			document.getElementById("password").value;
+
+		if (
+			fname.length > 0 &&
+			lname.length > 0 &&
+			address.length > 0 &&
+			nic.length > 0 &&
+			phoneNo.length > 0 &&
+			email.length > 0 &&
+			password.length > 0
+		) {
+			const result = await Auth__connection.registerHandler(
+				fname,
+				lname,
+				address,
+				nic,
+				phoneNo,
+				email,
+				password
+			);
+
+			if (result.status === false) {
+				setMessage_func(false, result.message);
+				setMessageStatus_func();
+			}else if(result.status === true){
+				setMessage_func(true, result.message);
+				setMessageStatus_func();
+			}
+		} else {
+			setMessage_func(false, "Please fill all the fields");
+			setMessageStatus_func();
+		}
+	};
+
+	const registerHandler = async () => {
+		const email = document.getElementById("email").value;
+		const code = document.getElementById("verifcode").value
+
+		if(email.length >0 && code.length >0){
+			const result = await Auth__connection.otpConfirm(email, code)
+
+			if(result.status === false){
+				setMessage_func(false, result.message);
+				setMessageStatus_func();
+			}else if(result.status === true){
+				navigate("/login")
+			}
+		}else {
+			setMessage_func(false, "Please verify your email address");
+			setMessageStatus_func();
+		}
+	};
+
 	return (
 		<div className="">
 			<div className="font-manrope font-bold text-xl text-white bg-textBlue text-center py-5">
@@ -14,7 +86,7 @@ const Registration = () => {
 					<div className="flex md:flex-row flex-col md:gap-x-5">
 						<div className="">
 							<label
-								for="firstname"
+								htmlFor="firstname"
 								className="text-sm text-textBlue"
 							>
 								First name
@@ -29,7 +101,7 @@ const Registration = () => {
 
 						<div className="">
 							<label
-								for="lastname"
+								htmlFor="lastname"
 								className="text-sm text-textBlue"
 							>
 								Last name
@@ -45,7 +117,7 @@ const Registration = () => {
 
 					<div className="">
 						<label
-							for="address"
+							htmlFor="address"
 							className="text-sm text-textBlue"
 						>
 							Address
@@ -60,7 +132,7 @@ const Registration = () => {
 
 					<div className="md:w-1/2">
 						<label
-							for="nic"
+							htmlFor="nic"
 							className="text-sm text-textBlue"
 						>
 							NIC
@@ -75,7 +147,7 @@ const Registration = () => {
 
 					<div className="md:w-1/2">
 						<label
-							for="phoneNo"
+							htmlFor="phoneNo"
 							className="text-sm text-textBlue"
 						>
 							Phone No.
@@ -88,49 +160,9 @@ const Registration = () => {
 						/>
 					</div>
 
-					<div className="flex flex-col md:flex-row md:items-end justify-between">
-						<div className="md:w-1/2">
-							<label
-								for="email"
-								className="text-sm text-textBlue"
-							>
-								Email
-							</label>
-							<input
-								id="email"
-								type="email"
-								placeholder="Email Address"
-								className="w-full mt-2 py-1 px-2 rounded-md focus:ring focus:ring-opacity-75 focus:ring-indigo-400 border-gray-700 text-gray-900"
-							/>
-						</div>
-
-						<button className="w-fit text-sm text-white bg-textBlue font-semibold px-3 py-2 h-fit">
-							Send confirmation mail
-						</button>
-					</div>
-
-					<div className="text-xs text-textBlue my-2 mb-6">
-						*Please check your Email and enter the
-						verification code that we sent.
-					</div>
-					<div className="mt-2 md:w-1/2">
-						<label
-							for="verifcode"
-							className="text-sm text-textBlue"
-						>
-							Verification Code
-						</label>
-						<input
-							id="verifcode"
-							type="number"
-							placeholder="Verification Code"
-							className="w-full my-2 py-1  px-2 rounded-md focus:ring focus:ring-opacity-75 focus:ring-indigo-400 border-gray-700 text-gray-900"
-						/>
-					</div>
-
 					<div className="md:w-1/2">
 						<label
-							for="password"
+							htmlFor="password"
 							className="text-sm text-textBlue"
 						>
 							Password
@@ -143,7 +175,53 @@ const Registration = () => {
 						/>
 					</div>
 
-					<button className="bg-[#4B51AC] text-white font-manrope font-semibold py-2 px-4 my-6 w-fit">
+					<div className="flex flex-col md:flex-row md:items-end justify-between">
+						<div className="md:w-1/2">
+							<label
+								htmlFor="email"
+								className="text-sm text-textBlue"
+							>
+								Email
+							</label>
+							<input
+								id="email"
+								type="email"
+								placeholder="Email Address"
+								className="w-full mt-2 py-1 px-2 rounded-md focus:ring focus:ring-opacity-75 focus:ring-indigo-400 border-gray-700 text-gray-900"
+							/>
+						</div>
+
+						<button
+							onClick={emailConfirmHandler}
+							className="w-fit text-sm text-white bg-textBlue font-semibold px-3 py-2 h-fit"
+						>
+							Send confirmation mail
+						</button>
+					</div>
+
+					<div className="text-xs text-textBlue my-2 mb-6">
+						*Please check your Email and enter the
+						verification code that we sent.
+					</div>
+					<div className="mt-2 md:w-1/2">
+						<label
+							htmlFor="verifcode"
+							className="text-sm text-textBlue"
+						>
+							Verification Code
+						</label>
+						<input
+							id="verifcode"
+							type="number"
+							placeholder="Verification Code"
+							className="w-full my-2 py-1  px-2 rounded-md focus:ring focus:ring-opacity-75 focus:ring-indigo-400 border-gray-700 text-gray-900"
+						/>
+					</div>
+
+					<button
+						onClick={registerHandler}
+						className="bg-[#4B51AC] text-white font-manrope font-semibold py-2 px-4 my-6 w-fit"
+					>
 						Register
 					</button>
 				</div>
@@ -154,6 +232,6 @@ const Registration = () => {
 			</div>
 		</div>
 	);
-}
+};
 
-export default Registration
+export default Registration;

@@ -11,6 +11,8 @@ const DefaultProvider = ({ children }) => {
 	const [details_title, setDetails_title] = useState();
 	const [details_rate, setDetails_rate] = useState();
 	const [details_images, setDetails_images] = useState([]);
+	const [messageStatus, setMessageStatus] = useState(false);
+	const [message, setMessage] = useState({});
 
 	const setDetailPopup_func = () => {
 		setDetailPopup(!detailPopup);
@@ -36,6 +38,17 @@ const DefaultProvider = ({ children }) => {
 		setDetails_images(images)
 	}
 
+	const setMessageStatus_func = () => {
+		setMessageStatus(!messageStatus);
+	};
+
+	const setMessage_func = (status, message) => {
+		setMessage({
+			status: status,
+			message: message,
+		});
+	};
+
 	return (
 		<DefaultContext.Provider
 			value={{
@@ -50,7 +63,11 @@ const DefaultProvider = ({ children }) => {
 				details_rate,
 				setDetails_rate_func,
 				details_images,
-				setDetails_images_func
+				setDetails_images_func,
+				messageStatus,
+				setMessageStatus_func,
+				message,
+				setMessage_func,
 			}}
 		>
 			{children}

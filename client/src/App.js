@@ -19,6 +19,7 @@ import ProfilePage from "./pages/ProfilePage"
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 import PopupContainer from "./components/popup/PopupContainer";
+import Message from "./components/shared/Message"
 
 function App() {
 	const {
@@ -28,6 +29,7 @@ function App() {
 		details_title,
 		details_rate,
 		details_images,
+		messageStatus,
 	} = useContext(DefaultContext);
 
 	const blurbgClick = () => {
@@ -53,6 +55,8 @@ function App() {
 				/>
 			)}
 
+			{messageStatus && <Message />}
+
 			<Navbar />
 
 			<Routes>
@@ -76,10 +80,7 @@ function App() {
 					path="/contact-us"
 					element={<ContactPage />}
 				/>
-				<Route
-					path="/profile"
-					element={<ProfilePage />}
-				/>
+				<Route path="/profile" element={<ProfilePage />} />
 
 				{/* 404 not found */}
 				<Route path="*" element={<NotFoundPage />} />
