@@ -4,6 +4,7 @@ import { json } from "body-parser";
 import { unhandledRouteMiddleware, errorMiddleware } from "@alpha-lib/shared-lib";
 import cookieSession from "cookie-session";
 import path from "path";
+import rateLimit from 'express-rate-limit';
 
 import { userRouter } from "./routes/user-routes";
 
@@ -24,6 +25,13 @@ app.use(cookieSession({
     signed: false,
     secure: true
 }));
+
+const limiter = rateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 5
+});
+
+app.use(limiter);
 
 // app.use(cors);
 

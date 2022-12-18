@@ -5,6 +5,7 @@ import { currentUserMiddleware, errorMiddleware, unhandledRouteMiddleware } from
 import cookieSession from "cookie-session";
 import { paymentsRouter } from "./routes/payments-routes";
 import path from "path";
+import rateLimit from 'express-rate-limit';
 
 const app = express();
 
@@ -26,6 +27,14 @@ const options: cors.CorsOptions = {
 
 // Then pass these options to cors:
 app.use(cors(options));
+
+// set rate limit
+const limiter = rateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 5
+});
+
+app.use(limiter);
 
 app.use(json());
 
