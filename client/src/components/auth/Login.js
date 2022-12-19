@@ -6,12 +6,12 @@ const Login = (props) => {
 	const { setMessage_func, setMessageStatus_func } =
 		useContext(DefaultContext);
 		
-	const loginHandler = ()=> {
+	const loginHandler = async()=> {
 		const email = document.getElementById("email").value
 		const password = document.getElementById("password").value
 
 		if(email.length >0 && password.length >0){
-			props.onClick(email, password)
+			await props.onClick(email, password)
 		}else {
 			setMessage_func(false, "Please enter email and password");
 			setMessageStatus_func();

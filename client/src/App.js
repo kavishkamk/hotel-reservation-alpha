@@ -1,10 +1,9 @@
 import "./App.css";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { DefaultContext } from "./context/DefaultContext";
 import {ProtectedRoute} from "./ProtectedRoute"
 
-// pages
 import BookingPage from "./pages/BookingPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
@@ -15,14 +14,15 @@ import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProfilePage from "./pages/ProfilePage"
-
-// components
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 import PopupContainer from "./components/popup/PopupContainer";
 import Message from "./components/shared/Message"
+import LogoutModal from "./components/shared/LogoutModal"
 
 function App() {
+	const [loginStatus, setLoginStatus] = useState(1)
+
 	const {
 		detailPopup,
 		details,
@@ -31,11 +31,18 @@ function App() {
 		details_rate,
 		details_images,
 		messageStatus,
+		login,
+		sureStatus
 	} = useContext(DefaultContext);
 
 	const blurbgClick = () => {
 		setDetailPopup_func(!detailPopup);
 	};
+
+	// useEffect(()=> {
+	// 	console.log("login status changed ==> "+ loginStatus)
+		
+	// },[loginStatus])
 
 	return (
 		<>
@@ -57,8 +64,15 @@ function App() {
 			)}
 
 			{messageStatus && <Message />}
+			{sureStatus && (
+				<LogoutModal
+					loginStatus={loginStatus}
+					setLoginStatus={setLoginStatus}
+				/>
+			)}
 
-			<Navbar />
+			{/* {loginStatus > 0 && (<Navbar />)} */}
+			{loginStatus && <Navbar loginStatus={loginStatus} />}
 
 			<Routes>
 				<Route exact path="/" element={<HomePage />} />
@@ -66,7 +80,15 @@ function App() {
 					path="/booking-process"
 					element={<BookingPage />}
 				/>
-				<Route path="/login" element={<LoginPage />} />
+				<Route
+					path="/login"
+					element={
+						<LoginPage
+							loginStatus={loginStatus}
+							setLoginStatus={setLoginStatus}
+						/>
+					}
+				/>
 				<Route
 					path="/register"
 					element={<RegisterPage />}
