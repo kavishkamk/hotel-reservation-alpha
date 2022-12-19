@@ -72,7 +72,10 @@ const Navbar = (props) => {
 
 					{login && (
 						<>
-							<button className="">
+							<button
+								onClick={() => navigateHandler("/profile")}
+								className=""
+							>
 								<img src={user} alt="profile" />
 							</button>
 							<LogBtn
@@ -188,7 +191,12 @@ const Navbar = (props) => {
 
 							{login && (
 								<>
-									<button className="">
+									<button
+										onClick={() =>
+											navigateHandler("/profile")
+										}
+										className=""
+									>
 										<img src={user} alt="profile" />
 									</button>
 									<LogBtn

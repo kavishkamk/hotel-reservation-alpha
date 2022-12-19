@@ -31,9 +31,14 @@ class Auth {
 		return loginStatus ? loginStatus : false;
 	}
 
-	// login session is deleted when the password is changed
+	// login session is deleted
 	deleteSession() {
 		sessionStorage.removeItem("loginStatus");
+	}
+
+	// user data is deleted
+	deleteUser() {
+		sessionStorage.removeItem("user")
 	}
 
 	login(cb, user) {
@@ -49,6 +54,7 @@ class Auth {
 	logout(cb) {
 		this.authenticated = false;
 		this.deleteSession();
+		this.deleteUser()
 		cb();
 	}
 
