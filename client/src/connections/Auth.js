@@ -76,7 +76,7 @@ class Auth__connection {
 	async otpSending(email) {
 		const thisUrl = main.url + "/users/requestotp";
 		const res = await fetch(thisUrl, {
-			method: "POST",
+			method: "PATCH",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				email: email,
@@ -108,7 +108,7 @@ class Auth__connection {
 	async otpConfirm(email, code) {
 		const thisUrl = main.url + "/users/activate";
 		const res = await fetch(thisUrl, {
-			method: "POST",
+			method: "PATCH",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				email: email,
