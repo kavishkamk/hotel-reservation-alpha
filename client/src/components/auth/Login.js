@@ -1,7 +1,23 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import loginImage from "../../assets/auth/login.png";
+import {DefaultContext} from "../../context/DefaultContext"
 
-const Login = () => {
+const Login = (props) => {
+	const { setMessage_func, setMessageStatus_func } =
+		useContext(DefaultContext);
+		
+	const loginHandler = ()=> {
+		const email = document.getElementById("email").value
+		const password = document.getElementById("password").value
+
+		if(email.length >0 && password.length >0){
+			props.onClick(email, password)
+		}else {
+			setMessage_func(false, "Please enter email and password");
+			setMessageStatus_func();
+		}
+	}
+
 	return (
 		<div className="">
 			<div className="font-manrope font-bold text-xl text-white bg-textBlue text-center py-5">
@@ -13,7 +29,7 @@ const Login = () => {
 				<div className="order-last md:order-first font-manrope mx-10 my-5">
 					<div className="">
 						<label
-							for="email"
+							htmlFor="email"
 							className="text-sm text-textBlue"
 						>
 							Email
@@ -28,7 +44,7 @@ const Login = () => {
 
 					<div className="">
 						<label
-							for="password"
+							htmlFor="password"
 							className="text-sm text-textBlue"
 						>
 							Password
@@ -41,7 +57,7 @@ const Login = () => {
 						/>
 					</div>
 
-					<button className="bg-[#4B51AC] text-white font-manrope font-semibold py-2 px-4 my-6 w-fit">
+					<button onClick={loginHandler} className="bg-[#4B51AC] text-white font-manrope font-semibold py-2 px-4 my-6 w-fit">
 						Login
 					</button>
 				</div>

@@ -2,6 +2,7 @@ import "./App.css";
 import React, { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import { DefaultContext } from "./context/DefaultContext";
+import {ProtectedRoute} from "./ProtectedRoute"
 
 // pages
 import BookingPage from "./pages/BookingPage";
@@ -80,7 +81,15 @@ function App() {
 					path="/contact-us"
 					element={<ContactPage />}
 				/>
-				<Route path="/profile" element={<ProfilePage />} />
+				<Route
+					exact
+					path="/profile"
+					element={
+						<ProtectedRoute>
+							<ProfilePage />
+						</ProtectedRoute>
+					}
+				/>
 
 				{/* 404 not found */}
 				<Route path="*" element={<NotFoundPage />} />

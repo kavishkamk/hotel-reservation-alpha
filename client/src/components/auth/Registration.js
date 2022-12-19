@@ -4,7 +4,7 @@ import Auth__connection from "../../connections/Auth";
 import { DefaultContext } from "../../context/DefaultContext";
 import {useNavigate} from "react-router-dom"
 
-const Registration = () => {
+const Registration = (props) => {
 	const navigate = useNavigate()
 
 	const { setMessage_func, setMessageStatus_func } =
@@ -32,7 +32,7 @@ const Registration = () => {
 			email.length > 0 &&
 			password.length > 0
 		) {
-			const result = await Auth__connection.registerHandler(
+			await props.emailConfirm(
 				fname,
 				lname,
 				address,
@@ -41,14 +41,6 @@ const Registration = () => {
 				email,
 				password
 			);
-
-			if (result.status === false) {
-				setMessage_func(false, result.message);
-				setMessageStatus_func();
-			}else if(result.status === true){
-				setMessage_func(true, result.message);
-				setMessageStatus_func();
-			}
 		} else {
 			setMessage_func(false, "Please fill all the fields");
 			setMessageStatus_func();
@@ -60,14 +52,7 @@ const Registration = () => {
 		const code = document.getElementById("verifcode").value
 
 		if(email.length >0 && code.length >0){
-			const result = await Auth__connection.otpConfirm(email, code)
-
-			if(result.status === false){
-				setMessage_func(false, result.message);
-				setMessageStatus_func();
-			}else if(result.status === true){
-				navigate("/login")
-			}
+			await props.register(email, code)
 		}else {
 			setMessage_func(false, "Please verify your email address");
 			setMessageStatus_func();

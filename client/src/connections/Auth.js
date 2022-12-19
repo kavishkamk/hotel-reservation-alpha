@@ -1,6 +1,7 @@
 import * as main from "./main-url";
 
 class Auth__connection {
+
 	async registerHandler(
 		fname,
 		lname,
@@ -48,6 +49,8 @@ class Auth__connection {
 				) {
 					value.message =
 						"Account is already created. Please check your email and enter the verification code to complete registration";
+				} else {
+					value.message = error.message;
 				}
 			});
 		} else if (data.user) {
