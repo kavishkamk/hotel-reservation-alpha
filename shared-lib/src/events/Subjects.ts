@@ -7,12 +7,20 @@ export enum Subjects {
 
     RoomTypeReservationCreated = "roomTypeReservation:created",
     RoomTypeReservationCancelled = "RoomTypeReservation:cancelled",
+    RoomTypeReservationPaymentAwaiting = "RoomTypeReservation:paymentAwaiting",
+    RoomTypeReservationPaymentCompleated = "RoomTypeReservation:compleated",
 
     RestaurentReservationCreated = "restaurentReservation:created",
     RestaurentReservationCancelled = "restaurentReservation:cancelled",
+    RestaurentReservationPaymentAwaiting = "restaurentResrvation:paymentAwaiting",
+    RestaurentReservationPaymentCompleated = "restaurentReservation:paymentCompleated",
 
     RoomExpirationCompleate = "roomExpiration:compleate",
     RestaurentExpirationCompleate = "restaurentExpiration:compleate",
 
-    PaymentCreated = "payment:created"
+    RoomTypePaymentCreated = "roomTypePayment:created",
+    RestaurentPaymentCreated = "restaurentPayment:created",
+
+    RoomTypePaymentConfirmed = "roomTypePayment:confirmed",
+    RestaurentPaymentConfirmed = "restaurentTypePayment:confirmed"
 };

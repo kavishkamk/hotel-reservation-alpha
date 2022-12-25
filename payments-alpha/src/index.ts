@@ -4,6 +4,8 @@ import { natsWrapper } from "./nats-wrapper";
 import { app } from "./app";
 import { RoomTypeOrderCreatedListnear } from "./events/listnears/room-type-order-created-listnear";
 import { RoomTypeOrderCancelledListnear } from "./events/listnears/room-type-order-cancelled-listener";
+import { RoomTypeOrderPaymentAwaitingListnear } from "./events/listnears/room-type-order-payment-awaiting-listener";
+import { RoomTypeOrderPaymentCompleatedListnear } from "./events/listnears/room-type-order-payment-compleated-listener";
 
 const port = 4000;
 
@@ -43,6 +45,8 @@ const start = () => {
 
             new RoomTypeOrderCreatedListnear(natsWrapper.client).listen();
             new RoomTypeOrderCancelledListnear(natsWrapper.client).listen();
+            new RoomTypeOrderPaymentAwaitingListnear(natsWrapper.client).listen();
+            new RoomTypeOrderPaymentCompleatedListnear(natsWrapper.client).listen();
 
             mongoose.connect(process.env.MONGO_URI!)
                 .then(() => {

@@ -3,13 +3,14 @@ import cors from "cors";
 import { json } from "body-parser";
 import { currentUserMiddleware, errorMiddleware, unhandledRouteMiddleware } from "@alpha-lib/shared-lib";
 import cookieSession from "cookie-session";
-import { paymentsRouter } from "./routes/payments-routes";
+import { paymentsRouter } from "./routes/room-payments-routes";
 import path from "path";
 import rateLimit from 'express-rate-limit';
 
 const app = express();
 
 app.set("trust proxy", true);
+app.set("trust proxy", "127.0.0.1");
 
 // app.use((req, res, next) => {
 //     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -40,7 +41,7 @@ app.use(json());
 
 app.use(cookieSession({
     signed: false,
-    secure: process.env.NODE_ENV !== "test"
+    secure: true
 }));
 
 // decode and set the current user result to response
@@ -48,7 +49,7 @@ app.use(currentUserMiddleware);
 
 app.use("/api/payments/upload/images", express.static(path.join(__dirname, "upload", "images")));
 
-app.use("/api/payments", paymentsRouter);
+app.use("/api/payments/room-type", paymentsRouter);
 
 app.use(unhandledRouteMiddleware);
 

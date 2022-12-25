@@ -1,6 +1,6 @@
 {
   "name": "@alpha-lib/shared-lib",
-  "version": "1.0.27",
+  "version": "1.0.34",
   "description": "",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",

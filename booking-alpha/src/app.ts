@@ -41,7 +41,7 @@ app.use(json());
 
 app.use(cookieSession({
     signed: false,
-    secure: process.env.NODE_ENV !== "test"
+    secure: true
 }));
 
 // decode and set the current user result to response
