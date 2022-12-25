@@ -11,6 +11,7 @@ import { userRouter } from "./routes/user-routes";
 const app = express();
 
 app.set("trust proxy", true);
+// app.set("trust proxy", "127.0.0.1");
 
 const allowedOrigins = ['http://localhost:3000', "*"];
 
@@ -28,7 +29,7 @@ app.use(cookieSession({
 
 const limiter = rateLimit({
     windowMs: 1 * 60 * 1000, // 1 minute
-    max: 5
+    max: 6
 });
 
 app.use(limiter);

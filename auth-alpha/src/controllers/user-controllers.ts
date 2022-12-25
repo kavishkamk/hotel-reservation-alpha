@@ -69,7 +69,8 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
                 profileURL: exsistingUser.profileURL,
                 activeStatus: exsistingUser.activeStatus,
                 nicNumber: exsistingUser.nicNumber,
-                isAdmin: exsistingUser.isAdmin
+                isAdmin: exsistingUser.isAdmin,
+                jwt: userJWT
             }
         });
 };
@@ -225,7 +226,8 @@ const accountActivation = async (req: Request, res: Response, next: NextFunction
                 profileURL: user.profileURL,
                 activeStatus: user.activeStatus,
                 nicNumber: user.nicNumber,
-                isAdmin: user.isAdmin
+                isAdmin: user.isAdmin,
+                jwt: userJWT
             }
         });
 };

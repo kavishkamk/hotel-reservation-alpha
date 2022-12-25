@@ -24,6 +24,10 @@ export class RoomExpirationCompleateListner extends Listener<RoomExpirationCompl
             return msg.ack();
         };
 
+        if (reservation.status === ReservationStatus.AwaitingPayment) {
+            return msg.ack();
+        };
+
         reservation.set({
             status: ReservationStatus.Cancelled
         });
