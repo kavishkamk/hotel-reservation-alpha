@@ -14,7 +14,7 @@
 
 ### 1. sign-up
 - POST request
-- if user creation success this send email with activation email to given email address
+- if user creation success create deactivated account
 ```
     POST -> api/users/signup
 ```
@@ -269,3 +269,106 @@ request image
 ```
 api/users/upload/images/${image_name.extention}
 ```
+
+### 9. create user
+- POST request
+- if user creation success create active accout (addmin permision required to create account)
+```
+    POST -> api/users/add-user
+```
+
+```
+    {
+        firstName: string;
+        lastName: string;
+        email: string;
+        contactNumber: string;
+        address: string;
+        password: string;
+        nicNumber: string;
+        profilePic?: -;
+    }
+```
+
+- response (201 status code) - created user account success 
+```
+    {
+        user: {
+            userId: string;
+            firstName: string;
+            lastName: string;
+            email: string;
+            contactNumber: string;
+            address: string;
+            profileURL?: string;
+            activeStatus: Boolean;
+            nicNumber: string;
+            isAdmin?: boolaen;
+        }
+    }
+```
+
+### Error Response
+
+- response NOT_AUTHERIZED (401 -> Don't have access to create client account)
+
+- response EXISTING_USER (422 -> Signup Fail, User Alrady Exist, Please use another email) 
+
+- response INPUT_VALIDATION_ERROR (422 -> Input validation Error) 
+
+- response INTERNAL_SERVER_ERROR (500 -> Internal server error, unknown error)
+
+### 10. get users by email
+
+- GET request
+- for get the user by email (admin access required)
+```
+    GET -> api/users/email/${clientEmail}
+```
+
+- response (200 status code) - get user account
+```
+    {
+        user: {
+            userId: string;
+            firstName: string;
+            lastName: string;
+            email: string;
+            contactNumber: string;
+            address: string;
+            profileURL?: string;
+            activeStatus: Boolean;
+            nicNumber: string;
+            isAdmin?: boolaen;
+        }
+    }
+```
+
+### Error Response
+
+- response NOT_AUTHERIZED (401 -> Don't have access to get user details)
+
+- response NOT_FOUND (404 -> User not found) 
+
+- response INTERNAL_SERVER_ERROR (500 -> Internal server error, unknown error)
+
+### 10. get users count
+
+- GET request
+- for get the number of users
+```
+    GET -> api/users/user-count
+```
+
+- response (200 status code) - get number of users
+```
+    {
+        "count": number
+    }
+```
+
+### Error Response
+
+- response NOT_AUTHERIZED (401 -> Don't have access to get user details)
+
+- response INTERNAL_SERVER_ERROR (500 -> Internal server error, unknown error)

@@ -2,7 +2,7 @@ import { Router } from "express";
 import { body, oneOf } from "express-validator";
 import { requestValidationMiddleware, currentUserMiddleware, requireAuthMiddleware, fileUpload, requireAdminAccess } from "@alpha-lib/shared-lib";
 
-import { signin, signout, signup, currentUser, requestAccoutActivationOTP, accountActivation, editUserDetails } from "../controllers/user-controllers";
+import { signin, signout, signup, currentUser, requestAccoutActivationOTP, accountActivation, editUserDetails, createClient, getClientByEmail, getNumberOfUsers } from "../controllers/user-controllers";
 
 const MIN_PASSWORD_LENGHT = 8;
 
@@ -136,6 +136,60 @@ router.patch("/editprofile",
     ],
     requestValidationMiddleware,
     editUserDetails
+);
+
+// admin access required for after this middle ware
+router.use(requireAdminAccess);
+
+// sign up
+router.post(
+    "/add-user",
+    fileUpload.single("profilePic"),
+    [
+        body("firstName")
+            .not()
+            .isEmpty()
+            .trim()
+            .withMessage("First Name Required"),
+        body("lastName")
+            .not()
+            .isEmpty()
+            .trim()
+            .withMessage("Last Name Required"),
+        body("email")
+            .isEmail()
+            .normalizeEmail()
+            .withMessage("Email must be valid"),
+        body("password")
+            .trim()
+            .isLength({ min: MIN_PASSWORD_LENGHT })
+            .withMessage(`Password should be at leadt ${MIN_PASSWORD_LENGHT} characters`),
+        body("address")
+            .trim()
+            .not()
+            .isEmpty()
+            .withMessage("Address is required"),
+        body("contactNumber")
+            .trim()
+            .not()
+            .isEmpty(),
+        body("nicNumber")
+            .trim()
+            .isLength({ min: 9 })
+            .withMessage("NIC number required")
+    ],
+    requestValidationMiddleware,
+    createClient
+);
+
+router.get(
+    "/email/:userEmail",
+    getClientByEmail
+);
+
+router.get(
+    "/user-count",
+    getNumberOfUsers
 );
 
 export { router as userRouter };

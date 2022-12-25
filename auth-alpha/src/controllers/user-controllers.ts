@@ -338,11 +338,112 @@ const editUserDetails = async (req: Request, res: Response, next: NextFunction) 
         });
 };
 
-const signout = (req: Request, res: Response, next: NextFunction) => {
+const signout = async (req: Request, res: Response, next: NextFunction) => {
 
     req.session = null;
 
     res.status(201).send({});
+};
+
+const createClient = async (req: Request, res: Response, next: NextFunction) => {
+    const { firstName, lastName, email, password, address, contactNumber, nicNumber } = req.body;
+
+    let existingUser;
+
+    // check exsisting email
+    try {
+        existingUser = await User.findOne({ email }).exec();
+    } catch (err) {
+        return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Signup Fail, Please try again later..."))
+    };
+
+    // check alrady have a account
+    if (existingUser) {
+        return next(new CommonError(422, ErrorTypes.EXISTING_USER, "Signup Fail, User Alrady Exist, Please use another email"));
+    };
+
+    // create user
+    let user = User.build({
+        firstName,
+        lastName,
+        email,
+        password,
+        address,
+        contactNumber,
+        profileURL: req.file?.path || "upload/images/unknownPerson.jpg",
+        activeStatus: true,
+        nicNumber,
+        isAdmin: false
+    });
+
+    try {
+        user = await user.save();
+    } catch (err) {
+        return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Create user Failed, Please try again later"));
+    };
+
+    res.status(201)
+        .json({
+            user: {
+                userId: user.id,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                address: user.address,
+                contactNumber: user.contactNumber,
+                profileURL: user.profileURL,
+                activeStatus: user.activeStatus,
+                nicNumber: user.nicNumber
+            }
+        });
+};
+
+const getClientByEmail = async (req: Request, res: Response, next: NextFunction) => {
+
+    const userEmail = req.params.userEmail;
+
+    let user;
+
+    try {
+        user = await User.findOne({ email: userEmail }).exec();
+    } catch (err) {
+        return next(err);
+    };
+
+    if (!user) {
+        return next(new CommonError(404, ErrorTypes.NOT_FOUND, "User Account Not found"));
+    };
+
+    res.status(200)
+        .json({
+            user: {
+                userId: user.id,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                address: user.address,
+                contactNumber: user.contactNumber,
+                profileURL: user.profileURL,
+                activeStatus: user.activeStatus,
+                nicNumber: user.nicNumber,
+                isAdmin: user.isAdmin
+            }
+        });
+
+};
+
+const getNumberOfUsers = async (req: Request, res: Response, next: NextFunction) => {
+
+    let count;
+
+    try {
+        count = await User.countDocuments({ isAdmin: false, activeStatus: true });
+    } catch (err) {
+        return next(err);
+    };
+
+    res.status(200).json({ count });
+
 };
 
 export {
@@ -352,5 +453,8 @@ export {
     signup,
     requestAccoutActivationOTP,
     accountActivation,
-    editUserDetails
+    editUserDetails,
+    createClient,
+    getClientByEmail,
+    getNumberOfUsers
 };
