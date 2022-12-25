@@ -52,10 +52,6 @@ const createRoom = async (req: Request, res: Response, next: NextFunction) => {
 
 };
 
-const NumberOfAvailableRooms = async () => {
-
-};
-
 const deleteRoomType = async (req: Request, res: Response, next: NextFunction) => {
 
     const id = req.params.roomTypeId;
