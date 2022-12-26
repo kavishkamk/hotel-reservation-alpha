@@ -6,17 +6,6 @@ const ProfileEdit = (props) => {
 	const [readOnly, setReadOnly] = useState(true)
 	const [user, setUser] = useState(props.user)
 
-	// const user = {
-	// 	id: 1,
-	// 	fname: "Rashmi",
-	// 	lname: "Wijesekara",
-	// 	address: "No.20, Homagama",
-	// 	email: "rashmiw@gmail.com",
-	// 	phoneNo: "0772346573"
-	// };
-
-	// console.log(user)
-
 	useEffect(()=> {
 		if(readOnly && edit) setReadOnly(false)
 		else setReadOnly(true)
@@ -42,6 +31,7 @@ const ProfileEdit = (props) => {
 			contactNumber: contactNumber
 		}
 		await props.setUser(user)
+		await props.setEdited(true)
 	}
 
 	return (

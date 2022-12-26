@@ -11,8 +11,20 @@ class Auth {
 		);
 	}
 
+	saveToken(token) {
+		sessionStorage.setItem("token", JSON.stringify(token));
+	}
+
+	getToken() {
+		const tokenString = sessionStorage.getItem("token");
+		const token = JSON.parse(tokenString);
+		return token;
+	}
+
 	saveUser(officer) {
 		sessionStorage.setItem("user", JSON.stringify(officer));
+
+		if (officer.jwt) this.saveToken(officer.jwt);
 	}
 
 	getUser() {
@@ -38,7 +50,7 @@ class Auth {
 
 	// user data is deleted
 	deleteUser() {
-		sessionStorage.removeItem("user")
+		sessionStorage.removeItem("user");
 	}
 
 	login(cb, user) {
@@ -54,7 +66,7 @@ class Auth {
 	logout(cb) {
 		this.authenticated = false;
 		this.deleteSession();
-		this.deleteUser()
+		this.deleteUser();
 		cb();
 	}
 
