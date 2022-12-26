@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
-
-// components
+import Rooms__connection from "../connections/Rooms";
 import SelectDate from "../components/booking-progress/SelectDate";
 import Search from "../components/rooms/Search";
 import CardContainer from "../components/cards/CardContainer";
@@ -20,8 +19,9 @@ const RoomsPage = () => {
 	const [selectedTags, setSelectedTags] = useState([]);
 	const [searchResult, setSearchResult] =
 		useState(roomData);
-	const [bookStatus, setBookStatus] = useState(false)
-	const [item, setItem] = useState([])
+	const [bookStatus, setBookStatus] = useState(false);
+	const [item, setItem] = useState([]);
+	const [tags, setTags] = useState([]);
 
 	const roomsTags = [
 		{
@@ -53,15 +53,26 @@ const RoomsPage = () => {
 	};
 
 	let redirect;
-	const bookClickHandler = (item)=> {
-		setItem(item)
-		setFormData({...formData, item})
-		setBookStatus(true)
-	}
+	const bookClickHandler = (item) => {
+		setItem(item);
+		setFormData({ ...formData, item });
+		setBookStatus(true);
+	};
 
-	useEffect(()=> {
-		console.log(formData)
-	},[formData])
+	useEffect(() => {
+		console.log(formData);
+	}, [formData]);
+
+	useEffect(() => {
+		async function fetchData() {
+			const data =
+				await Rooms__connection.getAllRoomsTags();
+			await setTags(data)
+		}
+
+		const data = fetchData();
+		console.log(tags)
+	}, []);
 
 	return (
 		<>
