@@ -2,13 +2,35 @@ import { requestValidationMiddleware, requireAdminAccess, requireAuthMiddleware 
 import { Router } from "express";
 import { body } from "express-validator";
 
-import { createRestaurent, deleteRestaurentType, getRestaurent } from "../controllers/restaurent-controller";
+import { createRestaurent, deleteRestaurentType, getRestaurent, getRestaurentById, getRestaurentWithGivenTags } from "../controllers/restaurent-controller";
 
 const router = Router();
 
 router.get(
     "/",
     getRestaurent
+);
+
+router.get(
+    "/:restaurentId",
+    getRestaurentById
+);
+
+router.patch(
+    "/filter",
+    [
+        body("tags")
+            .isArray({ min: 1 })
+            .withMessage("Should have at least 1 tag"),
+        body("tags.*")
+            .not()
+            .isArray()
+            .not()
+            .isEmpty()
+            .withMessage("tags should not be null"),
+    ],
+    requestValidationMiddleware,
+    getRestaurentWithGivenTags
 );
 
 // after this route, to proferm operation user should log in to the system
