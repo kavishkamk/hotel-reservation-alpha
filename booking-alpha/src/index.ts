@@ -6,6 +6,7 @@ import { RoomTypeCreatedListner } from "./events/listeners/room-type-created-lis
 import { RoomExpirationCompleateListner } from "./events/listeners/room-expiration-compleate-listnear";
 import { RoomTypePaymentCreated } from "./events/listeners/room-type-payment-created-listener";
 import { RoomTypePaymentCompleated } from "./events/listeners/room-type-payment-compleated-listener";
+import { RestaurentTypeCreatedListener } from "./events/listeners/restaurent-type-created";
 
 const port = 4000;
 
@@ -44,6 +45,7 @@ const start = () => {
             new RoomExpirationCompleateListner(natsWrapper.client).listen();
             new RoomTypePaymentCreated(natsWrapper.client).listen();
             new RoomTypePaymentCompleated(natsWrapper.client).listen();
+            new RestaurentTypeCreatedListener(natsWrapper.client).listen();
 
             process.on("SIGTERM", () => natsWrapper.client.close());
             process.on("SIGINT", () => natsWrapper.client.close());

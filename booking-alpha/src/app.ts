@@ -7,6 +7,8 @@ import rateLimit from 'express-rate-limit';
 
 import { roomBookingRouter } from "./routes/room-booking-routes";
 import { roomTypeRouter } from "./routes/room-type-routes";
+import { restaurentTypeRouter } from "./routes/restaurent-type-routes";
+import { restaurentBookingRouter } from "./routes/restaurent-booking-routes";
 
 const app = express();
 
@@ -49,6 +51,8 @@ app.use(currentUserMiddleware);
 
 app.use("/api/booking/room-types", roomTypeRouter);
 app.use("/api/booking/room-booking", roomBookingRouter);
+app.use("/api/booking/restaurent-types", restaurentTypeRouter);
+app.use("/api/booking/restaurent-booking", restaurentBookingRouter);
 
 app.use(unhandledRouteMiddleware);
 

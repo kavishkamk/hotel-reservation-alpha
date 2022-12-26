@@ -1,7 +1,7 @@
 import { requestValidationMiddleware, requireAdminAccess, requireAuthMiddleware } from "@alpha-lib/shared-lib";
 import { Router } from "express";
 import { body } from "express-validator";
-import { createBookingForClient, createRoomBooking, getBookings } from "../controllers/room-booking-controller";
+import { createRestaurentBooking, createRestaurentBookingForClient, getRestaurentBookings } from "../controllers/restaurent-booking-controller";
 
 const router = Router();
 
@@ -10,13 +10,13 @@ router.use(requireAuthMiddleware);
 router.post(
     "/",
     [
-        body("roomTypeId")
+        body("restaurentTypeId")
             .not()
             .isEmpty()
-            .withMessage("room type id required"),
-        body("numberOfRooms")
+            .withMessage("restaurent type id required"),
+        body("numberOfTables")
             .isInt({ gt: 0 })
-            .withMessage("number of rooms should be grater than 0"),
+            .withMessage("number of tables should be grater than 0"),
         body("numberOfPersons")
             .isInt({ gt: 0 })
             .withMessage("Number of persons should be grater than 0"),
@@ -28,26 +28,26 @@ router.post(
             .withMessage("to Date required")
     ],
     requestValidationMiddleware,
-    createRoomBooking
+    createRestaurentBooking
 );
 
 router.use(requireAdminAccess);
 
 router.get(
     "/",
-    getBookings
+    getRestaurentBookings
 );
 
 router.post(
     "/create-booking",
     [
-        body("roomTypeId")
+        body("restaurentTypeId")
             .not()
             .isEmpty()
-            .withMessage("room type id required"),
-        body("numberOfRooms")
+            .withMessage("restaurent type id required"),
+        body("numberOfTables")
             .isInt({ gt: 0 })
-            .withMessage("number of rooms should be grater than 0"),
+            .withMessage("number of tables should be grater than 0"),
         body("numberOfPersons")
             .isInt({ gt: 0 })
             .withMessage("Number of persons should be grater than 0"),
@@ -63,7 +63,8 @@ router.post(
             .withMessage("client id required"),
     ],
     requestValidationMiddleware,
-    createBookingForClient
+    createRestaurentBookingForClient
 );
 
-export { router as roomBookingRouter };
+
+export { router as restaurentBookingRouter };

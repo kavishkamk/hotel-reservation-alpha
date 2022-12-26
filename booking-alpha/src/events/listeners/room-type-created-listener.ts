@@ -9,7 +9,7 @@ export class RoomTypeCreatedListner extends Listener<RoomTypeCreatedEvent> {
     queueGroupName = QueueGroupName;
 
     async onMessage(data: RoomTypeCreatedEvent['data'], msg: Message) {
-        console.log("Event reserved : " + data);
+
         const { id, roomType, price, numberOfRooms, maxGuest, version } = data;
 
         const roomTypeObj = RoomType.build({
