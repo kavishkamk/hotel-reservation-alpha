@@ -53,6 +53,13 @@ const roomTypeSchema = new Schema({
         require: [true, "max gurest required"],
         min: [0, "max gurest should be > 0"]
     }
+}, {
+    toJSON: {
+        getters: true,
+        transform(doc, ret, options) {
+            delete ret._id
+        },
+    }
 });
 
 roomTypeSchema.set("versionKey", "version");

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alpha-payments-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alpha-payments
+  template:
+    metadata:
+      labels:
+        app: alpha-payments
+    spec:
+      containers:
+        - name: alpha-payments
+          # image: kavishkamk/hotel-reservation-alpha-payments
+          image: us.gcr.io/ticketing-dev-367104/payments-alpha
+          env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: http://nats-srv:4222
+            - name: NATS_CLUSTER_ID
+              value: alphahotelreservation
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+            - name: MONGO_URI
+              value: mongodb://alpha-payments-mongo-srv:27017/payments
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alpha-payments-srv
+spec:
+  selector:
+    app: alpha-payments
+  ports:
+    - name: alpha-payments
+      protocol: TCP
+      port: 4000
+      targetPort: 4000

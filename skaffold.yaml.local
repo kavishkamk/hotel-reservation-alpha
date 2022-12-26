@@ -1,0 +1,50 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*.yaml
+build:
+  local:
+    push: false
+  artifacts:
+    - image: kavishkamk/hotel-reservation-alpha-auth
+      context: auth-alpha
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.ts"
+    - image: kavishkamk/hotel-reservation-alpha-services
+      context: services-alpha
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.ts"
+    - image: kavishkamk/hotel-reservation-alpha-booking
+      context: booking-alpha
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.ts"
+    - image: kavishkamk/hotel-reservation-alpha-expiration
+      context: expiration-alpha
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.ts"
+    - image: kavishkamk/hotel-reservation-alpha-payments
+      context: payments-alpha
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.ts"

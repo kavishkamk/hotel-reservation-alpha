@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@alpha-lib/shared-lib@^1.0.18":
-  version "1.0.18"
-  resolved "https://registry.yarnpkg.com/@alpha-lib/shared-lib/-/shared-lib-1.0.18.tgz#500804cf1c1144207940d1239e6a47526da535d2"
-  integrity sha512-l6+Wjk75Ny2vXY5bVj2LcphpDvAW50ajKkBvpY03sodzvPsQrxoQC5mvGw/Zr4M8+lOjDKepz/AQuqkXXi6R+g==
+"@alpha-lib/shared-lib@^1.0.31":
+  version "1.0.31"
+  resolved "https://registry.yarnpkg.com/@alpha-lib/shared-lib/-/shared-lib-1.0.31.tgz#da52a445fdb3965753afe1a6784ced3590be726d"
+  integrity sha512-GyqW8pbSagNT04oMmp1/oPY0ccDXRibPFJxXS23+JmnTVvw+ZKMyPp3fGCBX/10/kx5aloPaGM6SydtciPYaYg==
   dependencies:
     "@types/cookie-session" "^2.0.44"
     "@types/express" "^4.17.14"
@@ -1207,6 +1207,11 @@ etag@~1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==
+
+express-rate-limit@^6.7.0:
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/express-rate-limit/-/express-rate-limit-6.7.0.tgz#6aa8a1bd63dfe79702267b3af1161a93afc1d3c2"
+  integrity sha512-vhwIdRoqcYB/72TK3tRZI+0ttS8Ytrk24GfmsxDXK9o9IhHNO5bXRiXQSExPQ4GbaE5tvIS7j1SGrxsuWs+sGA==
 
 express-validator@*, express-validator@^6.14.2:
   version "6.14.2"

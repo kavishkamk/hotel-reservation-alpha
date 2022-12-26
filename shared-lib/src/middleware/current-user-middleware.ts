@@ -26,14 +26,21 @@ declare global {
 // check the jwt set on cookie and if cookie has jwt verify and set the data to the request
 const currentUserMiddleware = (req: Request, res: Response, next: NextFunction) => {
 
-    if (!req.session?.jwt) {
+    if (!req.session?.jwt && !req.headers.authorization) {
         return next();
     }
 
-    try {
-        var decoded = jwt.verify(req.session.jwt, process.env.JWT_KEY!) as UserPayload;
-        req.currentUser = decoded;
-    } catch (err) { };
+    if (req.session!.jwt) {
+        try {
+            var decoded = jwt.verify(req.session!.jwt, process.env.JWT_KEY!) as UserPayload;
+            req.currentUser = decoded;
+        } catch (err) { console.log("Cookies jwt token decode error") };
+    } else if (req.headers.authorization) {
+        try {
+            var decoded = jwt.verify(req.headers.authorization, process.env.JWT_KEY!) as UserPayload;
+            req.currentUser = decoded;
+        } catch (err) { console.log("Authorizatio header jwt token decode error") };
+    }
 
     next();
 

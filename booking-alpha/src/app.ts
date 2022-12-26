@@ -3,6 +3,7 @@ import cors from "cors";
 import { json } from "body-parser";
 import { currentUserMiddleware, errorMiddleware, unhandledRouteMiddleware } from "@alpha-lib/shared-lib";
 import cookieSession from "cookie-session";
+import rateLimit from 'express-rate-limit';
 
 import { roomBookingRouter } from "./routes/room-booking-routes";
 import { roomTypeRouter } from "./routes/room-type-routes";
@@ -20,6 +21,14 @@ const options: cors.CorsOptions = {
 // Then pass these options to cors:
 app.use(cors(options))
 
+// set request rate limit
+const limiter = rateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 5
+});
+
+app.use(limiter);
+
 app.use(json());
 
 // app.use((req, res, next) => {
@@ -32,7 +41,7 @@ app.use(json());
 
 app.use(cookieSession({
     signed: false,
-    secure: process.env.NODE_ENV !== "test"
+    secure: true
 }));
 
 // decode and set the current user result to response

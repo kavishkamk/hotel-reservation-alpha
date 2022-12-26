@@ -1,3 +1,4 @@
+import { CommonError, ErrorTypes } from "@alpha-lib/shared-lib";
 import { NextFunction, Request, Response } from "express";
 import { RoomTypeCreatedPublisher } from "../events/publishers/room-type-created-publisher";
 import { RoomType } from "../models/RoomType";
@@ -52,10 +53,6 @@ const createRoom = async (req: Request, res: Response, next: NextFunction) => {
 
 };
 
-const NumberOfAvailableRooms = async () => {
-
-};
-
 const deleteRoomType = async (req: Request, res: Response, next: NextFunction) => {
 
     const id = req.params.roomTypeId;
@@ -72,8 +69,46 @@ const deleteRoomType = async (req: Request, res: Response, next: NextFunction) =
 
 };
 
+const getRoomsWithGivenTags = async (req: Request, res: Response, next: NextFunction) => {
+
+    const { tags } = req.body;
+
+    let rooms;
+
+    try {
+        rooms = await RoomType.find({ tags: { $all: tags } }).populate("tags").exec();
+    } catch (err) {
+        return next(err);
+    };
+
+    res.status(200).json({ rooms });
+
+};
+
+const getRoomById = async (req: Request, res: Response, next: NextFunction) => {
+
+    const roomId = req.params.roomId;
+
+    let room;
+
+    try {
+        room = await RoomType.findById(roomId).populate("tags").exec();
+    } catch (err) {
+        return next(err);
+    };
+
+    if (!room) {
+        return next(new CommonError(404, ErrorTypes.NOT_FOUND, "Room type not found"));
+    };
+
+    res.status(200).json({ room });
+
+};
+
 export {
     createRoom,
     getRooms,
-    deleteRoomType
+    deleteRoomType,
+    getRoomsWithGivenTags,
+    getRoomById
 };
