@@ -42,7 +42,7 @@
 
 - response NOT_AUTHERIZED (401 -> Don't have admin access to create)
 
--  response INPUT_VALIDATION_ERROR (422 -> Input validation Error)
+- response INPUT_VALIDATION_ERROR (422 -> Input validation Error)
 
 - response INTERNAL_SERVER_ERROR (500 -> Internal server error, unknown error)
 

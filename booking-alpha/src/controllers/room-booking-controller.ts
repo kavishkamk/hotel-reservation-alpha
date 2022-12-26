@@ -11,11 +11,43 @@ const EXPIRATION_WINDOW_SECOND = 2 * 60;
 
 const createRoomBooking = async (req: Request, res: Response, next: NextFunction) => {
 
-    // if (req.currentUser!.isAdmin) {
-    //     return next(new CommonError(401, ErrorTypes.NOT_AUTHERIZED, "Don't have access to use this route"));
-    // };
+    if (req.currentUser!.isAdmin) {
+        return next(new CommonError(401, ErrorTypes.NOT_AUTHERIZED, "Don't have access to use this route"));
+    };
+
+    const booking = await roomBookingLogic(req, req.currentUser!.id, next);
+
+    res.json({ booking });
+};
+
+const createBookingForClient = async (req: Request, res: Response, next: NextFunction) => {
+
+    const { clientId } = req.body;
+
+    const booking = await roomBookingLogic(req, clientId, next);
+
+    res.json({ booking });
+
+};
+
+const getBookings = async (req: Request, res: Response, next: NextFunction) => {
+
+    let bookings;
+
+    try {
+        bookings = await Order.find().populate("roomType").exec();
+    } catch (err) {
+        return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Operation Fail, Plase try again later"));
+    };
+
+    res.status(200).json({ bookings });
+
+};
+
+const roomBookingLogic = async (req: Request, client: string, next: NextFunction) => {
 
     const { roomTypeId, numberOfRooms, numberOfPersons, fromDate, toDate } = req.body;
+
     console.log(new Date(fromDate), new Date(toDate));
     let roomTypeObj;
 
@@ -120,7 +152,7 @@ const createRoomBooking = async (req: Request, res: Response, next: NextFunction
 
     // create a booking
     let booking = Order.build({
-        userId: req.currentUser!.id,
+        userId: client,
         roomType: roomTypeObj,
         numberOfRooms,
         numberOfPersons,
@@ -153,21 +185,12 @@ const createRoomBooking = async (req: Request, res: Response, next: NextFunction
         }
     });
 
-    res.json({ booking });
-};
-
-const getBookings = async (req: Request, res: Response, next: NextFunction) => {
-
-    let bookings;
-
-    try {
-        bookings = await Order.find().populate("roomType").exec();
-    } catch (err) {
-        return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Operation Fail, Plase try again later"));
-    };
-
-    res.status(200).json({ bookings });
+    return booking;
 
 };
 
-export { createRoomBooking, getBookings };
+export {
+    createRoomBooking,
+    getBookings,
+    createBookingForClient
+};
