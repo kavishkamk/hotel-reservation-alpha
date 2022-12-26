@@ -350,6 +350,84 @@
 
 - response INTERNAL_SERVER_ERROR (500 -> Internal server error, unknown error)
 
+### 3.4. get rooms contains given tags
+- PATCH request
+- get rooms contains given tags
+```
+   PATCH -> api/services/rooms/filter
+```
+
+```
+   {
+      "tags": string[]
+   }
+```
+- response (200 status code) - reserved room list successfully
+
+```
+   {
+      "rooms":
+        {
+            "roomType": string;
+            "numberOfRooms": number;
+            "description": string;
+            "imageURL": string;
+            "price": number;
+            "stars": number;
+            "amenities": string[];
+            "tags": 
+                {
+                    "tagName": string;
+                    "version": number;
+                    "id": string;
+                }[];
+            "maxGuest": number;
+            "version": number;
+            "id": string;
+         }[];
+   }
+```
+### Error Response
+- response INPUT_VALIDATION_ERROR (422 -> Input validation Error )
+
+- response INTERNAL_SERVER_ERROR (500 -> Internal server error, unknown error)
+
+### 3.5. get room types
+- GET request
+- get room tpes
+```
+   GET -> api/services/rooms/roomId
+```
+- response (200 status code) - get room list success
+```
+   {
+      "rooms": 
+         {
+            "roomType": string;
+            "numberOfRooms": string;
+            "description": string;
+            "imageURL": string;
+            "price": number;
+            "stars": number;
+            "amenities": string[];
+            "tags": 
+               {
+                  "tagName": string;
+                  "version": number;
+                  "id": string;
+               }[]
+            "maxGuest": number;
+            "version": number;
+            "id": number;
+         }
+   }
+```
+### Error Response
+
+- response INTERNAL_SERVER_ERROR (500 -> Internal server error, unknown error)
+
+- response NOT_FOUND (404 -> not found)
+
 ### 4. Restaurent routes
 
 ### 4.1. create restaurent
@@ -395,7 +473,7 @@
 
 - response NOT_AUTHERIZED (401 -> Don't have admin access to create)
 
--  response INPUT_VALIDATION_ERROR (422 -> Input validation Error)
+- response INPUT_VALIDATION_ERROR (422 -> Input validation Error)
 
 - response INTERNAL_SERVER_ERROR (500 -> Internal server error, unknown error)
 
@@ -456,3 +534,76 @@
 - response NOT_FOUND (404 -> not found)
 
 - response INTERNAL_SERVER_ERROR (500 -> Internal server error, unknown error)
+
+### 4.4. get restaurents contains given tags
+- PATCH request
+- get restaurents contains given tags
+```
+   PATCH -> api/services/restaurents/filter
+```
+
+```
+   {
+      "tags": string[]
+   }
+```
+- response (200 status code) - reserved restaurent list successfully
+
+```
+   {
+      "restaurents": 
+         {
+            "restaurentType": string;
+            "numberOfTables": number;
+            "description": string;
+            "imageURL": string;
+            "stars": number;
+            "tags":
+                {
+                    "tagName": string;
+                    "version": number;
+                    "id": string
+                }[];
+            "maxGuest": number;
+            "version": number;
+            "id": string;
+         }[];
+   }
+```
+### Error Response
+- response INPUT_VALIDATION_ERROR (422 -> Input validation Error )
+
+- response INTERNAL_SERVER_ERROR (500 -> Internal server error, unknown error)
+
+### 4.5. get restaurnt types
+- GET request
+- get restaurent tpes
+```
+   GET -> api/services/restaurents/restaurentId
+```
+- response (200 status code) - get restaurent list success
+```
+   {
+      "restaurent": {
+         "restaurentType": string;
+         "numberOfTables": mumber;
+         "description": string;
+         "imageURL": string;
+         "stars": number
+         "tags":
+            {
+                "tagName": string;
+                "version": number;
+                "id": string;
+            }[];
+        "maxGuest": number;
+        "version": number;
+        "id": string;
+    }
+}
+```
+### Error Response
+
+- response INTERNAL_SERVER_ERROR (500 -> Internal server error, unknown error)
+
+- response NOT_FOUND (404 -> not found)

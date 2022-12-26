@@ -2,13 +2,35 @@ import { requestValidationMiddleware, requireAuthMiddleware, requireAdminAccess 
 import { Router } from "express";
 import { body } from "express-validator";
 
-import { createRoom, deleteRoomType, getRooms } from "../controllers/room-controller";
+import { createRoom, deleteRoomType, getRoomById, getRooms, getRoomsWithGivenTags } from "../controllers/room-controller";
 
 const router = Router();
 
 router.get(
     "/",
     getRooms
+);
+
+router.get(
+    "/:roomId",
+    getRoomById
+);
+
+router.patch(
+    "/filter",
+    [
+        body("tags")
+            .isArray({ min: 1 })
+            .withMessage("Should have at least 1 tag"),
+        body("tags.*")
+            .not()
+            .isArray()
+            .not()
+            .isEmpty()
+            .withMessage("tags should not be null"),
+    ],
+    requestValidationMiddleware,
+    getRoomsWithGivenTags
 );
 
 // after this route, to proferm operation user should log in to the system
