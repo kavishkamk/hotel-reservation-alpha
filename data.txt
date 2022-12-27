@@ -1,0 +1,5 @@
+== room tags
+Deluxe, Executive, King, Queen
+
+== restaurent tags
+Bar, Chinese, Rooftop

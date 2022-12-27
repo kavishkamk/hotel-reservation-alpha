@@ -1,6 +1,6 @@
 import * as main from "./main-url";
 import Auth from "../functions/Auth";
-import examples from "../data/rooms.json"
+
 class Rooms__connection {
 	static #roomDetails = [
 		{
