@@ -35,7 +35,7 @@ class Dashboard__connection {
 	async clientRegister(client){
 		const thisUrl = main.url + "/users/add-user";
 		const token = Auth.getToken();
-		
+
 		const res = await fetch(thisUrl, {
 			method: "POST",
 			headers: {
@@ -59,6 +59,21 @@ class Dashboard__connection {
 			result.user = data.user
 		}
 		return result;
+	}
+
+	async getClientCount() {
+		const thisUrl = main.url + "/users/user-count";
+		const token = Auth.getToken();
+
+		const res = await fetch(thisUrl, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			}
+		});
+		const data = await res.json();
+		return data;
 	}
 }
 

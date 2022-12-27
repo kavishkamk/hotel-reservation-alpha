@@ -1,9 +1,9 @@
 import React from 'react'
 
-const TotalCounts = () => {
-	const clientsCount = 67
-	const reservationsCount = 32
-	const paymentsCount = 54
+const TotalCounts = (props) => {
+	const clientsCount = props.clientsCount
+	const reservationsCount = props.reservationsCount
+	const paymentsCount = props.paymentsCount
 
 	return (
 		<div className="flex flex-row pt-2 font-manrope">
