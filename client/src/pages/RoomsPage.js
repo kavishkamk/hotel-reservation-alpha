@@ -47,9 +47,13 @@ const RoomsPage = () => {
 		},
 	];
 
-	const searchHandler = () => {
+	const searchHandler = async() => {
 		console.log(selectedTags);
 		// parse the selected tags to the backend
+
+		const data = await Rooms__connection.filterRooms(selectedTags)
+		console.log(data);
+
 	};
 
 	let redirect;
@@ -59,19 +63,24 @@ const RoomsPage = () => {
 		setBookStatus(true);
 	};
 
-	useEffect(() => {
-		console.log(formData);
-	}, [formData]);
+	// useEffect(() => {
+	// 	console.log(formData);
+	// }, [formData]);
 
 	useEffect(() => {
-		async function fetchData() {
+		async function getAllRoomsTags() {
 			const data =
 				await Rooms__connection.getAllRoomsTags();
-			await setTags(data)
+			await setTags(data);
 		}
 
-		const data = fetchData();
-		console.log(tags)
+		async function getAllRooms() {
+			const data = await Rooms__connection.getAllRooms();
+			await setSearchResult(data)
+		}
+
+		getAllRoomsTags();
+		getAllRooms()
 	}, []);
 
 	return (
@@ -93,7 +102,7 @@ const RoomsPage = () => {
 				</div>
 				<div className="flex flex-col md:flex-row items-start">
 					<Search
-						tags={roomsTags}
+						tags={tags}
 						selectedTags={selectedTags}
 						setSelectedTags={setSelectedTags}
 						onClick={() => searchHandler()}
@@ -105,7 +114,7 @@ const RoomsPage = () => {
 							setFormData={setFormData}
 						/>
 
-						<div className="flex flex-wrap justify-left gap-y-6 gap-x-2 mx-5 my-5">
+						<div className="flex flex-wrap justify-left gap-y-6 gap-x-2 ml-5 my-5">
 							{searchResult.map((item) => (
 								<CardContainer
 									title={item.name}

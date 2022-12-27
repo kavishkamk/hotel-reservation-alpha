@@ -9,13 +9,30 @@ const SelectTags = (props) => {
 		new Array(tags.length).fill(false)
 	);
 
-	const handleOnChange = (position, name) => {
+	const handleOnChange = (position, id) => {
 		const updatedCheckedState = checkedState.map(
 			(item, index) => (index === position ? !item : item)
 		);
 
 		setCheckedState(updatedCheckedState);
-		setSelectedTags([...selectedTags, name])
+		let removed = false
+
+		selectedTags.forEach(selected => {
+			// changed checkbox already selected
+			// need to remove that tag from the selectedTags
+			if(selected === id) {
+				removed = true
+				return
+			}
+		});
+		
+		if(removed) {
+			setSelectedTags((current) =>
+				current.filter((tag) => tag !== id)
+			);
+		}else {
+			setSelectedTags([...selectedTags, id]);
+		}
 	};
 
 	return (
@@ -34,7 +51,7 @@ const SelectTags = (props) => {
 										value={item.content}
 										checked={checkedState[item.label]}
 										onChange={() =>
-											handleOnChange(item.label, item.content)
+											handleOnChange(item.label, item.id)
 										}
 									/>
 									<label
