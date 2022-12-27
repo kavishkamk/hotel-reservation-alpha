@@ -137,7 +137,26 @@ class Rooms__connection {
 		});
 
 		const data = await res.json();
-		return data.rooms;
+		let rooms = [];
+
+		const details = Rooms__connection.#roomDetails;
+		const images = Rooms__connection.#images;
+
+		data.rooms.forEach((room) => {
+			rooms.push({
+				id: room.id,
+				name: room.roomType,
+				description: room.description,
+				details: details,
+				image: room.imageURL,
+				images: images,
+				price: room.price,
+				stars: room.stars,
+				tags: room.tags,
+			});
+		});
+
+		return rooms;
 	}
 }
 
