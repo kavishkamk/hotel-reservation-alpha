@@ -11,17 +11,23 @@ class Auth {
 		);
 	}
 
+	saveToken(token) {
+		sessionStorage.setItem("token", JSON.stringify(token));
+	}
+
+	getToken() {
+		const tokenString = sessionStorage.getItem("token");
+		const token = JSON.parse(tokenString);
+		return token;
+	}
+
 	saveUser(officer) {
-		sessionStorage.setItem(
-			"user",
-			JSON.stringify(officer)
-		);
+		sessionStorage.setItem("user", JSON.stringify(officer));
+		if (officer.jwt) this.saveToken(officer.jwt);
 	}
 
 	getUser() {
-		const tokenString = sessionStorage.getItem(
-			"user"
-		);
+		const tokenString = sessionStorage.getItem("user");
 		const user = JSON.parse(tokenString);
 		return user;
 	}
@@ -59,6 +65,16 @@ class Auth {
 
 	isAuthenticated() {
 		return this.authenticated;
+	}
+
+	saveClientEmail(email) {
+		sessionStorage.setItem("clientEmail", JSON.stringify(email));
+	}
+
+	getClientEmail() {
+		const tokenString = sessionStorage.getItem("clientEmail");
+		const email = JSON.parse(tokenString);
+		return email ? email : "";
 	}
 }
 

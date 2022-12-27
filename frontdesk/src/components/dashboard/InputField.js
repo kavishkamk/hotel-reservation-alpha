@@ -33,6 +33,7 @@ const InputField = (props) => {
 					placeholder={props.title}
 					value={props.value}
 					readOnly={readonly}
+					onChange={handleInputChange}
 					className="w-2/3 my-2 py-1 px-2 rounded-md focus:ring focus:ring-opacity-75 focus:ring-indigo-400 border-gray-700 text-gray-900 bg-[#E2E8F0]"
 				/>
 			)}

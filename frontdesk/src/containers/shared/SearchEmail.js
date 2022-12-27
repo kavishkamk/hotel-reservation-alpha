@@ -1,16 +1,18 @@
-import React from "react";
+import React, {useState} from "react";
+import Auth from "../../functions/Auth"
 
 const SearchEmail = (props) => {
+	const [value, setValue] = useState(Auth.getClientEmail());
 
 	const searchHandler = () => {
 		const input = document.getElementById("searchInput").value;
 		props.onClick(input);
-		document.getElementById("searchInput").value = ""
+		// document.getElementById("searchInput").value = ""
 	};
 
 	return (
 		<fieldset className="w-2/3 mx-auto space-y-1 text-gray-900 shadow-lg">
-			<label for="Search" className="hidden">
+			<label htmlFor="Search" className="hidden">
 				Search
 			</label>
 			<div className="relative w-full">
@@ -18,6 +20,7 @@ const SearchEmail = (props) => {
 					type="search"
 					name="Search"
 					placeholder="Search Email Address"
+					value={value}
 					id="searchInput"
 					className="w-full py-2 px-10 text-sm rounded-md focus:outline-none bg-white text-gray-700 focus:bg-gray-100 focus:border-indigo-200"
 				/>
