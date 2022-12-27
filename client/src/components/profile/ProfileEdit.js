@@ -4,15 +4,7 @@ import Input from "./Input";
 const ProfileEdit = (props) => {
 	const [edit, setEdit] = useState(false)
 	const [readOnly, setReadOnly] = useState(true)
-
-	const user = {
-		id: 1,
-		fname: "Rashmi",
-		lname: "Wijesekara",
-		address: "No.20, Homagama",
-		email: "rashmiw@gmail.com",
-		phoneNo: "0772346573"
-	};
+	const [user, setUser] = useState(props.user)
 
 	useEffect(()=> {
 		if(readOnly && edit) setReadOnly(false)
@@ -23,9 +15,23 @@ const ProfileEdit = (props) => {
 		setEdit(true)
 	}
 
-	const saveHandler = ()=> {
+	const saveHandler = async ()=> {
 		// send the edits to the DB
-		setEdit(false)
+		await setEdit(false)
+
+		const firstName = document.getElementById("firstname").value
+		const lastName = document.getElementById("lastname").value
+		const address = document.getElementById("address").value
+		const contactNumber = document.getElementById("phoneNo").value
+
+		const user = {
+			firstName: firstName,
+			lastName: lastName,
+      address: address,
+			contactNumber: contactNumber
+		}
+		await props.setUser(user)
+		await props.setEdited(true)
 	}
 
 	return (
@@ -34,7 +40,7 @@ const ProfileEdit = (props) => {
 				id="firstname"
 				label="First Name"
 				type="text"
-				defaultValue={user.fname}
+				defaultValue={user.firstName}
 				placeholder="First Name"
 				readonly={readOnly}
 			/>
@@ -43,7 +49,7 @@ const ProfileEdit = (props) => {
 				id="lastname"
 				label="Last Name"
 				type="text"
-				defaultValue={user.lname}
+				defaultValue={user.lastName}
 				placeholder="Last Name"
 				readonly={readOnly}
 			/>
@@ -61,7 +67,7 @@ const ProfileEdit = (props) => {
 				id="phoneNo"
 				label="Phone No."
 				type="tel"
-				defaultValue={user.phoneNo}
+				defaultValue={user.contactNumber}
 				placeholder="Phone No."
 				readonly={readOnly}
 			/>

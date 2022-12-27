@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
-
-// components
+import Rooms__connection from "../connections/Rooms";
 import SelectDate from "../components/booking-progress/SelectDate";
 import Search from "../components/rooms/Search";
 import CardContainer from "../components/cards/CardContainer";
-
-// data
-import roomData from "../data/rooms.json";
 
 const RoomsPage = () => {
 	const [formData, setFormData] = useState({
@@ -18,50 +14,58 @@ const RoomsPage = () => {
 	});
 
 	const [selectedTags, setSelectedTags] = useState([]);
-	const [searchResult, setSearchResult] =
-		useState(roomData);
-	const [bookStatus, setBookStatus] = useState(false)
-	const [item, setItem] = useState([])
+	const [searchResult, setSearchResult] = useState([]);
+	const [bookStatus, setBookStatus] = useState(false);
+	const [item, setItem] = useState([]);
+	const [tags, setTags] = useState([]);
+	const [bookHide, setBookHide] = useState(true)
 
-	const roomsTags = [
-		{
-			topic: "Room Class",
-			tags: [
-				{ label: 1, content: "Deluxe" },
-				{ label: 2, content: "Executive" },
-			],
-		},
-		{
-			topic: "Bedding",
-			tags: [
-				{ label: 1, content: "Queen" },
-				{ label: 2, content: "King" },
-			],
-		},
-		{
-			topic: "Facilities",
-			tags: [
-				{ label: 1, content: "AC" },
-				{ label: 2, content: "Suite" },
-			],
-		},
-	];
-
-	const searchHandler = () => {
+	const searchHandler = async () => {
 		console.log(selectedTags);
 		// parse the selected tags to the backend
+
+		const data = await Rooms__connection.filterRooms(
+			selectedTags
+		);
+		console.log(data);
+		setSearchResult(data);
 	};
 
 	let redirect;
-	const bookClickHandler = (item)=> {
-		setItem(item)
-		setFormData({...formData, item})
-		setBookStatus(true)
-	}
+	const bookClickHandler = (item) => {
+		setItem(item);
+		setFormData({ ...formData, item });
+		setBookStatus(true);
+	};
 
-	useEffect(()=> {
-		console.log(formData)
-	},[formData])
+	useEffect(() => {
+		console.log(formData);
+
+		if (
+			formData.checkin.length > 0 &&
+			formData.checkout.length > 0 &&
+			formData.guests.length > 0
+		) {
+			setBookHide(false)
+			// TODO: check availability intergrate with the API
+		}
+	}, [formData]);
+
+	useEffect(() => {
+		async function getAllRoomsTags() {
+			const data =
+				await Rooms__connection.getAllRoomsTags();
+			await setTags(data);
+		}
+
+		async function getAllRooms() {
+			const data = await Rooms__connection.getAllRooms();
+			await setSearchResult(data);
+		}
+
+		getAllRoomsTags();
+		getAllRooms();
+	}, []);
 
 	return (
 		<>
@@ -82,19 +86,19 @@ const RoomsPage = () => {
 				</div>
 				<div className="flex flex-col md:flex-row items-start">
 					<Search
-						tags={roomsTags}
+						tags={tags}
 						selectedTags={selectedTags}
 						setSelectedTags={setSelectedTags}
 						onClick={() => searchHandler()}
 					/>
 
-					<div className="">
+					<div className="md:ml-5">
 						<SelectDate
 							formData={formData}
 							setFormData={setFormData}
 						/>
 
-						<div className="flex flex-wrap justify-left gap-y-6 gap-x-2 mx-5 my-5">
+						<div className="flex flex-wrap justify-left gap-y-6 gap-x-2 my-5">
 							{searchResult.map((item) => (
 								<CardContainer
 									title={item.name}
@@ -104,6 +108,7 @@ const RoomsPage = () => {
 									description={item.description}
 									bookClickHandler={bookClickHandler}
 									item={item}
+									hideBookBtn={bookHide}
 								/>
 							))}
 						</div>

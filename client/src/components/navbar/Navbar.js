@@ -1,29 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Transition } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
-
-// components
+import { DefaultContext } from "../../context/DefaultContext";
 import NavBtn from "./NavBtn";
 import LogBtn from "./LogBtn";
-
-// images
 import Logo from "../../assets/home-page/logo.svg";
+import user from "../../assets/home-page/user.svg";
 
-const Navbar = () => {
+const Navbar = (props) => {
+	const { login, setSure_func, setSureStatus_func } = useContext(DefaultContext);
+
 	const [isOpen, setIsOpen] = useState(false);
 	const navigate = useNavigate();
 
-	const navigateHandler = (route)=> {
-		if(route !== "/")
-			setIsOpen(!isOpen);
-			
+	const navigateHandler = (route) => {
+		if (route !== "/") setIsOpen(!isOpen);
+
 		navigate(route);
-	}
+	};
+
+	const logoutHandler = () => {
+		setSure_func(
+			"Are you sure you want to log out?",
+			"Log out"
+		);
+		setSureStatus_func();
+	};
 
 	return (
 		<>
 			<div className="backdrop-blur-lg bg-white z-30 flex flex-row px-10 py-3 justify-between items-center fixed top-0 left-0 right-0">
-				<div onClick={() => navigateHandler("/")} className="cursor-pointer w-48">
+				<div
+					onClick={() => navigateHandler("/")}
+					className="cursor-pointer w-48"
+				>
 					<img src={Logo} alt="logo" />
 				</div>
 
@@ -47,14 +57,33 @@ const Navbar = () => {
 						onClick={() => navigateHandler("/contact-us")}
 						name="contact us"
 					/>
-					<LogBtn
-						onClick={() => navigateHandler("/login")}
-						name="Login"
-					/>
-					<LogBtn
-						onClick={() => navigateHandler("/register")}
-						name="Register"
-					/>
+					{!login && (
+						<>
+							<LogBtn
+								onClick={() => navigateHandler("/login")}
+								name="Login"
+							/>
+							<LogBtn
+								onClick={() => navigateHandler("/register")}
+								name="Register"
+							/>
+						</>
+					)}
+
+					{login && (
+						<>
+							<button
+								onClick={() => navigateHandler("/profile")}
+								className=""
+							>
+								<img src={user} alt="profile" />
+							</button>
+							<LogBtn
+								onClick={logoutHandler}
+								name="Log out"
+							/>
+						</>
+					)}
 				</div>
 
 				{/* mobile menu icon */}
@@ -126,7 +155,9 @@ const Navbar = () => {
 								rounded="rounded-2xl"
 							/>
 							<NavBtn
-								onClick={() => navigateHandler("/restaurents")}
+								onClick={() =>
+									navigateHandler("/restaurents")
+								}
 								name="restaurents"
 								rounded="rounded-2xl"
 							/>
@@ -136,17 +167,44 @@ const Navbar = () => {
 								name="about us"
 							/>
 							<NavBtn
-								onClick={() => navigateHandler("/contact-us")}
+								onClick={() =>
+									navigateHandler("/contact-us")
+								}
 								name="contact us"
 							/>
-							<LogBtn
-								onClick={() => navigateHandler("/login")}
-								name="Login"
-							/>
-							<LogBtn
-								onClick={() => navigateHandler("/register")}
-								name="Register"
-							/>
+							{!login && (
+								<>
+									<LogBtn
+										onClick={() =>
+											navigateHandler("/login")
+										}
+										name="Login"
+									/>
+									<LogBtn
+										onClick={() =>
+											navigateHandler("/register")
+										}
+										name="Register"
+									/>
+								</>
+							)}
+
+							{login && (
+								<>
+									<button
+										onClick={() =>
+											navigateHandler("/profile")
+										}
+										className=""
+									>
+										<img src={user} alt="profile" />
+									</button>
+									<LogBtn
+										onClick={logoutHandler}
+										name="Log out"
+									/>
+								</>
+							)}
 						</div>
 					</div>
 				)}

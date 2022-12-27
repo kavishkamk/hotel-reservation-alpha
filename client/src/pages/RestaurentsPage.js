@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
-
-// components
+import Restaurents__connection from "../connections/Restaurents"
 import SelectMeal from "../components/booking-progress/SelectMeal";
 import Search from "../components/rooms/Search";
 import CardContainer from "../components/cards/CardContainer";
-
-// data
-import data from "../data/restaurents.json"
 
 const RestaurentsPage = () => {
 	const [formData, setFormData] = useState({
@@ -19,37 +15,18 @@ const RestaurentsPage = () => {
 
 	const [selectedTags, setSelectedTags] = useState([]);
 	const [searchResult, setSearchResult] =
-		useState(data);
+		useState([]);
 	const [bookStatus, setBookStatus] = useState(false);
 	const [item, setItem] = useState([]);
+	const [tags, setTags] = useState([]);
+	const [bookHide, setBookHide] = useState(true);
 
-	const tags = [
-		{
-			topic: "topic 1",
-			tags: [
-				{ label: 1, content: "Deluxe" },
-				{ label: 2, content: "Executive" },
-			],
-		},
-		{
-			topic: "topic 2",
-			tags: [
-				{ label: 1, content: "Deluxe" },
-				{ label: 2, content: "Executive" },
-			],
-		},
-		{
-			topic: "topic 3",
-			tags: [
-				{ label: 1, content: "Deluxe" },
-				{ label: 2, content: "Executive" },
-			],
-		},
-	];
-
-	const searchHandler = () => {
+	const searchHandler = async () => {
 		console.log(selectedTags);
 		// parse the selected tags to the backend
+
+		const data = await Restaurents__connection.filterRestaurents(selectedTags)
+		setSearchResult(data)
 	};
 
 	let redirect;
@@ -58,6 +35,23 @@ const RestaurentsPage = () => {
 		setFormData({ ...formData, item });
 		setBookStatus(true);
 	};
+
+	useEffect(() => {
+		async function getAllRoomsTags() {
+			const data =
+				await Restaurents__connection.getAllTags();
+			await setTags(data);
+		}
+
+		async function getAllRestaurents() {
+			const data =
+				await Restaurents__connection.getAllRestaurents();
+			await setSearchResult(data);
+		}
+
+		getAllRoomsTags();
+		getAllRestaurents();
+	}, []);
 
 	return (
 		<>
@@ -100,6 +94,7 @@ const RestaurentsPage = () => {
 									description={item.description}
 									bookClickHandler={bookClickHandler}
 									item={item}
+									hideBookBtn={bookHide}
 								/>
 							))}
 						</div>
