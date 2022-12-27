@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Input from "../../components/dashboard/InputField";
 
 const ClientRegistration = (props) => {
-
 	const [client, setClient] = useState(props.clientData);
 	const [fname, setFname] = useState();
 	const [lname, setLname] = useState();
@@ -12,8 +11,8 @@ const ClientRegistration = (props) => {
 	const [nic, setNic] = useState();
 
 	useEffect(() => {
-		if(props.clientData){
-			setClient(props.clientData)
+		if (props.clientData) {
+			setClient(props.clientData);
 		}
 		if (client) {
 			setFname(client["First Name"]);
@@ -25,16 +24,16 @@ const ClientRegistration = (props) => {
 		}
 	}, [props.clientData]);
 
-	const clientRegisterHandler = ()=> {
+	const clientRegisterHandler = () => {
 		props.clientRegister({
 			"First Name": fname,
 			"Last Name": lname,
-      "Email": email,
+			Email: email,
 			"Contact No": contact,
-      "Address": address,
-			"NIC": nic
+			Address: address,
+			NIC: nic,
 		});
-	}
+	};
 
 	return (
 		<div className="w-full p-5 bg-white my-2 rounded-lg shadow-lg">
@@ -92,16 +91,17 @@ const ClientRegistration = (props) => {
 				/>
 			</div>
 
-			{Object.keys(props.clientData).length === 0 && (
-				<div
-					onClick={clientRegisterHandler}
-					className="mx-auto w-fit mt-5"
-				>
-					<button className="bg-textBlue text-white font-semibold px-8 py-2">
-						Register
-					</button>
-				</div>
-			)}
+			{!props.hideRegister &&
+				Object.keys(props.clientData).length === 0 && (
+					<div
+						onClick={clientRegisterHandler}
+						className="mx-auto w-fit mt-5"
+					>
+						<button className="bg-textBlue text-white font-semibold px-8 py-2">
+							Register
+						</button>
+					</div>
+				)}
 		</div>
 	);
 };
