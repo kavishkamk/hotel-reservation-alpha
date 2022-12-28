@@ -23,6 +23,7 @@ const DashboardPage = () => {
 
 	const [email, setEmail] = useState(Auth.getClientEmail());
 	const [clientData, setClientData] = useState({});
+	const [clientId, setClientId] = useState("")
 	const [clientsCount, setClientsCount] = useState();
 	const [reservationsCount, setReservationsCount] =
 		useState(78);
@@ -96,12 +97,17 @@ const DashboardPage = () => {
 					Address: data.user.address,
 					NIC: data.user.nicNumber,
 				});
+				await setClientId(data.user.userId)
 			}
 		}
 
 		if (email.length > 0) {
 			console.log(email);
 			getUserByEmail(email);
+		}else {
+			// console.log("clear all");
+			setClientData({})
+			setClientId("")
 		}
 	}, [email]);
 
@@ -151,7 +157,7 @@ const DashboardPage = () => {
 
 			<div className="flex flex-row w-full items-start pt-2 font-manrope">
 				<div className="w-1/2 pl-10">
-					<SearchEmail onClick={searchHandler} />
+					<SearchEmail onClick={searchHandler} setEmail={setEmail} />
 					<ClientRegistration
 						email={email}
 						clientData={clientData}
@@ -160,7 +166,11 @@ const DashboardPage = () => {
 				</div>
 
 				<div className="w-1/2 pl-5 pr-10">
-					<ReservationForm roomsList={roomsList} />
+					<ReservationForm
+						roomsList={roomsList}
+						setRoomsList={setRoomsList}
+						clientId={clientId}
+					/>
 				</div>
 			</div>
 		</PageContainer>

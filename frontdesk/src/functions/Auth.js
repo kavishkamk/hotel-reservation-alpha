@@ -42,9 +42,11 @@ class Auth {
 		return loginStatus ? loginStatus : false;
 	}
 
-	// login session is deleted when the password is changed
 	deleteSession() {
 		sessionStorage.removeItem("loginStatus");
+		sessionStorage.removeItem("user")
+		sessionStorage.removeItem("clientEmail")
+		sessionStorage.removeItem("token")
 	}
 
 	login(cb, user) {
@@ -75,6 +77,10 @@ class Auth {
 		const tokenString = sessionStorage.getItem("clientEmail");
 		const email = JSON.parse(tokenString);
 		return email ? email : "";
+	}
+
+	deleteClientEmail() {
+		sessionStorage.removeItem("clientEmail");
 	}
 }
 

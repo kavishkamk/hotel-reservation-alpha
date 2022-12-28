@@ -35,6 +35,15 @@ const ClientRegistration = (props) => {
 		});
 	};
 
+	const clearAllHandler = async () => {
+		document.getElementById("firstname").value = "";
+		document.getElementById("lastname").value = "";
+		document.getElementById("email").value = "";
+		document.getElementById("contactno").value = "";
+		document.getElementById("address").value = "";
+		document.getElementById("nic").value = "";
+	}
+
 	return (
 		<div className="w-full p-5 bg-white my-2 rounded-lg shadow-lg">
 			<div className="my-2 font-bold text-lg text-center text-black">
@@ -91,17 +100,25 @@ const ClientRegistration = (props) => {
 				/>
 			</div>
 
-			{!props.hideRegister &&
-				Object.keys(props.clientData).length === 0 && (
-					<div
-						onClick={clientRegisterHandler}
-						className="mx-auto w-fit mt-5"
-					>
-						<button className="bg-textBlue text-white font-semibold px-8 py-2">
-							Register
-						</button>
-					</div>
+			<div className="flex flex-row items-center justify-evenly mt-5">
+				{!props.hideRegister &&
+					Object.keys(props.clientData).length === 0 && (
+						<div
+							onClick={clientRegisterHandler}
+							className=""
+						>
+							<button className="bg-textBlue text-white font-semibold px-8 py-2">
+								Register
+							</button>
+						</div>
+					)}
+
+				{Object.keys(props.clientData).length === 0 && (
+					<button onClick={clearAllHandler} className="bg-red-500 text-white font-semibold px-8 py-2">
+						Clear All
+					</button>
 				)}
+			</div>
 		</div>
 	);
 };

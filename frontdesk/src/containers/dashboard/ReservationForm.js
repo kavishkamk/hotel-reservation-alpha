@@ -1,18 +1,47 @@
 import React, { useState, useEffect } from "react";
 import SelectRoomAvailability from "../../components/dashboard/SelectRoomAvailability";
+import Dashboard__connection from "../../connections/Dashboard";
+import Dates from "../../functions/Dates";
 
 const ReservationForm = (props) => {
 	const [formData, setFormData] = useState();
 	const [selectedRooms, setSelectedRooms] = useState([]);
 	const [totalAmount, setTotalAmount] = useState(0);
-	const [availableRooms, setAvailableRooms] = useState(props.roomsList)
+	const [availableRooms, setAvailableRooms] = useState(
+		props.roomsList
+	);
+	const [multiply, setMultiply] = useState()
 
 	useEffect(() => {
-		console.log(formData);
+		async function checkAvailability(check) {
+			const data =
+				await Dashboard__connection.checkAvailability(
+					check
+				);
+			console.log(data);
+
+			// set rooms list according to the availability
+			// setAvailableRooms(data.rooms)
+		}
+
+		if (formData) {
+			console.log(formData);
+			const diff = Dates.getDifferenceInDays(
+				formData.checkin,
+				formData.checkout
+			);
+			console.log("diff => " + diff);
+			setMultiply(diff * formData.rooms)
+		}
+
+		// TODO: check availability
+		// checkAvailability(formData)
+		// TODO: load available rooms list
+
 	}, [formData]);
 
 	useEffect(() => {
-		setAvailableRooms(props.roomsList)
+		setAvailableRooms(props.roomsList);
 	}, [props.roomsList]);
 
 	// const availableRooms = [
@@ -29,20 +58,25 @@ const ReservationForm = (props) => {
 		if (status === true) {
 			setSelectedRooms([...selectedRooms, room]);
 
-			setTotalAmount(totalAmount + room.price);
+			setTotalAmount(totalAmount + (room.price * multiply));
 		} else {
 			setSelectedRooms((current) =>
 				current.filter((room) => room.id !== id)
 			);
-			setTotalAmount(totalAmount - room.price);
+			setTotalAmount(totalAmount - (room.price * multiply));
 		}
 	};
+
+	const bookSubmitHandler = async()=> {
+
+	}
 
 	return (
 		<div className="w-full p-5 bg-white rounded-lg shadow-lg max-h-[calc(100vh-10rem)] min-h-[calc(100vh-10rem)] overflow-y-auto">
 			<SelectRoomAvailability
 				formData={formData}
 				setFormData={setFormData}
+				disabled={props.clientId.length > 0 ? false : true}
 			/>
 
 			{/* selecting rooms */}
@@ -77,6 +111,7 @@ const ReservationForm = (props) => {
 											id={room.id}
 											name={room.name}
 											value={room.name}
+											disabled={!multiply ? true : false}
 										/>
 									</div>
 								);
@@ -91,13 +126,13 @@ const ReservationForm = (props) => {
 					Total amount due :
 				</div>
 				<div className="text-red-600 font-bold text-xl">
-					Rs.{totalAmount}/=
+					{`Rs.${totalAmount.toFixed(2)}/=`}
 				</div>
 			</div>
 
 			{totalAmount > 0 && (
 				<div className="w-full flex items-center justify-center">
-					<button className="bg-green-600 text-white font-bold px-8 py-2">
+					<button onClick={bookSubmitHandler} className="bg-green-600 text-white font-bold px-8 py-2">
 						Submit
 					</button>
 				</div>

@@ -2,6 +2,7 @@ import * as main from "./main-url";
 import Auth from "../functions/Auth"
 
 class Dashboard__connection {
+
 	async getUserByEmail(email) {
 		const thisUrl = main.url + "/users/email/" + email;
 		const token = Auth.getToken();
@@ -140,6 +141,31 @@ class Dashboard__connection {
 
 		// console.log(result)
 		return result;
+	}
+
+	async checkAvailability(check) {
+		return true
+	}
+
+	async roomBooking(book) {
+		const thisUrl =
+			main.url + "/booking/room-booking/create-booking";
+		const token = Auth.getToken();
+
+		const res = await fetch(thisUrl, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			},
+			body: JSON.stringify({
+				
+			})
+		});
+		const data = await res.json();
+		console.log(data);
+		
+		
 	}
 }
 
