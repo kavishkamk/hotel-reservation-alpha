@@ -27,18 +27,53 @@ const DashboardPage = () => {
 	const [reservationsCount, setReservationsCount] =
 		useState(78);
 	const [paymentsCount, setPaymentsCount] = useState(55);
+	const [roomsList, setRoomsList] = useState([]);
 
 	useEffect(() => {
 		async function getClientCount() {
 			const data =
 				await Dashboard__connection.getClientCount();
 			await setClientsCount(data.count);
-			return
+			return;
 		}
 
 		// TODO: fetch reservations and payments counts
+		async function getReservationtCount() {
+			const data =
+				await Dashboard__connection.getReservationtCount();
+			await setReservationsCount(data.count);
+			return;
+		}
+
+		async function getPaymentCount() {
+			const data =
+				await Dashboard__connection.getPaymentCount();
+			await setPaymentsCount(data.count);
+			return;
+		}
+
+		async function getAllRooms() {
+			const data =
+				await Dashboard__connection.getAllRooms();
+
+			if (data.error) {
+				setMessage_func(false, data.error);
+				setMessageStatus_func();
+				return;
+			} 
+			else if(data.data) {
+				const rooms = data.data;
+				// console.log(rooms)
+				await setRoomsList(rooms);
+			}
+		}
 
 		getClientCount();
+		// getReservationtCount()
+		// getPaymentCount()
+		getAllRooms();
+
+		// console.log(roomsList);
 	}, []);
 
 	useEffect(() => {
@@ -125,7 +160,7 @@ const DashboardPage = () => {
 				</div>
 
 				<div className="w-1/2 pl-5 pr-10">
-					<ReservationForm />
+					<ReservationForm roomsList={roomsList} />
 				</div>
 			</div>
 		</PageContainer>
