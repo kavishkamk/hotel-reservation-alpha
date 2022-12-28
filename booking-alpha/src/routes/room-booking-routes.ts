@@ -1,9 +1,29 @@
 import { requestValidationMiddleware, requireAdminAccess, requireAuthMiddleware } from "@alpha-lib/shared-lib";
 import { Router } from "express";
 import { body } from "express-validator";
-import { createBookingForClient, createRoomBooking, getBookings } from "../controllers/room-booking-controller";
+import { checkRoomAvailability, createBookingForClient, createRoomBooking, getBookings } from "../controllers/room-booking-controller";
 
 const router = Router();
+
+router.patch(
+    "/check-availability",
+    [
+        body("numberOfRooms")
+            .isInt({ gt: 0 })
+            .withMessage("number of rooms should be grater than 0"),
+        body("numberOfPersons")
+            .isInt({ gt: 0 })
+            .withMessage("Number of persons should be grater than 0"),
+        body("fromDate")
+            .isDate()
+            .withMessage("from Date required"),
+        body("toDate")
+            .isDate()
+            .withMessage("to Date required")
+    ],
+    requestValidationMiddleware,
+    checkRoomAvailability
+);
 
 router.use(requireAuthMiddleware);
 

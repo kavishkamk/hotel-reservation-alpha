@@ -1,13 +1,15 @@
 import { CommonError, ErrorTypes, ReservationStatus } from "@alpha-lib/shared-lib";
 import { NextFunction, Request, Response } from "express";
+import { Types } from "mongoose";
 
-import { RoomType } from "../models/RoomType";
+import { RoomType, RoomTypeDoc } from "../models/RoomType";
 import { Order } from "../models/Order";
 import { OrderTracker } from "../models/OrderTracker";
 import { RoomTypeReservationCreatedPublisher } from "../events/publishers/room-type-reservation-created-publisher";
 import { natsWrapper } from "../nats-wrapper";
+import { getDatesBetween } from "../resources/date-handle";
 
-const EXPIRATION_WINDOW_SECOND = 2 * 60;
+const EXPIRATION_WINDOW_SECOND = 60 * 60;
 
 const createRoomBooking = async (req: Request, res: Response, next: NextFunction) => {
 
@@ -44,6 +46,36 @@ const getBookings = async (req: Request, res: Response, next: NextFunction) => {
 
 };
 
+const checkRoomAvailability = async (req: Request, res: Response, next: NextFunction) => {
+
+    const { numberOfRooms, numberOfPersons, fromDate, toDate } = req.body;
+
+    // check toDate grater than fromDate
+    if (fromDate > toDate) {
+        return next(new CommonError(400, ErrorTypes.INPUT_VALIDATION_ERROR, "dipacher date should not before than arrival date"));
+    };
+
+    let roomTypeList;
+
+    try {
+        roomTypeList = await RoomType.find().exec();
+    } catch (err) {
+        return next(err);
+    };
+
+    let fromDay = new Date(fromDate);
+    let toDay = new Date(toDate);
+    // check number of rooms availble
+
+    // get the all dates request for booking
+    const dateArray = getDatesBetween(fromDay, toDay);
+
+    const freeList = await filterFreeList(roomTypeList, numberOfRooms, numberOfPersons, dateArray, next);
+
+    res.status(200).json({ freeRoomList: freeList });
+
+};
+
 const roomBookingLogic = async (req: Request, client: string, next: NextFunction) => {
 
     const { roomTypeId, numberOfRooms, numberOfPersons, fromDate, toDate } = req.body;
@@ -73,50 +105,20 @@ const roomBookingLogic = async (req: Request, client: string, next: NextFunction
             + numberOfRooms + " of the " + roomTypeObj.roomType + " is " + roomTypeObj.maxGuest * numberOfRooms));
     };
 
-    let day = new Date(fromDate);
     let fromDay = new Date(fromDate);
     let toDay = new Date(toDate);
     // check number of rooms availble
 
     // get the all dates request for booking
-    const dateArray = [];
-    let tempDate = fromDay;
-    while (toDay >= tempDate) {
-        dateArray.push(tempDate);
-        tempDate = new Date(tempDate);
-        tempDate.setDate(tempDate.getDate() + 1);
-    };
+    const dateArray = getDatesBetween(fromDay, toDay);
 
     // check each day availability
-    let available = true;
-    try {
-        for (let i = 0; i < dateArray.length; i++) {
-            let reservedRecord = await OrderTracker.findOne({ day: dateArray[i], roomTypeId }).exec();
-            // if no record available room is available
-            if (reservedRecord) {
-                available = available && true;
-                // we have to check the rooms
-                // get available room in given day, given type
-                const availableRooms = roomTypeObj.numberOfRooms - reservedRecord.numberOfPendingRooms + reservedRecord.numberOfAwaitingPayments + reservedRecord.numberOfReservedRooms;
-                console.log("available number of rooms " + availableRooms);
-                if (numberOfRooms > availableRooms) {
-                    available = available && false;
-                    break;
-                }
-            }
-        }
-        console.log(">>>>>>>>>>>>>>>>>>>>>" + available)
-    } catch (err) {
-        return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Reservation fail. Plase try again later"))
-    };
+    let available = await checkAvailabilityOfGivenRoom(dateArray, roomTypeId, roomTypeObj, numberOfRooms, next);
 
     // check rooms are available
     if (!available) {
         return next(new CommonError(400, ErrorTypes.NOT_FOUND, "Rooms are not available"));
     }
-
-
-
 
     let recorde;
     // find the record and set records
@@ -157,7 +159,7 @@ const roomBookingLogic = async (req: Request, client: string, next: NextFunction
         numberOfRooms,
         numberOfPersons,
         roomPrice: roomTypeObj.price,
-        totalPrice: roomTypeObj.price * numberOfRooms,
+        totalPrice: roomTypeObj.price * numberOfRooms * dateArray.length,
         status: ReservationStatus.Created,
         expiresAt: expiration,
         fromDate,
@@ -189,8 +191,58 @@ const roomBookingLogic = async (req: Request, client: string, next: NextFunction
 
 };
 
+const filterFreeList = async (roomTypeList: (RoomTypeDoc & { _id: Types.ObjectId; })[],
+    numberOfRooms: number, numberOfPersons: number, dateArray: Date[], next: NextFunction) => {
+    const freeList = await Promise.all(roomTypeList.map(async roomTypeTemp => {
+        // check gust number match for number of rooms
+        if (numberOfPersons > roomTypeTemp.maxGuest * numberOfRooms) {
+            return false;
+        }
+
+        // check each day availability
+        let available = await checkAvailabilityOfGivenRoom(dateArray, roomTypeTemp.id, roomTypeTemp, numberOfRooms, next);
+
+        return available ? roomTypeTemp : false;
+
+    }));
+
+    return freeList.filter(x => x);
+};
+
+
+const checkAvailabilityOfGivenRoom = async (dateArray: Date[], roomTypeId: string,
+    roomTypeObj: RoomTypeDoc & { _id: Types.ObjectId; }, numberOfRooms: number, next: NextFunction) => {
+
+    // check each day availability
+    let available = true;
+    try {
+        for (let i = 0; i < dateArray.length; i++) {
+            let reservedRecord = await OrderTracker.findOne({ day: dateArray[i], roomTypeId }).exec();
+            // if no record available room is available
+            if (reservedRecord) {
+                available = available && true;
+                // we have to check the rooms
+                // get available room in given day, given type
+                const availableRooms = roomTypeObj.numberOfRooms - reservedRecord.numberOfPendingRooms + reservedRecord.numberOfAwaitingPayments + reservedRecord.numberOfReservedRooms;
+                console.log("available number of rooms " + availableRooms);
+                if (numberOfRooms > availableRooms) {
+                    available = available && false;
+                    break;
+                }
+            }
+        }
+        console.log(">>>>>>>>>>>>>>>>>>>>>" + available)
+    } catch (err) {
+        return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Reservation fail. Plase try again later"))
+    };
+
+    return available;
+
+};
+
 export {
     createRoomBooking,
     getBookings,
-    createBookingForClient
+    createBookingForClient,
+    checkRoomAvailability
 };
