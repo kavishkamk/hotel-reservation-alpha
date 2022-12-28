@@ -158,14 +158,19 @@ class Dashboard__connection {
 				"Content-Type": "application/json",
 				Authorization: token,
 			},
-			body: JSON.stringify({
-				
-			})
+			body: JSON.stringify(book)
 		});
 		const data = await res.json();
 		console.log(data);
+
+		let result = {};
+		if(data.booking){
+			result.booking = data.booking
+		}else {
+			result.error = "Something went wrong"
+		}
 		
-		
+		return result;
 	}
 }
 

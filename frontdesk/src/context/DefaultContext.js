@@ -10,6 +10,8 @@ const DefaultProvider = ({ children }) => {
 	const [message, setMessage] = useState({})
 	const [sureStatus, setSureStatus] = useState(false)
 	const [sure, setSure] = useState({})
+	const [sureVerify, setSureVerify] = useState(false)
+	const [sureModalDisplay, setSureModalDisplay] = useState(false)
 
 	const setPath_func = ()=> {
 		setPath(window.location.pathname)
@@ -33,8 +35,19 @@ const DefaultProvider = ({ children }) => {
 		})
 	}
 
+	// logoutModal display or hide
 	const setSureStatus_func = () => {
 		setSureStatus(!sureStatus)
+	}
+
+	// clicked on yes in modal "are you sure"
+	const setSureVerify_func = (status) => {
+		setSureVerify(status)
+	}
+
+	// modal "are you sure" display
+	const setSureModalDisplay_func = (status) => {
+		setSureModalDisplay(status)
 	}
 
 	return (
@@ -44,6 +57,8 @@ const DefaultProvider = ({ children }) => {
 			message, setMessage_func,
 			sureStatus, setSureStatus_func,
 			sure, setSure_func,
+			sureVerify, setSureVerify_func,
+			sureModalDisplay, setSureModalDisplay_func,
 		}}>
 			{children}
 		</DefaultContext.Provider>

@@ -1,16 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, {
+	useState,
+	useEffect,
+	useContext,
+} from "react";
 import SelectRoomAvailability from "../../components/dashboard/SelectRoomAvailability";
 import Dashboard__connection from "../../connections/Dashboard";
 import Dates from "../../functions/Dates";
+import { DefaultContext } from "../../context/DefaultContext";
 
 const ReservationForm = (props) => {
+	const {
+		setMessage_func,
+		setMessageStatus_func,
+		setSure_func,
+		setSureVerify_func,
+		sureVerify,
+		setSureStatus_func,
+		setSureModalDisplay_func,
+	} = useContext(DefaultContext);
+
 	const [formData, setFormData] = useState();
 	const [selectedRooms, setSelectedRooms] = useState([]);
 	const [totalAmount, setTotalAmount] = useState(0);
 	const [availableRooms, setAvailableRooms] = useState(
 		props.roomsList
 	);
-	const [multiply, setMultiply] = useState()
+	const [multiply, setMultiply] = useState();
+	const [submitHandleStatus, setSubmitHandleStatus] = useState(false)
 
 	useEffect(() => {
 		async function checkAvailability(check) {
@@ -31,13 +47,14 @@ const ReservationForm = (props) => {
 				formData.checkout
 			);
 			console.log("diff => " + diff);
-			setMultiply(diff * formData.rooms)
+			setMultiply(diff * formData.rooms);
+
+			console.log(props.clientId);
 		}
 
 		// TODO: check availability
 		// checkAvailability(formData)
 		// TODO: load available rooms list
-
 	}, [formData]);
 
 	useEffect(() => {
@@ -58,18 +75,61 @@ const ReservationForm = (props) => {
 		if (status === true) {
 			setSelectedRooms([...selectedRooms, room]);
 
-			setTotalAmount(totalAmount + (room.price * multiply));
+			setTotalAmount(totalAmount + room.price * multiply);
 		} else {
 			setSelectedRooms((current) =>
 				current.filter((room) => room.id !== id)
 			);
-			setTotalAmount(totalAmount - (room.price * multiply));
+			setTotalAmount(totalAmount - room.price * multiply);
 		}
 	};
 
-	const bookSubmitHandler = async()=> {
+	const bookSubmitHandler = async () => {
+		setSureModalDisplay_func(true)
+		setSure_func("Confirm the reservation ?", "Confirm");
+		setSureStatus_func();
 
-	}
+		console.log(selectedRooms);
+		await setSubmitHandleStatus(true)
+	};
+
+	useEffect(() => {
+		async function fetchData(book) {
+			const data = await Dashboard__connection.roomBooking(
+				book
+			);
+
+			if (data.error) {
+				await setMessage_func(false, data.error);
+				await setMessageStatus_func();
+				return;
+			} else {
+				await setMessage_func(
+					true,
+					"Successfully reserved"
+				);
+				await setMessageStatus_func();
+				return;
+			}
+		}
+		if (
+			sureVerify === true &&
+			submitHandleStatus === true
+		) {
+			const book = {
+				roomTypeId: selectedRooms[0].id,
+				numberOfRooms: formData.rooms,
+				numberOfPersons: formData.guests,
+				fromDate: formData.checkin,
+				toDate: formData.checkout,
+				clientId: props.clientId,
+			};
+			console.log("confirm booking");
+			fetchData(book)
+			setSureVerify_func(false)
+			setSubmitHandleStatus(false)
+		}
+	}, [sureVerify, submitHandleStatus]);
 
 	return (
 		<div className="w-full p-5 bg-white rounded-lg shadow-lg max-h-[calc(100vh-10rem)] min-h-[calc(100vh-10rem)] overflow-y-auto">
@@ -132,7 +192,10 @@ const ReservationForm = (props) => {
 
 			{totalAmount > 0 && (
 				<div className="w-full flex items-center justify-center">
-					<button onClick={bookSubmitHandler} className="bg-green-600 text-white font-bold px-8 py-2">
+					<button
+						onClick={bookSubmitHandler}
+						className="bg-green-600 text-white font-bold px-8 py-2"
+					>
 						Submit
 					</button>
 				</div>
