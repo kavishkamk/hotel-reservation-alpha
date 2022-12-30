@@ -8,6 +8,7 @@ import { OrderTracker } from "../models/OrderTracker";
 import { RoomTypeReservationCreatedPublisher } from "../events/publishers/room-type-reservation-created-publisher";
 import { natsWrapper } from "../nats-wrapper";
 import { getDatesBetween } from "../resources/date-handle";
+import { RoomTypeReservationCancelledPublisher } from "../events/publishers/room-type-reservation-cancelled-publisher";
 
 const EXPIRATION_WINDOW_SECOND = 60 * 60;
 
@@ -191,6 +192,68 @@ const roomBookingLogic = async (req: Request, client: string, next: NextFunction
 
 };
 
+const cancelRoomReservation = async (req: Request, res: Response, next: NextFunction) => {
+
+    const orderId = req.params.orderId;
+
+    let reservation = await Order.findById(orderId).populate("roomType");
+
+    if (!reservation) {
+        return next(new CommonError(404, ErrorTypes.NOT_FOUND, "Reservation not found"));
+    };
+
+    if (!(reservation.userId == req.currentUser!.id || req.currentUser?.isAdmin)) {
+        return next(new CommonError(401, ErrorTypes.NOT_AUTHERIZED, "you don't have permision to cancel reservation"));
+    };
+
+    if (reservation.status === ReservationStatus.Cancelled) {
+        return next(new CommonError(400, ErrorTypes.BAD_REQUEST, "Reservation already cancelled"));
+    };
+
+    reservation.set({
+        status: ReservationStatus.Cancelled
+    });
+
+    try {
+        reservation = await reservation.save();
+    } catch (err) {
+        return next(err);
+    };
+
+    await new RoomTypeReservationCancelledPublisher(natsWrapper.client).publish({
+        id: reservation.id,
+        version: reservation.version,
+        ticket: {
+            id: reservation.roomType.id
+        }
+    });
+
+    // get the all dates request for booking
+    const dateArray = getDatesBetween(reservation.fromDate, reservation.toDate);
+
+    let recorde;
+    // find the record and set records
+    try {
+        for (let i = 0; i < dateArray.length; i++) {
+            recorde = await OrderTracker.findOne({ day: dateArray[i], roomTypeId: reservation.roomType.id }).exec();
+            // if not found create record
+            if (recorde) {
+                const previous = recorde.numberOfPendingRooms;
+                recorde.set({
+                    numberOfPendingRooms: previous - reservation.numberOfRooms
+                })
+                await recorde.save();
+            };
+
+        }
+    } catch (err) {
+        throw new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Reservation fail. Plase try again later");
+    };
+
+    res.status(200).json({ request: "success" });
+
+};
+
 const filterFreeList = async (roomTypeList: (RoomTypeDoc & { _id: Types.ObjectId; })[],
     numberOfRooms: number, numberOfPersons: number, dateArray: Date[], next: NextFunction) => {
     const freeList = await Promise.all(roomTypeList.map(async roomTypeTemp => {
@@ -244,5 +307,6 @@ export {
     createRoomBooking,
     getBookings,
     createBookingForClient,
-    checkRoomAvailability
+    checkRoomAvailability,
+    cancelRoomReservation
 };

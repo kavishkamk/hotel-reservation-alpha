@@ -3,6 +3,7 @@ import { Message } from "node-nats-streaming";
 import { Order } from "../../models/Order";
 import { OrderTracker } from "../../models/OrderTracker";
 import { natsWrapper } from "../../nats-wrapper";
+import { getDatesBetween } from "../../resources/date-handle";
 import { RoomTypeReservationCancelledPublisher } from "../publishers/room-type-reservation-cancelled-publisher";
 
 import { QueueGroupName } from "./queue-group-name";
@@ -28,6 +29,10 @@ export class RoomExpirationCompleateListner extends Listener<RoomExpirationCompl
             return msg.ack();
         };
 
+        if (reservation.status === ReservationStatus.Cancelled) {
+            return msg.ack();
+        };
+
         reservation.set({
             status: ReservationStatus.Cancelled
         });
@@ -50,13 +55,7 @@ export class RoomExpirationCompleateListner extends Listener<RoomExpirationCompl
         msg.ack();
 
         // get the all dates request for booking
-        const dateArray = [];
-        let tempDate = reservation.fromDate;
-        while (reservation.toDate >= tempDate) {
-            dateArray.push(tempDate);
-            tempDate = new Date(tempDate);
-            tempDate.setDate(tempDate.getDate() + 1);
-        };
+        const dateArray = getDatesBetween(reservation.fromDate, reservation.toDate);
 
         let recorde;
         // find the record and set records

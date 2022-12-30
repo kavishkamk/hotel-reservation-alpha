@@ -168,6 +168,60 @@ const checkRestaurentAvailability = async (req: Request, res: Response, next: Ne
 
 };
 
+const cancelRestaurentReservation = async (req: Request, res: Response, next: NextFunction) => {
+
+    const orderId = req.params.orderId;
+
+    let reservation = await RestaurentOrder.findById(orderId).populate("restaurentType");
+
+    if (!reservation) {
+        return next(new CommonError(404, ErrorTypes.NOT_FOUND, "Reservation not found"));
+    };
+
+    if (!(reservation.userId == req.currentUser!.id || req.currentUser?.isAdmin)) {
+        return next(new CommonError(401, ErrorTypes.NOT_AUTHERIZED, "you don't have permision to cancel reservation"));
+    };
+
+    if (reservation.status === ReservationStatus.Cancelled) {
+        return next(new CommonError(400, ErrorTypes.BAD_REQUEST, "Reservation already cancelled"));
+    };
+
+    reservation.set({
+        status: ReservationStatus.Cancelled
+    });
+
+    try {
+        reservation = await reservation.save();
+    } catch (err) {
+        return next(err);
+    };
+
+    // get the all dates request for booking
+    const dateArray = getDatesBetween(reservation.fromDate, reservation.toDate);
+
+    let recorde;
+    // find the record and set records
+    try {
+        for (let i = 0; i < dateArray.length; i++) {
+            recorde = await RestaurentOrderTracker.findOne({ day: dateArray[i], roomTypeId: reservation.restaurentType.id }).exec();
+            // if not found create record
+            if (recorde) {
+                const previous = recorde.numberOfReservedTables;
+                recorde.set({
+                    numberOfReservedTables: previous - reservation.numberOfTables
+                })
+                await recorde.save();
+            };
+
+        }
+    } catch (err) {
+        throw new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Reservation fail. Plase try again later");
+    };
+
+    res.status(200).json({ request: "success" });
+
+};
+
 const filterFreeRestaurentList = async (restaurentTypeList: (RestaurentTypeDoc & { _id: Types.ObjectId; })[],
     numberOfTables: number, numberOfPersons: number, dateArray: Date[], next: NextFunction) => {
 
@@ -216,5 +270,6 @@ export {
     createRestaurentBooking,
     getRestaurentBookings,
     createRestaurentBookingForClient,
-    checkRestaurentAvailability
+    checkRestaurentAvailability,
+    cancelRestaurentReservation
 };

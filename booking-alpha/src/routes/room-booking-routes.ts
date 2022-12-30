@@ -1,7 +1,7 @@
 import { requestValidationMiddleware, requireAdminAccess, requireAuthMiddleware } from "@alpha-lib/shared-lib";
 import { Router } from "express";
 import { body } from "express-validator";
-import { checkRoomAvailability, createBookingForClient, createRoomBooking, getBookings } from "../controllers/room-booking-controller";
+import { cancelRoomReservation, checkRoomAvailability, createBookingForClient, createRoomBooking, getBookings } from "../controllers/room-booking-controller";
 
 const router = Router();
 
@@ -49,6 +49,11 @@ router.post(
     ],
     requestValidationMiddleware,
     createRoomBooking
+);
+
+router.patch(
+    "/cancel/:orderId",
+    cancelRoomReservation
 );
 
 router.use(requireAdminAccess);
