@@ -254,6 +254,118 @@ const cancelRoomReservation = async (req: Request, res: Response, next: NextFunc
 
 };
 
+const getPendingRoomReservationOfCurrentUser = async (req: Request, res: Response, next: NextFunction) => {
+
+    let reservationList;
+
+    try {
+        reservationList = await Order.find({ userId: req.currentUser!.id, status: ReservationStatus.Created }).exec();
+    } catch (err) {
+        return next(err);
+    }
+
+    res.status(200).json({ reservationList });
+
+};
+
+const getConfirmAvaitingRoomReservationOfCurrentUser = async (req: Request, res: Response, next: NextFunction) => {
+
+    let reservationList;
+
+    try {
+        reservationList = await Order.find({ userId: req.currentUser!.id, status: ReservationStatus.AwaitingPayment }).exec();
+    } catch (err) {
+        return next(err);
+    }
+
+    res.status(200).json({ reservationList });
+
+};
+
+const getConfirmedRoomReservationOfCurrentUser = async (req: Request, res: Response, next: NextFunction) => {
+
+    let reservationList;
+
+    try {
+        reservationList = await Order.find({ userId: req.currentUser!.id, status: ReservationStatus.Complete }).exec();
+    } catch (err) {
+        return next(err);
+    }
+
+    res.status(200).json({ reservationList });
+
+};
+
+const getCancelledRoomReservationOfCurrentUser = async (req: Request, res: Response, next: NextFunction) => {
+
+    let reservationList;
+
+    try {
+        reservationList = await Order.find({ userId: req.currentUser!.id, status: ReservationStatus.Cancelled }).exec();
+    } catch (err) {
+        return next(err);
+    }
+
+    res.status(200).json({ reservationList });
+
+};
+
+const getPendingRoomReservation = async (req: Request, res: Response, next: NextFunction) => {
+
+    let reservationList;
+
+    try {
+        reservationList = await Order.find({ status: ReservationStatus.Created }).exec();
+    } catch (err) {
+        return next(err);
+    }
+
+    res.status(200).json({ reservationList });
+
+};
+
+const getConfirmAvaitingRoomReservation = async (req: Request, res: Response, next: NextFunction) => {
+
+    let reservationList;
+
+    try {
+        reservationList = await Order.find({ status: ReservationStatus.AwaitingPayment }).exec();
+    } catch (err) {
+        return next(err);
+    }
+
+    res.status(200).json({ reservationList });
+
+};
+
+const getConfirmedRoomReservation = async (req: Request, res: Response, next: NextFunction) => {
+
+    let reservationList;
+
+    try {
+        reservationList = await Order.find({ status: ReservationStatus.Complete }).exec();
+    } catch (err) {
+        return next(err);
+    }
+
+    res.status(200).json({ reservationList });
+
+};
+
+const getCancelledRoomReservation = async (req: Request, res: Response, next: NextFunction) => {
+
+    let reservationList;
+
+    try {
+        reservationList = await Order.find({ status: ReservationStatus.Cancelled }).exec();
+    } catch (err) {
+        return next(err);
+    }
+
+    res.status(200).json({ reservationList });
+
+};
+
 const filterFreeList = async (roomTypeList: (RoomTypeDoc & { _id: Types.ObjectId; })[],
     numberOfRooms: number, numberOfPersons: number, dateArray: Date[], next: NextFunction) => {
     const freeList = await Promise.all(roomTypeList.map(async roomTypeTemp => {
@@ -308,5 +420,13 @@ export {
     getBookings,
     createBookingForClient,
     checkRoomAvailability,
-    cancelRoomReservation
+    cancelRoomReservation,
+    getPendingRoomReservationOfCurrentUser,
+    getConfirmAvaitingRoomReservationOfCurrentUser,
+    getConfirmedRoomReservationOfCurrentUser,
+    getCancelledRoomReservationOfCurrentUser,
+    getPendingRoomReservation,
+    getConfirmAvaitingRoomReservation,
+    getCancelledRoomReservation,
+    getConfirmedRoomReservation
 };

@@ -1,7 +1,7 @@
 import { requestValidationMiddleware, requireAdminAccess, requireAuthMiddleware } from "@alpha-lib/shared-lib";
 import { Router } from "express";
 import { body } from "express-validator";
-import { cancelRoomReservation, checkRoomAvailability, createBookingForClient, createRoomBooking, getBookings } from "../controllers/room-booking-controller";
+import { cancelRoomReservation, checkRoomAvailability, createBookingForClient, createRoomBooking, getBookings, getCancelledRoomReservation, getCancelledRoomReservationOfCurrentUser, getConfirmAvaitingRoomReservation, getConfirmAvaitingRoomReservationOfCurrentUser, getConfirmedRoomReservation, getConfirmedRoomReservationOfCurrentUser, getPendingRoomReservation, getPendingRoomReservationOfCurrentUser } from "../controllers/room-booking-controller";
 
 const router = Router();
 
@@ -56,6 +56,26 @@ router.patch(
     cancelRoomReservation
 );
 
+router.get(
+    "/pending-reservation/current-user",
+    getPendingRoomReservationOfCurrentUser
+);
+
+router.get(
+    "/awaiting-confirm-reservation/current-user",
+    getConfirmAvaitingRoomReservationOfCurrentUser
+);
+
+router.get(
+    "/confirmed/current-user",
+    getConfirmedRoomReservationOfCurrentUser
+);
+
+router.get(
+    "/cancelled/current-user",
+    getCancelledRoomReservationOfCurrentUser
+);
+
 router.use(requireAdminAccess);
 
 router.get(
@@ -89,6 +109,26 @@ router.post(
     ],
     requestValidationMiddleware,
     createBookingForClient
+);
+
+router.get(
+    "/pending-reservation",
+    getPendingRoomReservation
+);
+
+router.get(
+    "/awaiting-confirm-reservation",
+    getConfirmAvaitingRoomReservation
+);
+
+router.get(
+    "/confirmed",
+    getConfirmedRoomReservation
+);
+
+router.get(
+    "/cancelled",
+    getCancelledRoomReservation
 );
 
 export { router as roomBookingRouter };

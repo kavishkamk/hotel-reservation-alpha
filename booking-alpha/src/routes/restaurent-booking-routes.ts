@@ -1,7 +1,7 @@
 import { requestValidationMiddleware, requireAdminAccess, requireAuthMiddleware } from "@alpha-lib/shared-lib";
 import { Router } from "express";
 import { body } from "express-validator";
-import { cancelRestaurentReservation, checkRestaurentAvailability, createRestaurentBooking, createRestaurentBookingForClient, getRestaurentBookings } from "../controllers/restaurent-booking-controller";
+import { cancelRestaurentReservation, checkRestaurentAvailability, createRestaurentBooking, createRestaurentBookingForClient, getCancelledTableReservation, getCancelledTableReservationOfCurrentUser, getConfirmedTableReservation, getConfirmedTableReservationOfCurrentUser, getRestaurentBookings } from "../controllers/restaurent-booking-controller";
 
 const router = Router();
 
@@ -56,6 +56,16 @@ router.patch(
     cancelRestaurentReservation
 );
 
+router.get(
+    "/confirmed/current-user",
+    getConfirmedTableReservationOfCurrentUser
+);
+
+router.get(
+    "/cancelled/current-user",
+    getCancelledTableReservationOfCurrentUser
+);
+
 router.use(requireAdminAccess);
 
 router.get(
@@ -89,6 +99,16 @@ router.post(
     ],
     requestValidationMiddleware,
     createRestaurentBookingForClient
+);
+
+router.get(
+    "/confirmed",
+    getConfirmedTableReservation
+);
+
+router.get(
+    "/cancelled",
+    getCancelledTableReservation
 );
 
 

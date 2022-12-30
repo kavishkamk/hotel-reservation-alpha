@@ -222,6 +222,62 @@ const cancelRestaurentReservation = async (req: Request, res: Response, next: Ne
 
 };
 
+const getConfirmedTableReservationOfCurrentUser = async (req: Request, res: Response, next: NextFunction) => {
+
+    let reservationList;
+
+    try {
+        reservationList = await RestaurentOrder.find({ userId: req.currentUser!.id, status: ReservationStatus.Created }).exec();
+    } catch (err) {
+        return next(err);
+    }
+
+    res.status(200).json({ reservationList });
+
+};
+
+const getCancelledTableReservationOfCurrentUser = async (req: Request, res: Response, next: NextFunction) => {
+
+    let reservationList;
+
+    try {
+        reservationList = await RestaurentOrder.find({ userId: req.currentUser!.id, status: ReservationStatus.Cancelled }).exec();
+    } catch (err) {
+        return next(err);
+    }
+
+    res.status(200).json({ reservationList });
+
+};
+
+const getConfirmedTableReservation = async (req: Request, res: Response, next: NextFunction) => {
+
+    let reservationList;
+
+    try {
+        reservationList = await RestaurentOrder.find({ status: ReservationStatus.Created }).exec();
+    } catch (err) {
+        return next(err);
+    }
+
+    res.status(200).json({ reservationList });
+
+};
+
+const getCancelledTableReservation = async (req: Request, res: Response, next: NextFunction) => {
+
+    let reservationList;
+
+    try {
+        reservationList = await RestaurentOrder.find({ status: ReservationStatus.Cancelled }).exec();
+    } catch (err) {
+        return next(err);
+    }
+
+    res.status(200).json({ reservationList });
+
+};
+
 const filterFreeRestaurentList = async (restaurentTypeList: (RestaurentTypeDoc & { _id: Types.ObjectId; })[],
     numberOfTables: number, numberOfPersons: number, dateArray: Date[], next: NextFunction) => {
 
@@ -271,5 +327,9 @@ export {
     getRestaurentBookings,
     createRestaurentBookingForClient,
     checkRestaurentAvailability,
-    cancelRestaurentReservation
+    cancelRestaurentReservation,
+    getCancelledTableReservationOfCurrentUser,
+    getConfirmedTableReservationOfCurrentUser,
+    getCancelledTableReservation,
+    getConfirmedTableReservation
 };
