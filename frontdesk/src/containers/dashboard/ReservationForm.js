@@ -7,6 +7,7 @@ import SelectRoomAvailability from "../../components/dashboard/SelectRoomAvailab
 import Dashboard__connection from "../../connections/Dashboard";
 import Dates from "../../functions/Dates";
 import { DefaultContext } from "../../context/DefaultContext";
+import Auth from "../../functions/Auth";
 
 const ReservationForm = (props) => {
 	const {
@@ -28,6 +29,9 @@ const ReservationForm = (props) => {
 	const [multiply, setMultiply] = useState();
 	const [submitHandleStatus, setSubmitHandleStatus] =
 		useState(false);
+	const [reservationData, setReservationData] = useState(
+		{}
+	);
 
 	useEffect(() => {
 		async function checkAvailability(check) {
@@ -43,12 +47,13 @@ const ReservationForm = (props) => {
 				await setMessageStatus_func();
 				return;
 			} else {
-				setAvailableRooms(data.rooms)
+				setAvailableRooms(data.rooms);
 				await setMessage_func(
 					true,
 					"Available rooms list updated"
 				);
 				await setMessageStatus_func();
+				await setTotalAmount(0);
 				return;
 			}
 		}
@@ -72,7 +77,6 @@ const ReservationForm = (props) => {
 				toDate: formData.checkout,
 			};
 			checkAvailability(checkData);
-
 		}
 
 		// TODO: check availability
@@ -130,8 +134,9 @@ const ReservationForm = (props) => {
 				await setMessage_func(
 					true,
 					"Successfully reserved"
-				);
+					);
 				await setMessageStatus_func();
+				await setReservationData(data.booking);
 				return;
 			}
 		}
@@ -151,8 +156,36 @@ const ReservationForm = (props) => {
 			fetchData(book);
 			setSureVerify_func(false);
 			setSubmitHandleStatus(false);
+
+			// console.log(Object.keys(reservationData).length);
 		}
 	}, [sureVerify, submitHandleStatus]);
+
+	useEffect(()=> {
+		// save the printing data on the session storage
+		if (Object.keys(reservationData).length > 0) {
+			Auth.savePrintReserveData({
+				id: reservationData.id,
+				name: `${props.clientData["First Name"]} ${props.clientData["Last Name"]}`,
+				email: props.clientData["Email"],
+				phone: props.clientData["Contact No"],
+				checkin: reservationData.fromDate,
+				checkout: reservationData.toDate,
+				guests: reservationData.numberOfPersons,
+				nights: reservationData.nights,
+				room: {
+					id: reservationData.roomType.id,
+					name: reservationData.roomType.roomType,
+					count: reservationData.numberOfRooms,
+					price: reservationData.roomType.price,
+				},
+				total: reservationData.totalPrice,
+			});
+
+			// make the payment
+			window.open("/print", "_blank", "height=full");
+		}
+	}, [reservationData])
 
 	return (
 		<div className="w-full p-5 bg-white rounded-lg shadow-lg max-h-[calc(100vh-10rem)] min-h-[calc(100vh-10rem)] overflow-y-auto">

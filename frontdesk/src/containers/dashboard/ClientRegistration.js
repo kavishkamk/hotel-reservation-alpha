@@ -113,11 +113,15 @@ const ClientRegistration = (props) => {
 						</div>
 					)}
 
-				{Object.keys(props.clientData).length === 0 && (
-					<button onClick={clearAllHandler} className="bg-red-500 text-white font-semibold px-8 py-2">
-						Clear All
-					</button>
-				)}
+				{!props.hideRegister &&
+					Object.keys(props.clientData).length === 0 && (
+						<button
+							onClick={clearAllHandler}
+							className="bg-red-500 text-white font-semibold px-8 py-2"
+						>
+							Clear All
+						</button>
+					)}
 			</div>
 		</div>
 	);

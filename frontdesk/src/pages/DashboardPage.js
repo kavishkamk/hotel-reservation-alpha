@@ -170,6 +170,7 @@ const DashboardPage = () => {
 						roomsList={roomsList}
 						setRoomsList={setRoomsList}
 						clientId={clientId}
+						clientData={clientData}
 					/>
 				</div>
 			</div>

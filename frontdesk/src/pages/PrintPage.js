@@ -1,45 +1,37 @@
-import React, {useState} from 'react'
-// import {useLocation} from "react-router-dom"
-import LogoImage from "../assets/logo.svg"
+import React, { useState, useEffect } from "react";
+import LogoImage from "../assets/logo.svg";
+import Auth from "../functions/Auth";
+import Dates from "../functions/Dates";
 
 const PrintPage = (props) => {
-	const [printStatus, setPrintStatus] = useState(false)
-
-	// const tokenString = sessionStorage.getItem("loginStatus");
-	// const loginStatus = JSON.parse(tokenString);
-	// console.log(loginStatus)
+	const [printStatus, setPrintStatus] = useState(false);
 
 	const today = new Date().toLocaleString();
 	// 12/14/2022, 11:01:47 AM
 
-	const reservationDetails = {
-		id: 1,
-		name: "John Doe",
-		email: "john.doe@example.com",
-		phone: "0773224667",
-		checkin: '2022-12-14',
-		checkout: "2022-12-19",
-		guests: 3,
-		nights: 5,
-		room: 
-			{
-				id: 1,
-				name: "Deluxe Room",
-				count: 2,
-				price: 12000,
-			},
-		total: 120000
+	const reservationDetails = Auth.getPrintReserveData();
+
+	let checkin, checkout;
+	if (Object.keys(reservationDetails).length > 0) {
+		checkin = Dates.formatDate(reservationDetails.checkin);
+		checkout = Dates.formatDate(
+			reservationDetails.checkout
+		);
+	}
+
+	const printHandler = async () => {
+		await setPrintStatus(true);
+		await window.print();
+		await setPrintStatus(false);
+
+		// delete print data after printing
+		await Auth.deletePrintReserveData();
 	};
 
-	const printHandler = async ()=> {
-		await setPrintStatus(true)
-		await window.print()
-		await setPrintStatus(false)
-	}
-
-	const closeHandler = async ()=> {
-		window.close()
-	}
+	const closeHandler = async () => {
+		await Auth.deletePrintReserveData();
+		window.close();
+	};
 
 	return (
 		<div className="max-w-2xl mx-auto p-4">
@@ -107,12 +99,8 @@ const PrintPage = (props) => {
 				</div>
 				<div className="ml-5">
 					<div className="">{today}</div>
-					<div className="">
-						{reservationDetails.checkin}
-					</div>
-					<div className="">
-						{reservationDetails.checkout}
-					</div>
+					<div className="">{checkin}</div>
+					<div className="">{checkout}</div>
 				</div>
 			</div>
 
@@ -141,72 +129,78 @@ const PrintPage = (props) => {
 				</div>
 			</div>
 
-			<div className="container mx-auto text-black mt-5">
-				<div className="font-poppins font-bold w-1/3 mb-2">
-					Booking Details
-				</div>
-				<div className="overflow-x-auto font-inter">
-					<table className="min-w-full text-xs">
-						{/* <thead className="bg-gray-100">
+			{Object.keys(reservationDetails).length > 0 && (
+				<div className="container mx-auto text-black mt-5">
+					<div className="font-poppins font-bold w-1/3 mb-2">
+						Booking Details
+					</div>
+					<div className="overflow-x-auto font-inter">
+						<table className="min-w-full text-xs">
+							{/* <thead className="bg-gray-100">
 							<tr className="text-left">
 								<th className="p-3">Detail</th>
 								<th className="p-3 text-right">Amount</th>
 							</tr>
 						</thead> */}
-						<tbody>
-							<tr className="border border-opacity-20 border-gray-700 ">
-								<td className="p-2">
-									<p>No. of Guests</p>
-								</td>
-								<td className="p-2 text-right">
-									<p>{reservationDetails.guests}</p>
-								</td>
-							</tr>
+							<tbody>
+								<tr className="border border-opacity-20 border-gray-700 ">
+									<td className="p-2">
+										<p>No. of Guests</p>
+									</td>
+									<td className="p-2 text-right">
+										<p>{reservationDetails.guests}</p>
+									</td>
+								</tr>
 
-							<tr className="border border-opacity-20 border-gray-700 ">
-								<td className="p-2">
-									<p>
-										{reservationDetails.room.name +
-											" (per day)"}
-									</p>
-								</td>
-								<td className="p-2 text-right">
-									<p>Rs.{reservationDetails.room.price}</p>
-								</td>
-							</tr>
+								<tr className="border border-opacity-20 border-gray-700 ">
+									<td className="p-2">
+										<p>
+											{reservationDetails.room.name +
+												" (per day)"}
+										</p>
+									</td>
+									<td className="p-2 text-right">
+										<p>
+											Rs.{reservationDetails.room.price}
+										</p>
+									</td>
+								</tr>
 
-							<tr className="border border-opacity-20 border-gray-700 ">
-								<td className="p-2">
-									<p>No. of Rooms</p>
-								</td>
-								<td className="p-2 text-right">
-									<p>
-										{"x " + reservationDetails.room.count}
-									</p>
-								</td>
-							</tr>
+								<tr className="border border-opacity-20 border-gray-700 ">
+									<td className="p-2">
+										<p>No. of Rooms</p>
+									</td>
+									<td className="p-2 text-right">
+										<p>
+											{"x " + reservationDetails.room.count}
+										</p>
+									</td>
+								</tr>
 
-							<tr className="border border-opacity-20 border-gray-700 ">
-								<td className="p-2">
-									<p>Nights</p>
-								</td>
-								<td className="p-2 text-right">
-									<p>{"x " + reservationDetails.nights}</p>
-								</td>
-							</tr>
+								<tr className="border border-opacity-20 border-gray-700 ">
+									<td className="p-2">
+										<p>Nights</p>
+									</td>
+									<td className="p-2 text-right">
+										<p>
+											{"x " + reservationDetails.nights}
+										</p>
+									</td>
+								</tr>
 
-							<tr className="border border-y-4 border-opacity-20 border-gray-700 text-lg font-bold font-poppins">
-								<td className="p-2">
-									<p>Total Amount :</p>
-								</td>
-								<td className="p-2 text-right">
-									<p>Rs.{reservationDetails.total}</p>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+								<tr className="border border-y-4 border-opacity-20 border-gray-700 text-lg font-bold font-poppins">
+									<td className="p-2">
+										<p>Total Amount :</p>
+									</td>
+									<td className="p-2 text-right">
+										<p>Rs.{reservationDetails.total}</p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
-			</div>
+			)}
 
 			{!printStatus && (
 				<div className="w-full flex items-center justify-between">
@@ -226,6 +220,6 @@ const PrintPage = (props) => {
 			)}
 		</div>
 	);
-}
+};
 
-export default PrintPage
+export default PrintPage;
