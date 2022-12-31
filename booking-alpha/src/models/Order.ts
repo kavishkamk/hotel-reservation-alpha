@@ -1,4 +1,4 @@
-import { ReservationStatus } from "@alpha-lib/shared-lib";
+import { ArrivalStatus, ReservationStatus } from "@alpha-lib/shared-lib";
 import { Document, model, Model, Schema } from "mongoose";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
@@ -33,6 +33,9 @@ interface OrderDoc extends Document {
     fromDate: Date;
     toDate: Date;
     version: number;
+    checkIn?: Date;
+    checkOut?: Date;
+    arrivalStatus: ArrivalStatus;
 };
 
 // a interface that describe the properties
@@ -86,6 +89,17 @@ const orderSchema = new Schema({
     roomType: {
         type: Schema.Types.ObjectId,
         ref: 'RoomType'
+    },
+    checkIn: {
+        type: Date,
+    },
+    checkOut: {
+        type: Date,
+    },
+    arrivalStatus: {
+        type: String,
+        enum: Object.values(ArrivalStatus),
+        default: ArrivalStatus.Pending
     }
 }, {
     toJSON: {

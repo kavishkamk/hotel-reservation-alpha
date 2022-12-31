@@ -1,4 +1,4 @@
-import { CommonError, ErrorTypes, ReservationStatus } from "@alpha-lib/shared-lib";
+import { ArrivalStatus, CommonError, ErrorTypes, ReservationStatus } from "@alpha-lib/shared-lib";
 import { NextFunction, Request, Response } from "express";
 import { Types } from "mongoose";
 
@@ -366,6 +366,139 @@ const getCancelledRoomReservation = async (req: Request, res: Response, next: Ne
 
 };
 
+const checkIn = async (req: Request, res: Response, next: NextFunction) => {
+
+    const orderId = req.params.orderId;
+
+    let order;
+
+    try {
+        order = await Order.findById(orderId).exec();
+    } catch (err) {
+        return next(err);
+    };
+
+    if (!order) {
+        return next(new CommonError(404, ErrorTypes.NOT_FOUND, "Order not found"));
+    };
+
+    if (order.status !== ReservationStatus.Complete) {
+        return next(new CommonError(400, ErrorTypes.BAD_REQUEST, "This Reservation is still not compleated"));
+    };
+
+    order = await Order.findByIdAndUpdate(orderId, {
+        arrivalStatus: ArrivalStatus.CheckIn,
+        checkIn: new Date()
+    });
+
+    order?.set({
+        arrivalStatus: ArrivalStatus.CheckIn
+    })
+
+    res.status(200).send({ order });
+};
+
+const checkOut = async (req: Request, res: Response, next: NextFunction) => {
+
+    const orderId = req.params.orderId;
+
+    let order;
+
+    try {
+        order = await Order.findById(orderId).exec();
+    } catch (err) {
+        return next(err);
+    };
+
+    if (!order) {
+        return next(new CommonError(404, ErrorTypes.NOT_FOUND, "Order not found"));
+    };
+
+    if (order.arrivalStatus !== ArrivalStatus.CheckIn) {
+        return next(new CommonError(400, ErrorTypes.BAD_REQUEST, "not checked in to checkout"));
+    };
+
+    order = await Order.findByIdAndUpdate(orderId, {
+        arrivalStatus: ArrivalStatus.CheckOut,
+        checkIn: new Date()
+    });
+
+    order?.set({
+        arrivalStatus: ArrivalStatus.CheckOut
+    });
+
+    res.status(200).send({ order });
+};
+
+const getCheckInCurrentUser = async (req: Request, res: Response, next: NextFunction) => {
+
+    if (req.currentUser?.isAdmin) {
+        return next(new CommonError(401, ErrorTypes.NOT_AUTHERIZED, "You don't have access. This is clinet route"));
+    }
+
+    let order;
+
+    try {
+        order = await Order.find({ userId: req.currentUser!.id, arrivalStatus: ArrivalStatus.CheckIn }).exec();
+    } catch (err) {
+        return next(err);
+    };
+
+    res.status(200).json({ order });
+
+};
+
+const getCheckOutCurrentUser = async (req: Request, res: Response, next: NextFunction) => {
+
+    if (req.currentUser?.isAdmin) {
+        return next(new CommonError(401, ErrorTypes.NOT_AUTHERIZED, "You don't have access. This is clinet route"));
+    }
+
+    let order;
+
+    try {
+        order = await Order.find({ userId: req.currentUser!.id, arrivalStatus: ArrivalStatus.CheckOut }).exec();
+    } catch (err) {
+        return next(err);
+    };
+
+    res.status(200).json({ order });
+
+};
+
+const getCheckInByUserId = async (req: Request, res: Response, next: NextFunction) => {
+
+    const userId = req.params.userId;
+
+    let order;
+
+    try {
+        order = await Order.find({ userId, arrivalStatus: ArrivalStatus.CheckIn }).exec();
+    } catch (err) {
+        return next(err);
+    };
+
+    res.status(200).json({ order });
+
+};
+
+const getCheckOutByUserId = async (req: Request, res: Response, next: NextFunction) => {
+
+    const userId = req.params.userId;
+
+    let order;
+
+    try {
+        order = await Order.find({ userId, arrivalStatus: ArrivalStatus.CheckOut }).exec();
+    } catch (err) {
+        return next(err);
+    };
+
+    res.status(200).json({ order });
+
+};
+
+
 const filterFreeList = async (roomTypeList: (RoomTypeDoc & { _id: Types.ObjectId; })[],
     numberOfRooms: number, numberOfPersons: number, dateArray: Date[], next: NextFunction) => {
     const freeList = await Promise.all(roomTypeList.map(async roomTypeTemp => {
@@ -428,5 +561,11 @@ export {
     getPendingRoomReservation,
     getConfirmAvaitingRoomReservation,
     getCancelledRoomReservation,
-    getConfirmedRoomReservation
+    getConfirmedRoomReservation,
+    checkIn,
+    checkOut,
+    getCheckInCurrentUser,
+    getCheckOutCurrentUser,
+    getCheckInByUserId,
+    getCheckOutByUserId
 };

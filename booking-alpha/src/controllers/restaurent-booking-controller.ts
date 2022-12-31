@@ -1,6 +1,7 @@
-import { CommonError, ErrorTypes, ReservationStatus } from "@alpha-lib/shared-lib";
+import { ArrivalStatus, CommonError, ErrorTypes, ReservationStatus } from "@alpha-lib/shared-lib";
 import { NextFunction, Request, Response } from "express";
 import { Types } from "mongoose";
+import { Order } from "../models/Order";
 import { RestaurentOrder } from "../models/RestaurentOrder";
 import { RestaurentOrderTracker } from "../models/RestaurentOrderTracker";
 
@@ -278,6 +279,62 @@ const getCancelledTableReservation = async (req: Request, res: Response, next: N
 
 };
 
+const checkIn = async (req: Request, res: Response, next: NextFunction) => {
+
+    const orderId = req.params.orderId;
+
+    let order;
+
+    try {
+        order = await Order.findById(orderId).exec();
+    } catch (err) {
+        return next(err);
+    };
+
+    if (!order) {
+        return next(new CommonError(404, ErrorTypes.NOT_FOUND, "Order not found"));
+    };
+
+    if (order.status !== ReservationStatus.Complete) {
+        return next(new CommonError(400, ErrorTypes.BAD_REQUEST, "This Reservation is still not compleated"));
+    };
+
+    order = await RestaurentOrder.findByIdAndUpdate(orderId, {
+        arrivalStatus: ArrivalStatus.CheckIn,
+        checkIn: new Date()
+    });
+
+    res.status(200).send({ order });
+};
+
+const getTodaysTotalReservation = async (req: Request, res: Response, next: NextFunction) => {
+
+    let count;
+
+    try {
+        count = await Order.countDocuments({ status: { $in: [ReservationStatus.AwaitingPayment, ReservationStatus.Created] } });
+    } catch (err) {
+        return next(err);
+    };
+
+    res.status(200).json({ count });
+
+};
+
+const getTodaysTotalPayments = async (req: Request, res: Response, next: NextFunction) => {
+
+    let count;
+
+    try {
+        count = await Order.countDocuments({ status: ReservationStatus.Complete });
+    } catch (err) {
+        return next(err);
+    };
+
+    res.status(200).json({ count });
+
+};
+
 const filterFreeRestaurentList = async (restaurentTypeList: (RestaurentTypeDoc & { _id: Types.ObjectId; })[],
     numberOfTables: number, numberOfPersons: number, dateArray: Date[], next: NextFunction) => {
 
@@ -307,14 +364,12 @@ const checkAvailabilityOfGivenRestaurent = async (dateArray: Date[], restaurentT
                 // we have to check the restaurents
                 // get available restaurent in given day, given type
                 const availableRestaurents = reservationTypeObj.numberOfTables - reservedRecord.numberOfReservedTables;
-                console.log("available number of tables " + availableRestaurents);
                 if (numberOfTables > availableRestaurents) {
                     available = available && false;
                     break;
                 }
             }
         }
-        console.log(">>>>>>>>>>>>>>>>>>>>>" + available)
     } catch (err) {
         return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Reservation fail. Plase try again later"))
     };
@@ -331,5 +386,8 @@ export {
     getCancelledTableReservationOfCurrentUser,
     getConfirmedTableReservationOfCurrentUser,
     getCancelledTableReservation,
-    getConfirmedTableReservation
+    getConfirmedTableReservation,
+    checkIn,
+    getTodaysTotalReservation,
+    getTodaysTotalPayments
 };

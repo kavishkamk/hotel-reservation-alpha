@@ -1,4 +1,4 @@
-import { ReservationStatus } from "@alpha-lib/shared-lib";
+import { ArrivalStatus, ReservationStatus } from "@alpha-lib/shared-lib";
 import { Document, model, Model, Schema } from "mongoose";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
@@ -27,6 +27,9 @@ interface RestaurentOrderDoc extends Document {
     fromDate: Date;
     toDate: Date;
     version: number;
+    checkIn?: Date;
+    checkOut?: Date;
+    arrivalStatus: ArrivalStatus;
 };
 
 // a interface that describe the properties
@@ -67,6 +70,17 @@ const restaurentOrderSchema = new Schema({
     restaurentType: {
         type: Schema.Types.ObjectId,
         ref: 'RestaurentType'
+    },
+    checkIn: {
+        type: Date,
+    },
+    checkOut: {
+        type: Date,
+    },
+    arrivalStatus: {
+        type: String,
+        enum: Object.values(ArrivalStatus),
+        default: ArrivalStatus.Pending
     }
 }, {
     toJSON: {
