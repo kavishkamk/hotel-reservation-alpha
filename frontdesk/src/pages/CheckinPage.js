@@ -1,23 +1,23 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import PageContainer from "../components/page/PageContainer";
 import SearchEmail from "../containers/shared/SearchEmail";
 import ClientRegistration from "../containers/dashboard/ClientRegistration";
 import { DefaultContext } from "../context/DefaultContext";
 import BookingSummary from "../containers/shared/BookingSummary"
+import Auth from "../functions/Auth"
+import Dashboard__connection from "../connections/Dashboard"
 
 const CheckinPage = () => {
-	const { path, setPath_func } = useContext(DefaultContext);
+	const {
+		path,
+		setPath_func,
+		setMessage_func,
+		setMessageStatus_func,
+	} = useContext(DefaultContext);
 	setPath_func();
 	
-	const [email, setEmail] = useState();
-	const [clientData, setClientData] = useState({
-		"First Name": "Nimal",
-		"Last Name": "Silva",
-		Email: "nimal@silva.com",
-		"Contact No": "0773224667",
-		Address: "No.22, Temple Road, Homagama",
-		NIC: "768874563v",
-	});
+	const [email, setEmail] = useState(Auth.getClientEmail());
+	const [clientData, setClientData] = useState({});
 
 	const [reservations, setReservations] = useState([
 		{
@@ -45,6 +45,35 @@ const CheckinPage = () => {
 		setEmail(input);
 	};
 
+	useEffect(() => {
+		async function getUserByEmail(email) {
+			const data =
+				await Dashboard__connection.getUserByEmail(email);
+			console.log(data);
+
+			if (data.error) {
+				setMessage_func(false, data.error);
+				setMessageStatus_func();
+			} else if (data.user) {
+				Auth.saveClientEmail(email);
+
+				await setClientData({
+					"First Name": data.user.firstName,
+					"Last Name": data.user.lastName,
+					Email: data.user.email,
+					"Contact No": data.user.contactNumber,
+					Address: data.user.address,
+					NIC: data.user.nicNumber,
+				});
+			}
+		}
+
+		if (email.length > 0) {
+			console.log(email);
+			getUserByEmail(email);
+		}
+	}, [email]);
+
 	return (
 		<PageContainer>
 			<div className="flex flex-row w-full items-start pt-2 font-manrope">
@@ -54,6 +83,7 @@ const CheckinPage = () => {
 						email={email}
 						clientData={clientData}
 						topic="Client Information"
+						hideRegister = {true}
 					/>
 				</div>
 

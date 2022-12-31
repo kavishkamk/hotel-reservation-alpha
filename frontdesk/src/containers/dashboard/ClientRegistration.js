@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Input from "../../components/dashboard/InputField";
 
 const ClientRegistration = (props) => {
-
 	const [client, setClient] = useState(props.clientData);
 	const [fname, setFname] = useState();
 	const [lname, setLname] = useState();
@@ -12,8 +11,8 @@ const ClientRegistration = (props) => {
 	const [nic, setNic] = useState();
 
 	useEffect(() => {
-		if(props.clientData){
-			setClient(props.clientData)
+		if (props.clientData) {
+			setClient(props.clientData);
 		}
 		if (client) {
 			setFname(client["First Name"]);
@@ -25,15 +24,24 @@ const ClientRegistration = (props) => {
 		}
 	}, [props.clientData]);
 
-	const clientRegisterHandler = ()=> {
+	const clientRegisterHandler = () => {
 		props.clientRegister({
 			"First Name": fname,
 			"Last Name": lname,
-      "Email": email,
+			Email: email,
 			"Contact No": contact,
-      "Address": address,
-			"NIC": nic
+			Address: address,
+			NIC: nic,
 		});
+	};
+
+	const clearAllHandler = async () => {
+		document.getElementById("firstname").value = "";
+		document.getElementById("lastname").value = "";
+		document.getElementById("email").value = "";
+		document.getElementById("contactno").value = "";
+		document.getElementById("address").value = "";
+		document.getElementById("nic").value = "";
 	}
 
 	return (
@@ -92,16 +100,29 @@ const ClientRegistration = (props) => {
 				/>
 			</div>
 
-			{Object.keys(props.clientData).length === 0 && (
-				<div
-					onClick={clientRegisterHandler}
-					className="mx-auto w-fit mt-5"
-				>
-					<button className="bg-textBlue text-white font-semibold px-8 py-2">
-						Register
-					</button>
-				</div>
-			)}
+			<div className="flex flex-row items-center justify-evenly mt-5">
+				{!props.hideRegister &&
+					Object.keys(props.clientData).length === 0 && (
+						<div
+							onClick={clientRegisterHandler}
+							className=""
+						>
+							<button className="bg-textBlue text-white font-semibold px-8 py-2">
+								Register
+							</button>
+						</div>
+					)}
+
+				{!props.hideRegister &&
+					Object.keys(props.clientData).length === 0 && (
+						<button
+							onClick={clearAllHandler}
+							className="bg-red-500 text-white font-semibold px-8 py-2"
+						>
+							Clear All
+						</button>
+					)}
+			</div>
 		</div>
 	);
 };

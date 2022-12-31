@@ -11,17 +11,23 @@ class Auth {
 		);
 	}
 
+	saveToken(token) {
+		sessionStorage.setItem("token", JSON.stringify(token));
+	}
+
+	getToken() {
+		const tokenString = sessionStorage.getItem("token");
+		const token = JSON.parse(tokenString);
+		return token;
+	}
+
 	saveUser(officer) {
-		sessionStorage.setItem(
-			"user",
-			JSON.stringify(officer)
-		);
+		sessionStorage.setItem("user", JSON.stringify(officer));
+		if (officer.jwt) this.saveToken(officer.jwt);
 	}
 
 	getUser() {
-		const tokenString = sessionStorage.getItem(
-			"user"
-		);
+		const tokenString = sessionStorage.getItem("user");
 		const user = JSON.parse(tokenString);
 		return user;
 	}
@@ -36,9 +42,11 @@ class Auth {
 		return loginStatus ? loginStatus : false;
 	}
 
-	// login session is deleted when the password is changed
 	deleteSession() {
 		sessionStorage.removeItem("loginStatus");
+		sessionStorage.removeItem("user");
+		sessionStorage.removeItem("clientEmail");
+		sessionStorage.removeItem("token");
 	}
 
 	login(cb, user) {
@@ -59,6 +67,90 @@ class Auth {
 
 	isAuthenticated() {
 		return this.authenticated;
+	}
+
+	saveClientEmail(email) {
+		sessionStorage.setItem(
+			"clientEmail",
+			JSON.stringify(email)
+		);
+	}
+
+	getClientEmail() {
+		const tokenString =
+			sessionStorage.getItem("clientEmail");
+		const email = JSON.parse(tokenString);
+		return email ? email : "";
+	}
+
+	deleteClientEmail() {
+		sessionStorage.removeItem("clientEmail");
+	}
+
+	// handle the print page content
+	savePrintReserveData(data) {
+		sessionStorage.setItem(
+			"print_reserve",
+			JSON.stringify(data)
+		);
+		sessionStorage.setItem(
+			"print_reserve_status",
+			JSON.stringify(true)
+		);
+	}
+
+	// getPrintReserveStatus() {
+	// 	const tokenString =
+	// 		sessionStorage.getItem("print_reserve_status");
+	// 	const data = JSON.parse(tokenString);
+	// 	return data ? data : "";
+	// }
+
+	getPrintReserveData() {
+		const tokenString =
+			sessionStorage.getItem("print_reserve");
+		const data = JSON.parse(tokenString);
+		return data ? data : "";
+	}
+
+	deletePrintReserveData() {
+		sessionStorage.removeItem("print_reserve");
+	}
+
+	savePrintCheckinData(data) {
+		sessionStorage.setItem(
+			"print_checkin",
+			JSON.stringify(data)
+		);
+	}
+
+	getPrintCheckinData() {
+		const tokenString =
+			sessionStorage.getItem("print_checkin");
+		const data = JSON.parse(tokenString);
+		return data ? data : "";
+	}
+
+	deletePrintCheckinData() {
+		sessionStorage.removeItem("print_checkin");
+	}
+
+	savePrintCheckoutData(data) {
+		sessionStorage.setItem(
+			"print_checkout",
+			JSON.stringify(data)
+		);
+	}
+
+	getPrintCheckoutData() {
+		const tokenString =
+			sessionStorage.getItem("print_checkout");
+		const data = JSON.parse(tokenString);
+		return data ? data : "";
+	}
+
+	deletePrintCheckoutData() {
+		sessionStorage.removeItem("print_checkout");
 	}
 }
 

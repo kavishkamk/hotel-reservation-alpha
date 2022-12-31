@@ -12,6 +12,10 @@ const LogoutModal = () => {
 		setSureStatus_func,
 		setMessage_func,
 		setMessageStatus_func,
+		sureVerify,
+		setSureVerify_func,
+		sureModalDisplay,
+		setSureModalDisplay_func,
 	} = useContext(DefaultContext);
 
 	const logoutHandler = async () => {
@@ -30,7 +34,16 @@ const LogoutModal = () => {
 
 	const cancelHandler = () => {
 		setSureStatus_func();
+		setSureModalDisplay_func(false)
 	};
+
+	const modalSureHandler = ()=> {
+		setSureVerify_func(true)
+		setSureStatus_func();
+		setSureModalDisplay_func(false)
+	}
+
+	console.log("sureModalDisplay => " + sureModalDisplay);
 
 	return (
 		<>
@@ -46,12 +59,16 @@ const LogoutModal = () => {
 						>
 							Cancel
 						</button>
-						<button
-							onClick={logoutHandler}
-							className="px-6 py-2 rounded-sm shadow-sm bg-red-400 text-white"
-						>
-							{sure.btnName}
-						</button>
+						{!sureModalDisplay ? (
+							<button
+								onClick={logoutHandler}
+								className="px-6 py-2 rounded-sm shadow-sm bg-red-400 text-white"
+							>
+								{sure.btnName}
+							</button>
+						) : (
+							<button onClick={modalSureHandler} className="px-6 py-2 rounded-sm shadow-sm bg-red-400 text-white">{sure.btnName}</button>
+						)}
 					</div>
 				</div>
 			</div>

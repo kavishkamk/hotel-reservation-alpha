@@ -15,8 +15,8 @@ const SelectRoomAvailability = (props) => {
 	let availability = false;
 
 	useEffect(() => {
-		console.log("form get ==> ");
-		console.log(formData);
+		// console.log("form get ==> ");
+		// console.log(formData);
 
 		// if (formData.checkin) {
 		// 	setCheckinDate(formData.checkin);
@@ -137,7 +137,8 @@ const SelectRoomAvailability = (props) => {
 			<div className="w-full flex items-center justify-center">
 				<button
 					onClick={checkHandler}
-					className="bg-textBlue text-white font-bold px-4 py-2"
+					disabled={props.disabled}
+					className="bg-textBlue text-white font-bold px-4 py-2 disabled:bg-slate-300"
 				>
 					Check Availability
 				</button>
