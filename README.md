@@ -1,6 +1,9 @@
 ## Architecture Diagram
 <img src="https://github.com/kavishkamk/hotel-reservation-alpha/blob/main/images/diagrams/architecture-diagram.png" alt="Architectur" title="Architecture Diagram">
 
+## Event Flow Diagram
+<img src="https://github.com/kavishkamk/hotel-reservation-alpha/blob/main/images/diagrams/event-flow-diagram.jpg" alt="Event flow" title="Event flow Diagram">
+
 ## install shared libreary ([@alpha-lib/shared-lib](https://www.npmjs.com/package/@alpha-lib/shared-lib))
 
 - install with yarn
