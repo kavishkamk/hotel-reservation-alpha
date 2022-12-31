@@ -84,22 +84,29 @@
 ```
 ```
    {
-      "orderId": "63a848c66ed4456761c89388"
+      "orderId": string;
    }
 ```
 
 - response (201 status code) - create payment success \
 
 ```
-   {
-      "order": {
-         "userId": string;
-         "status": string;
-         "totalPrice": number;
-         "version": number;
-         "id": string;
-      }
-   }
+{
+    "order": {
+        "userId": string;
+        "status": string;
+        "totalPrice": number;
+        "version": number;
+        "id": string;
+    },
+    "payment": {
+        "orderId": string;
+        "slipUrl": string;
+        "isConfirmed": boolean
+        "__v": number;
+        "id": string;
+    }
+}
 ```
 
 ### 4. set order as paied
@@ -147,3 +154,64 @@
 ### Error
 
 - response NOT_FOUND (404 -> Not found)
+
+
+### 5. get paymet by order id
+- GET request
+- get payment by order id
+
+```
+   GET -> https://alphahotelreservation.dev/api/payments/room-type/payment/:orderId
+```
+
+- response (200 status code) - get payment success \
+
+```
+   {
+      "roomPayments": {
+         "orderId": string;
+         "slipUrl": string;
+         "isConfirmed": boolean;
+         "__v": number;
+         "id": string;
+      }
+   }
+```
+
+### Error
+
+- response NOT_FOUND (404 -> Not found)
+
+### 6. cancel a payment
+- PATCH request
+- confirm payment ( this is admin route, this use to cancel payment for that payment client alrady uploaded the slip and waiting for comformation)
+
+```
+    PATCH -> api/payments/room-type/payment-cancel
+```
+```
+   {
+      "orderId": string;
+   }
+```
+
+- response (201 status code) - cancel payment success \
+
+```
+{
+    "order": {
+        "userId": string;
+        "status": string;
+        "totalPrice": number;
+        "version": number;
+        "id": string;
+    },
+    "payment": {
+        "orderId": string;
+        "slipUrl": string;
+        "isConfirmed": boolean
+        "__v": number;
+        "id": string;
+    }
+}
+```

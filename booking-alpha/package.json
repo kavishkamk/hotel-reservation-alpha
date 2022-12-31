@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@alpha-lib/shared-lib": "^1.0.36",
+    "@alpha-lib/shared-lib": "^1.0.37",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.14",
     "cookie-session": "^2.0.0",

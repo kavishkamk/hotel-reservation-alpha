@@ -22,5 +22,8 @@ export enum Subjects {
     RestaurentPaymentCreated = "restaurentPayment:created",
 
     RoomTypePaymentConfirmed = "roomTypePayment:confirmed",
-    RestaurentPaymentConfirmed = "restaurentTypePayment:confirmed"
+    RestaurentPaymentConfirmed = "restaurentTypePayment:confirmed",
+
+    RoomTypePaymentCancelled = "roomTypePayment:cancelled",
+    RestauretPaymentCancelled = "restaurentPayment:cancelled"
 };
