@@ -78,7 +78,9 @@ class Dashboard__connection {
 	}
 
 	async getReservationtCount() {
-		const thisUrl = main.url + "/users/user-count";
+		const thisUrl =
+			main.url +
+			"/booking/room-booking/totle-reservation-count";
 		const token = Auth.getToken();
 
 		const res = await fetch(thisUrl, {
@@ -93,7 +95,9 @@ class Dashboard__connection {
 	}
 
 	async getPaymentCount() {
-		const thisUrl = main.url + "/users/user-count";
+		const thisUrl =
+			main.url +
+			"/booking/room-booking/total-paied-reservation";
 		const token = Auth.getToken();
 
 		const res = await fetch(thisUrl, {

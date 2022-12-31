@@ -26,8 +26,8 @@ const DashboardPage = () => {
 	const [clientId, setClientId] = useState("")
 	const [clientsCount, setClientsCount] = useState();
 	const [reservationsCount, setReservationsCount] =
-		useState(78);
-	const [paymentsCount, setPaymentsCount] = useState(55);
+		useState();
+	const [paymentsCount, setPaymentsCount] = useState();
 	const [roomsList, setRoomsList] = useState([]);
 
 	useEffect(() => {
@@ -38,7 +38,6 @@ const DashboardPage = () => {
 			return;
 		}
 
-		// TODO: fetch reservations and payments counts
 		async function getReservationtCount() {
 			const data =
 				await Dashboard__connection.getReservationtCount();
@@ -70,8 +69,8 @@ const DashboardPage = () => {
 		}
 
 		getClientCount();
-		// getReservationtCount()
-		// getPaymentCount()
+		getReservationtCount()
+		getPaymentCount()
 		getAllRooms();
 
 		// console.log(roomsList);
