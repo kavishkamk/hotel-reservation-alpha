@@ -11,7 +11,7 @@ const createPayment = async (req: Request, res: Response, next: NextFunction) =>
     const { orderId } = req.body;
 
     if (!(req.file?.path)) {
-        return next(new CommonError(400, ErrorTypes.INPUT_VALIDATION_ERROR, "Paymet slip required"));
+        return next(new CommonError(400, ErrorTypes.BAD_REQUEST, "Paymet slip required"));
     };
 
     let order;
@@ -23,7 +23,7 @@ const createPayment = async (req: Request, res: Response, next: NextFunction) =>
     };
 
     if (!order) {
-        return next(new CommonError(400, ErrorTypes.NOT_FOUND, "Order not found"));
+        return next(new CommonError(404, ErrorTypes.NOT_FOUND, "Order not found"));
     };
 
     if (order.status == ReservationStatus.Cancelled) {
@@ -69,7 +69,7 @@ const getAllCurretUserOrders = async (req: Request, res: Response, next: NextFun
     try {
         roomOrders = await RoomTypeOrder.find({ userId: req.currentUser!.id }).exec();
     } catch (err) {
-        return next(new CommonError(500, ErrorTypes.INPUT_VALIDATION_ERROR, "Somthing wrong. Plase try again later"));
+        return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Somthing wrong. Plase try again later"));
     };
 
     res.status(200).json({ roomOrders });
@@ -89,7 +89,7 @@ const confirmPayment = async (req: Request, res: Response, next: NextFunction) =
     };
 
     if (!order) {
-        return next(new CommonError(400, ErrorTypes.NOT_FOUND, "Order not found"));
+        return next(new CommonError(404, ErrorTypes.NOT_FOUND, "Order not found"));
     };
 
     if (order.status == ReservationStatus.Cancelled) {
@@ -113,7 +113,7 @@ const confirmPayment = async (req: Request, res: Response, next: NextFunction) =
     };
 
     if (!payment) {
-        return next(new CommonError(400, ErrorTypes.NOT_FOUND, "Payment not found"));
+        return next(new CommonError(404, ErrorTypes.NOT_FOUND, "Payment not found"));
     };
 
     payment.set({
@@ -121,7 +121,7 @@ const confirmPayment = async (req: Request, res: Response, next: NextFunction) =
     });
 
     try {
-        await payment.save();
+        payment = await payment.save();
     } catch (err) {
         return next(new CommonError(500, ErrorTypes.INPUT_VALIDATION_ERROR, "Somthing wrong. Plase try again later"));
     };
@@ -148,7 +148,7 @@ const setOrderAsPaid = async (req: Request, res: Response, next: NextFunction) =
     };
 
     if (!order) {
-        return next(new CommonError(400, ErrorTypes.NOT_FOUND, "Order not found"));
+        return next(new CommonError(404, ErrorTypes.NOT_FOUND, "Order not found"));
     };
 
     if (order.status == ReservationStatus.Cancelled) {
