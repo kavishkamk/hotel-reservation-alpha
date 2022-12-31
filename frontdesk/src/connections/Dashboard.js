@@ -144,7 +144,37 @@ class Dashboard__connection {
 	}
 
 	async checkAvailability(check) {
-		return true
+		const thisUrl =
+			main.url + "/booking/room-booking/check-availability";
+		const token = Auth.getToken();
+
+		const res = await fetch(thisUrl, {
+			method: "PATCH",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			},
+			body: JSON.stringify(check),
+		});
+		const data = await res.json();
+		console.log(data);
+		let result = {
+			rooms: []
+		}
+
+		if(data.freeRoomList){
+			data.freeRoomList.forEach(room => {
+				result.rooms.push({
+					id: room.id,
+					name: room.roomType,
+					price: room.price
+				})
+			});
+		}else {
+			result.error = "Something went wrong"
+		}
+
+		return result
 	}
 
 	async roomBooking(book) {

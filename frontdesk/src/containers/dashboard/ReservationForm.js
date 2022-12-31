@@ -26,7 +26,8 @@ const ReservationForm = (props) => {
 		props.roomsList
 	);
 	const [multiply, setMultiply] = useState();
-	const [submitHandleStatus, setSubmitHandleStatus] = useState(false)
+	const [submitHandleStatus, setSubmitHandleStatus] =
+		useState(false);
 
 	useEffect(() => {
 		async function checkAvailability(check) {
@@ -37,7 +38,19 @@ const ReservationForm = (props) => {
 			console.log(data);
 
 			// set rooms list according to the availability
-			// setAvailableRooms(data.rooms)
+			if (data.error) {
+				await setMessage_func(false, data.error);
+				await setMessageStatus_func();
+				return;
+			} else {
+				setAvailableRooms(data.rooms)
+				await setMessage_func(
+					true,
+					"Available rooms list updated"
+				);
+				await setMessageStatus_func();
+				return;
+			}
 		}
 
 		if (formData) {
@@ -50,6 +63,16 @@ const ReservationForm = (props) => {
 			setMultiply(diff * formData.rooms);
 
 			console.log(props.clientId);
+
+			// check availability
+			const checkData = {
+				numberOfRooms: formData.rooms,
+				numberOfPersons: formData.guests,
+				fromDate: formData.checkin,
+				toDate: formData.checkout,
+			};
+			checkAvailability(checkData);
+
 		}
 
 		// TODO: check availability
@@ -85,12 +108,12 @@ const ReservationForm = (props) => {
 	};
 
 	const bookSubmitHandler = async () => {
-		setSureModalDisplay_func(true)
+		setSureModalDisplay_func(true);
 		setSure_func("Confirm the reservation ?", "Confirm");
 		setSureStatus_func();
 
 		console.log(selectedRooms);
-		await setSubmitHandleStatus(true)
+		await setSubmitHandleStatus(true);
 	};
 
 	useEffect(() => {
@@ -125,9 +148,9 @@ const ReservationForm = (props) => {
 				clientId: props.clientId,
 			};
 			console.log("confirm booking");
-			fetchData(book)
-			setSureVerify_func(false)
-			setSubmitHandleStatus(false)
+			fetchData(book);
+			setSureVerify_func(false);
+			setSubmitHandleStatus(false);
 		}
 	}, [sureVerify, submitHandleStatus]);
 
