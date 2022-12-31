@@ -135,5 +135,69 @@ const confirmPayment = async (req: Request, res: Response, next: NextFunction) =
 
 };
 
+const setOrderAsPaid = async (req: Request, res: Response, next: NextFunction) => {
 
-export { createPayment, getAllCurretUserOrders, confirmPayment };
+    const orderId = req.params.orderId;
+
+    let order;
+
+    try {
+        order = await RoomTypeOrder.findById(orderId).exec();
+    } catch (err) {
+        return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Internal server error. Plase try again later"));
+    };
+
+    if (!order) {
+        return next(new CommonError(400, ErrorTypes.NOT_FOUND, "Order not found"));
+    };
+
+    if (order.status == ReservationStatus.Cancelled) {
+        return next(new CommonError(400, ErrorTypes.BAD_REQUEST, "Order already cancelled"));
+    };
+
+    if (order.status == ReservationStatus.Complete) {
+        return next(new CommonError(400, ErrorTypes.BAD_REQUEST, "Already Payment compleated"));
+    };
+
+    let payment;
+
+    try {
+        payment = await RoomTypePayment.findOne({ orderId }).exec();
+    } catch (err) {
+        return next(new CommonError(500, ErrorTypes.INPUT_VALIDATION_ERROR, "Somthing wrong. Plase try again later"));
+    };
+
+    if (!payment) {
+        payment = RoomTypePayment.build({
+            orderId,
+            slipUrl: req.file?.path || "no link",
+            isConfirmed: false
+        });
+    };
+
+    payment.set({
+        isConfirmed: true
+    });
+
+    try {
+        await payment.save();
+    } catch (err) {
+        return next(new CommonError(500, ErrorTypes.INPUT_VALIDATION_ERROR, "Somthing wrong. Plase try again later"));
+    };
+
+    new RoomTypePaymentConfirmedPublisher(natsWrapper.client).publish({
+        paymentId: payment.id,
+        orderId
+    });
+
+    res.status(200).json({ order });
+
+};
+
+
+export {
+    createPayment,
+    getAllCurretUserOrders,
+    confirmPayment,
+    setOrderAsPaid
+};

@@ -2,13 +2,13 @@ import { Document, model, Model, Schema } from "mongoose";
 
 interface RoomTypePaymentsAttrs {
     orderId: string;
-    slipUrl: string;
+    slipUrl?: string;
     isConfirmed: boolean;
 };
 
 interface RoomTypePaymentDoc extends Document {
     orderId: string;
-    slipUrl: string;
+    slipUrl?: string;
     isConfirmed: boolean;
 };
 
@@ -22,8 +22,7 @@ const roomTypePaymentSchema = new Schema({
         require: [true, "order Id required"]
     },
     slipUrl: {
-        type: String,
-        require: [true, "paymet slip required"]
+        type: String
     },
     isConfirmed: {
         type: Boolean,

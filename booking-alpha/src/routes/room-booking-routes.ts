@@ -1,7 +1,8 @@
 import { requestValidationMiddleware, requireAdminAccess, requireAuthMiddleware } from "@alpha-lib/shared-lib";
 import { Router } from "express";
 import { body } from "express-validator";
-import { cancelRoomReservation, checkRoomAvailability, createBookingForClient, createRoomBooking, getBookings, getCancelledRoomReservation, getCancelledRoomReservationOfCurrentUser, getConfirmAvaitingRoomReservation, getConfirmAvaitingRoomReservationOfCurrentUser, getConfirmedRoomReservation, getConfirmedRoomReservationOfCurrentUser, getPendingRoomReservation, getPendingRoomReservationOfCurrentUser } from "../controllers/room-booking-controller";
+import { getTodaysTotalPayments, getTodaysTotalReservation } from "../controllers/restaurent-booking-controller";
+import { cancelRoomReservation, checkIn, checkOut, checkRoomAvailability, createBookingForClient, createRoomBooking, getBookings, getCancelledRoomReservation, getCancelledRoomReservationOfCurrentUser, getCheckInByUserId, getCheckInCurrentUser, getCheckOutByUserId, getCheckOutCurrentUser, getConfirmAvaitingRoomReservation, getConfirmAvaitingRoomReservationOfCurrentUser, getConfirmedRoomReservation, getConfirmedRoomReservationOfCurrentUser, getPendingRoomReservation, getPendingRoomReservationOfCurrentUser } from "../controllers/room-booking-controller";
 
 const router = Router();
 
@@ -76,6 +77,16 @@ router.get(
     getCancelledRoomReservationOfCurrentUser
 );
 
+router.get(
+    "/check-in/current-user",
+    getCheckInCurrentUser
+);
+
+router.get(
+    "/check-out/current-user",
+    getCheckOutCurrentUser
+);
+
 router.use(requireAdminAccess);
 
 router.get(
@@ -130,5 +141,35 @@ router.get(
     "/cancelled",
     getCancelledRoomReservation
 );
+
+router.patch(
+    "/checkIn/:orderId",
+    checkIn
+);
+
+router.patch(
+    "/checkOut/:orderId",
+    checkOut
+);
+
+router.get(
+    "/check-in/:userId",
+    getCheckInByUserId
+);
+
+router.get(
+    "/check-out/:userId",
+    getCheckOutByUserId
+);
+
+router.get(
+    "/totle-reservation-count",
+    getTodaysTotalReservation
+);
+
+router.get(
+    "/total-paied-reservation",
+    getTodaysTotalPayments
+)
 
 export { router as roomBookingRouter };

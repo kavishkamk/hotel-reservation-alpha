@@ -1,7 +1,7 @@
 import { requireAuthMiddleware, fileUpload, requestValidationMiddleware, requireAdminAccess } from "@alpha-lib/shared-lib";
 import { Router } from "express";
 import { body } from "express-validator";
-import { confirmPayment, createPayment, getAllCurretUserOrders } from "../controllers/room-payment-controller";
+import { confirmPayment, createPayment, getAllCurretUserOrders, setOrderAsPaid } from "../controllers/room-payment-controller";
 
 const router = Router();
 
@@ -41,5 +41,10 @@ router.post(
     requestValidationMiddleware,
     confirmPayment
 );
+
+router.patch(
+    "/set-to-paid/:orderId",
+    setOrderAsPaid
+)
 
 export { router as paymentsRouter };

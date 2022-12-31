@@ -30,3 +30,4 @@ export * from "./events/room-reservation-payment-awaiting-event";
 export * from "./events/restaurent-reservation-payment-awaiting-event";
 export * from "./events/room-reservation-payment-compleated-event";
 export * from "./events/restaurent-reservation-payment-compleated-event";
+export * from "./events/types/arrival-status";

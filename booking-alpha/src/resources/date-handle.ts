@@ -3,7 +3,7 @@ const getDatesBetween = (fromDay: Date, toDay: Date) => {
 
     const dateArray: Date[] = [];
     let tempDate = fromDay;
-    while (toDay >= tempDate) {
+    while (toDay > tempDate) {
         dateArray.push(tempDate);
         tempDate = new Date(tempDate);
         tempDate.setDate(tempDate.getDate() + 1);
