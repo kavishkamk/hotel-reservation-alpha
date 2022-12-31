@@ -81,7 +81,6 @@ const roomBookingLogic = async (req: Request, client: string, next: NextFunction
 
     const { roomTypeId, numberOfRooms, numberOfPersons, fromDate, toDate } = req.body;
 
-    console.log(new Date(fromDate), new Date(toDate));
     let roomTypeObj;
 
     // check room type available
@@ -128,7 +127,7 @@ const roomBookingLogic = async (req: Request, client: string, next: NextFunction
             recorde = await OrderTracker.findOne({ day: dateArray[i], roomTypeId }).exec();
             // if not found create record
             if (!recorde) {
-                console.log("not found")
+
                 recorde = OrderTracker.build({
                     day: dateArray[i],
                     roomTypeId: roomTypeObj,
@@ -142,7 +141,7 @@ const roomBookingLogic = async (req: Request, client: string, next: NextFunction
                     numberOfPendingRooms: previous + numberOfRooms
                 })
             };
-            console.log("--" + recorde);
+
             await recorde.save();
         }
     } catch (err) {
@@ -167,8 +166,6 @@ const roomBookingLogic = async (req: Request, client: string, next: NextFunction
         toDate
     });
 
-    console.log(new Date(booking.toDate.getFullYear(), booking.toDate.getMonth(), booking.toDate.getDate()));
-
     try {
         booking = await booking.save();
     } catch (err) {
@@ -188,7 +185,11 @@ const roomBookingLogic = async (req: Request, client: string, next: NextFunction
         }
     });
 
-    return booking;
+    const result = booking.toObject();
+
+    result["nights"] = dateArray.length;
+
+    return result;
 
 };
 
@@ -532,14 +533,14 @@ const checkAvailabilityOfGivenRoom = async (dateArray: Date[], roomTypeId: strin
                 // we have to check the rooms
                 // get available room in given day, given type
                 const availableRooms = roomTypeObj.numberOfRooms - reservedRecord.numberOfPendingRooms + reservedRecord.numberOfAwaitingPayments + reservedRecord.numberOfReservedRooms;
-                console.log("available number of rooms " + availableRooms);
+
                 if (numberOfRooms > availableRooms) {
                     available = available && false;
                     break;
                 }
             }
         }
-        console.log(">>>>>>>>>>>>>>>>>>>>>" + available)
+
     } catch (err) {
         return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Reservation fail. Plase try again later"))
     };

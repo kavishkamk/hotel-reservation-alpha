@@ -97,7 +97,7 @@ const restaurentBookingLogic = async (req: Request, client: string, next: NextFu
             recorde = await RestaurentOrderTracker.findOne({ day: dateArray[i], restaurentTypeId }).exec();
             // if not found create record
             if (!recorde) {
-                console.log("not found")
+
                 recorde = RestaurentOrderTracker.build({
                     day: dateArray[i],
                     restaurentTypeId: reservationTypeObj,
@@ -109,7 +109,7 @@ const restaurentBookingLogic = async (req: Request, client: string, next: NextFu
                     numberOfReservedTables: previous + numberOfTables
                 })
             };
-            console.log("--" + recorde);
+
             await recorde.save();
         }
     } catch (err) {
@@ -126,8 +126,6 @@ const restaurentBookingLogic = async (req: Request, client: string, next: NextFu
         fromDate,
         toDate
     });
-
-    console.log(new Date(booking.toDate.getFullYear(), booking.toDate.getMonth(), booking.toDate.getDate()));
 
     try {
         booking = await booking.save();
