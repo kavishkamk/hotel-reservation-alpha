@@ -206,6 +206,30 @@ class Dashboard__connection {
 		
 		return result;
 	}
+
+	async roomBookingPayment(orderId) {
+		const thisUrl =
+			main.url + "/payments/room-type/set-to-paid/"+ orderId;
+		const token = Auth.getToken();
+
+		console.log(thisUrl)
+
+		const res = await fetch(thisUrl, {
+			method: "PATCH",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			}
+		});
+		const data = await res.json();
+		console.log(data);
+
+		if(data.order){
+			return true
+		}else {
+			return false
+		}
+	}
 }
 
 export default new Dashboard__connection();

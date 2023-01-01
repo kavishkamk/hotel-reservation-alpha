@@ -166,7 +166,7 @@ const ReservationForm = (props) => {
 		// save the printing data on the session storage
 		if (Object.keys(reservationData).length > 0) {
 			Auth.savePrintReserveData({
-				id: reservationData.id,
+				id: reservationData._id,
 				name: `${props.clientData["First Name"]} ${props.clientData["Last Name"]}`,
 				email: props.clientData["Email"],
 				phone: props.clientData["Contact No"],
