@@ -18,18 +18,23 @@ const createRoomBooking = async (req: Request, res: Response, next: NextFunction
         return next(new CommonError(401, ErrorTypes.NOT_AUTHERIZED, "Don't have access to use this route"));
     };
 
-    const booking = await roomBookingLogic(req, req.currentUser!.id, next);
+    const booking = await roomBookingLogic(req, req.currentUser!.id, req.currentUser!.email);
 
-    res.json({ booking });
+    res.status(201).json({ booking });
 };
 
 const createBookingForClient = async (req: Request, res: Response, next: NextFunction) => {
 
-    const { clientId } = req.body;
+    const { clientId, email } = req.body;
 
-    const booking = await roomBookingLogic(req, clientId, next);
+    let booking;
 
-    res.json({ booking });
+    try {
+        booking = await roomBookingLogic(req, clientId, email);
+    } catch (err) {
+        return next(err);
+    };
+    res.status(201).json({ booking });
 
 };
 
@@ -71,13 +76,19 @@ const checkRoomAvailability = async (req: Request, res: Response, next: NextFunc
     // get the all dates request for booking
     const dateArray = getDatesBetween(fromDay, toDay);
 
-    const freeList = await filterFreeList(roomTypeList, numberOfRooms, numberOfPersons, dateArray, next);
+    let freeList;
+
+    try {
+        freeList = await filterFreeList(roomTypeList, numberOfRooms, numberOfPersons, dateArray);
+    } catch (err) {
+        return next(err);
+    };
 
     res.status(200).json({ freeRoomList: freeList });
 
 };
 
-const roomBookingLogic = async (req: Request, client: string, next: NextFunction) => {
+const roomBookingLogic = async (req: Request, client: string, email: string) => {
 
     const { roomTypeId, numberOfRooms, numberOfPersons, fromDate, toDate } = req.body;
 
@@ -87,22 +98,22 @@ const roomBookingLogic = async (req: Request, client: string, next: NextFunction
     try {
         roomTypeObj = await RoomType.findById(roomTypeId);
     } catch (err) {
-        return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Order Createin fail. Please try again later"));
+        throw new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Order Createin fail. Please try again later");
     };
 
     if (!roomTypeObj) {
-        return next(new CommonError(404, ErrorTypes.NOT_FOUND, "Room type not found"));
+        throw new CommonError(404, ErrorTypes.NOT_FOUND, "Room type not found");
     };
 
     // check toDate grater than fromDate
     if (fromDate > toDate) {
-        return next(new CommonError(400, ErrorTypes.INPUT_VALIDATION_ERROR, "dipacher date should not before than arrival date"));
+        throw new CommonError(400, ErrorTypes.INPUT_VALIDATION_ERROR, "dipacher date should not before than arrival date");
     };
 
     // check gust number match for number of rooms
     if (numberOfPersons > roomTypeObj.maxGuest * numberOfRooms) {
-        return next(new CommonError(400, ErrorTypes.INPUT_VALIDATION_ERROR, "Maximum number for the "
-            + numberOfRooms + " of the " + roomTypeObj.roomType + " is " + roomTypeObj.maxGuest * numberOfRooms));
+        throw new CommonError(400, ErrorTypes.INPUT_VALIDATION_ERROR, "Maximum number for the "
+            + numberOfRooms + " of the " + roomTypeObj.roomType + " is " + roomTypeObj.maxGuest * numberOfRooms);
     };
 
     let fromDay = new Date(fromDate);
@@ -113,11 +124,11 @@ const roomBookingLogic = async (req: Request, client: string, next: NextFunction
     const dateArray = getDatesBetween(fromDay, toDay);
 
     // check each day availability
-    let available = await checkAvailabilityOfGivenRoom(dateArray, roomTypeId, roomTypeObj, numberOfRooms, next);
+    let available = await checkAvailabilityOfGivenRoom(dateArray, roomTypeId, roomTypeObj, numberOfRooms);
 
     // check rooms are available
     if (!available) {
-        return next(new CommonError(400, ErrorTypes.NOT_FOUND, "Rooms are not available"));
+        throw new CommonError(400, ErrorTypes.NOT_FOUND, "Rooms are not available");
     }
 
     let recorde;
@@ -145,7 +156,7 @@ const roomBookingLogic = async (req: Request, client: string, next: NextFunction
             await recorde.save();
         }
     } catch (err) {
-        return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Reservation fail. Plase try again later"));
+        throw new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Reservation fail. Plase try again later");
     };
 
     // calculate expiration time
@@ -163,17 +174,18 @@ const roomBookingLogic = async (req: Request, client: string, next: NextFunction
         status: ReservationStatus.Created,
         expiresAt: expiration,
         fromDate,
-        toDate
+        toDate,
+        userEmail: email
     });
 
     try {
         booking = await booking.save();
     } catch (err) {
-        return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Reservation Fail. Plase try again later"));
+        throw new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Reservation Fail. Plase try again later");
     };
 
     // publish ticket created event
-    new RoomTypeReservationCreatedPublisher(natsWrapper.client).publish({
+    await new RoomTypeReservationCreatedPublisher(natsWrapper.client).publish({
         id: booking.id,
         status: booking.status,
         userId: booking.userId,
@@ -187,9 +199,7 @@ const roomBookingLogic = async (req: Request, client: string, next: NextFunction
 
     const result = booking.toObject();
 
-    result["nights"] = dateArray.length;
-
-    return result;
+    return { ...result, nights: dateArray.length };
 
 };
 
@@ -501,7 +511,7 @@ const getCheckOutByUserId = async (req: Request, res: Response, next: NextFuncti
 
 
 const filterFreeList = async (roomTypeList: (RoomTypeDoc & { _id: Types.ObjectId; })[],
-    numberOfRooms: number, numberOfPersons: number, dateArray: Date[], next: NextFunction) => {
+    numberOfRooms: number, numberOfPersons: number, dateArray: Date[]) => {
     const freeList = await Promise.all(roomTypeList.map(async roomTypeTemp => {
         // check gust number match for number of rooms
         if (numberOfPersons > roomTypeTemp.maxGuest * numberOfRooms) {
@@ -509,7 +519,7 @@ const filterFreeList = async (roomTypeList: (RoomTypeDoc & { _id: Types.ObjectId
         }
 
         // check each day availability
-        let available = await checkAvailabilityOfGivenRoom(dateArray, roomTypeTemp.id, roomTypeTemp, numberOfRooms, next);
+        let available = await checkAvailabilityOfGivenRoom(dateArray, roomTypeTemp.id, roomTypeTemp, numberOfRooms);
 
         return available ? roomTypeTemp : false;
 
@@ -520,7 +530,7 @@ const filterFreeList = async (roomTypeList: (RoomTypeDoc & { _id: Types.ObjectId
 
 
 const checkAvailabilityOfGivenRoom = async (dateArray: Date[], roomTypeId: string,
-    roomTypeObj: RoomTypeDoc & { _id: Types.ObjectId; }, numberOfRooms: number, next: NextFunction) => {
+    roomTypeObj: RoomTypeDoc & { _id: Types.ObjectId; }, numberOfRooms: number) => {
 
     // check each day availability
     let available = true;
@@ -542,7 +552,7 @@ const checkAvailabilityOfGivenRoom = async (dateArray: Date[], roomTypeId: strin
         }
 
     } catch (err) {
-        return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Reservation fail. Plase try again later"))
+        throw new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Reservation fail. Plase try again later");
     };
 
     return available;

@@ -14,6 +14,7 @@ interface IRestaurentOrder {
     numberOfPersons: number;
     fromDate: Date;
     toDate: Date;
+    userEmail?: string;
 };
 
 // this is the interface that describe
@@ -30,6 +31,7 @@ interface RestaurentOrderDoc extends Document {
     checkIn?: Date;
     checkOut?: Date;
     arrivalStatus: ArrivalStatus;
+    userEmail?: string;
 };
 
 // a interface that describe the properties
@@ -81,6 +83,9 @@ const restaurentOrderSchema = new Schema({
         type: String,
         enum: Object.values(ArrivalStatus),
         default: ArrivalStatus.Pending
+    },
+    userEmail: {
+        type: String
     }
 }, {
     toJSON: {
