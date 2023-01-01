@@ -17,6 +17,7 @@ interface IOrder {
     numberOfPersons: number;
     fromDate: Date;
     toDate: Date;
+    userEmail?: string;
 };
 
 // this is the interface that describe
@@ -36,6 +37,7 @@ interface OrderDoc extends Document {
     checkIn?: Date;
     checkOut?: Date;
     arrivalStatus: ArrivalStatus;
+    userEmail?: string;
 };
 
 // a interface that describe the properties
@@ -100,6 +102,9 @@ const orderSchema = new Schema({
         type: String,
         enum: Object.values(ArrivalStatus),
         default: ArrivalStatus.Pending
+    },
+    userEmail: {
+        type: String
     }
 }, {
     toJSON: {

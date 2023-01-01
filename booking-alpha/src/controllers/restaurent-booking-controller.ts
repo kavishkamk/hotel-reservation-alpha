@@ -14,7 +14,13 @@ const createRestaurentBooking = async (req: Request, res: Response, next: NextFu
         return next(new CommonError(401, ErrorTypes.NOT_AUTHERIZED, "Don't have access to use this route"));
     };
 
-    const booking = await restaurentBookingLogic(req, req.currentUser!.id, next);
+    let booking;
+
+    try {
+        booking = await restaurentBookingLogic(req, req.currentUser!.id, req.currentUser!.email);
+    } catch (err) {
+        return next(err);
+    };
 
     res.json({ booking });
 
@@ -22,9 +28,15 @@ const createRestaurentBooking = async (req: Request, res: Response, next: NextFu
 
 const createRestaurentBookingForClient = async (req: Request, res: Response, next: NextFunction) => {
 
-    const { clientId } = req.body;
+    const { clientId, email } = req.body;
 
-    const booking = await restaurentBookingLogic(req, clientId, next);
+    let booking;
+
+    try {
+        booking = await restaurentBookingLogic(req, clientId, email);
+    } catch (err) {
+        return next(err);
+    };
 
     res.json({ booking });
 
@@ -44,7 +56,7 @@ const getRestaurentBookings = async (req: Request, res: Response, next: NextFunc
 
 }
 
-const restaurentBookingLogic = async (req: Request, client: string, next: NextFunction) => {
+const restaurentBookingLogic = async (req: Request, client: string, email: string) => {
 
     const { restaurentTypeId, numberOfTables, numberOfPersons, fromDate, toDate } = req.body;
 
@@ -54,22 +66,22 @@ const restaurentBookingLogic = async (req: Request, client: string, next: NextFu
     try {
         reservationTypeObj = await RestaurentType.findById(restaurentTypeId).exec();
     } catch (err) {
-        return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Order Createin fail. Please try again later"));
+        throw new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Order Createin fail. Please try again later");
     };
 
     if (!reservationTypeObj) {
-        return next(new CommonError(404, ErrorTypes.NOT_FOUND, "Table type not found"));
+        throw new CommonError(404, ErrorTypes.NOT_FOUND, "Table type not found");
     };
 
     // check toDate grater than fromDate
     if (fromDate > toDate) {
-        return next(new CommonError(400, ErrorTypes.INPUT_VALIDATION_ERROR, "dipacher date should not before than arrival date"));
+        throw new CommonError(400, ErrorTypes.INPUT_VALIDATION_ERROR, "dipacher date should not before than arrival date");
     };
 
     // check gust number match for number of tables
     if (numberOfPersons > reservationTypeObj.maxGuest * numberOfTables) {
-        return next(new CommonError(400, ErrorTypes.INPUT_VALIDATION_ERROR, "Maximum number for the "
-            + numberOfTables + " of the " + reservationTypeObj.restaurentType + " is " + reservationTypeObj.maxGuest * numberOfTables));
+        throw new CommonError(400, ErrorTypes.INPUT_VALIDATION_ERROR, "Maximum number for the "
+            + numberOfTables + " of the " + reservationTypeObj.restaurentType + " is " + reservationTypeObj.maxGuest * numberOfTables);
     };
 
     let day = new Date(fromDate);
@@ -82,11 +94,11 @@ const restaurentBookingLogic = async (req: Request, client: string, next: NextFu
     const dateArray = getDatesBetween(fromDay, toDay);
 
     // check each day availability
-    let available = await checkAvailabilityOfGivenRestaurent(dateArray, restaurentTypeId, reservationTypeObj, numberOfTables, next);
+    let available = await checkAvailabilityOfGivenRestaurent(dateArray, restaurentTypeId, reservationTypeObj, numberOfTables);
 
     // check tables are available
     if (!available) {
-        return next(new CommonError(400, ErrorTypes.NOT_FOUND, "Tables are not available"));
+        throw new CommonError(400, ErrorTypes.NOT_FOUND, "Tables are not available");
     };
 
     let recorde;
@@ -113,24 +125,25 @@ const restaurentBookingLogic = async (req: Request, client: string, next: NextFu
             await recorde.save();
         }
     } catch (err) {
-        return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Reservation fail. Plase try again later"));
+        throw new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Reservation fail. Plase try again later");
     };
 
     // create a booking
     let booking = RestaurentOrder.build({
-        userId: req.currentUser!.id,
+        userId: client,
         restaurentType: reservationTypeObj,
         numberOfTables,
         numberOfPersons,
         status: ReservationStatus.Created,
         fromDate,
-        toDate
+        toDate,
+        userEmail: email
     });
 
     try {
         booking = await booking.save();
     } catch (err) {
-        return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Reservation Fail. Plase try again later"));
+        throw new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Reservation Fail. Plase try again later");
     };
 
     return booking;
@@ -161,7 +174,7 @@ const checkRestaurentAvailability = async (req: Request, res: Response, next: Ne
     // get the all dates request for booking
     const dateArray = getDatesBetween(fromDay, toDay);
 
-    const freeList = await filterFreeRestaurentList(restaurentTypeList, numberOfTables, numberOfPersons, dateArray, next);
+    const freeList = await filterFreeRestaurentList(restaurentTypeList, numberOfTables, numberOfPersons, dateArray);
 
     res.status(200).json({ freeRestaurentList: freeList });
 
@@ -226,7 +239,7 @@ const getConfirmedTableReservationOfCurrentUser = async (req: Request, res: Resp
     let reservationList;
 
     try {
-        reservationList = await RestaurentOrder.find({ userId: req.currentUser!.id, status: ReservationStatus.Created }).exec();
+        reservationList = await RestaurentOrder.find({ userId: req.currentUser!.id, status: ReservationStatus.Created }).populate("restaurentType").exec();
     } catch (err) {
         return next(err);
     }
@@ -240,7 +253,7 @@ const getCancelledTableReservationOfCurrentUser = async (req: Request, res: Resp
     let reservationList;
 
     try {
-        reservationList = await RestaurentOrder.find({ userId: req.currentUser!.id, status: ReservationStatus.Cancelled }).exec();
+        reservationList = await RestaurentOrder.find({ userId: req.currentUser!.id, status: ReservationStatus.Cancelled }).populate("restaurentType").exec();
     } catch (err) {
         return next(err);
     }
@@ -254,7 +267,7 @@ const getConfirmedTableReservation = async (req: Request, res: Response, next: N
     let reservationList;
 
     try {
-        reservationList = await RestaurentOrder.find({ status: ReservationStatus.Created }).exec();
+        reservationList = await RestaurentOrder.find({ status: ReservationStatus.Created }).populate("restaurentType").exec();
     } catch (err) {
         return next(err);
     }
@@ -268,7 +281,7 @@ const getCancelledTableReservation = async (req: Request, res: Response, next: N
     let reservationList;
 
     try {
-        reservationList = await RestaurentOrder.find({ status: ReservationStatus.Cancelled }).exec();
+        reservationList = await RestaurentOrder.find({ status: ReservationStatus.Cancelled }).populate("restaurentType").exec();
     } catch (err) {
         return next(err);
     }
@@ -334,14 +347,14 @@ const getTodaysTotalPayments = async (req: Request, res: Response, next: NextFun
 };
 
 const filterFreeRestaurentList = async (restaurentTypeList: (RestaurentTypeDoc & { _id: Types.ObjectId; })[],
-    numberOfTables: number, numberOfPersons: number, dateArray: Date[], next: NextFunction) => {
+    numberOfTables: number, numberOfPersons: number, dateArray: Date[]) => {
 
     const freeList = await Promise.all(restaurentTypeList.map(async tableTypeTemp => {
         if (numberOfPersons > tableTypeTemp.maxGuest * numberOfPersons) {
             return false;
         }
 
-        let available = await checkAvailabilityOfGivenRestaurent(dateArray, tableTypeTemp.id, tableTypeTemp, numberOfTables, next);
+        let available = await checkAvailabilityOfGivenRestaurent(dateArray, tableTypeTemp.id, tableTypeTemp, numberOfTables);
 
         return available ? tableTypeTemp : false;
     }))
@@ -351,7 +364,7 @@ const filterFreeRestaurentList = async (restaurentTypeList: (RestaurentTypeDoc &
 };
 
 const checkAvailabilityOfGivenRestaurent = async (dateArray: Date[], restaurentTypeId: string, reservationTypeObj: RestaurentTypeDoc & { _id: Types.ObjectId; },
-    numberOfTables: number, next: NextFunction) => {
+    numberOfTables: number) => {
     let available = true;
     try {
         for (let i = 0; i < dateArray.length; i++) {
@@ -369,7 +382,7 @@ const checkAvailabilityOfGivenRestaurent = async (dateArray: Date[], restaurentT
             }
         }
     } catch (err) {
-        return next(new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Reservation fail. Plase try again later"))
+        throw new CommonError(500, ErrorTypes.INTERNAL_SERVER_ERROR, "Reservation fail. Plase try again later");
     };
 
     return available;

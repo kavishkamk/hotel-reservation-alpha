@@ -96,6 +96,11 @@ router.post(
             .not()
             .isEmpty()
             .withMessage("client id required"),
+        body("email")
+            .trim()
+            .normalizeEmail()
+            .isEmail()
+            .withMessage("valid email required"),
     ],
     requestValidationMiddleware,
     createRestaurentBookingForClient
