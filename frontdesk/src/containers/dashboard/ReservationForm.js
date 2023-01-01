@@ -151,6 +151,7 @@ const ReservationForm = (props) => {
 				fromDate: formData.checkin,
 				toDate: formData.checkout,
 				clientId: props.clientId,
+				email: props.email
 			};
 			console.log("confirm booking");
 			fetchData(book);

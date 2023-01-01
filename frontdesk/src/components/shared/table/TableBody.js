@@ -1,7 +1,7 @@
 import React from "react";
 
 const TableBody = (props) => {
-	console.log(props.data);
+	// console.log(props.data);
 
 	return (
 		<tr className="border-b border-opacity-20 border-gray-700 bg-white text-sm">

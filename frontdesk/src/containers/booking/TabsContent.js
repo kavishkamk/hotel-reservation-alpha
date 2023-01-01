@@ -1,42 +1,20 @@
-import React from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import TableHead from "../../components/shared/table/TableHead"
 import TableBody from "../../components/shared/table/TableBody"
+import Booking__connection from "../../connections/Booking"
+import {DefaultContext} from "../../context/DefaultContext"
+import Dates from "../../functions/Dates"
 
 const TabsContent = (props) => {
-	const tab = props.tab
-
-	const pending = [
-		"Name", "Check-in", "Check-out", "Guests", "Room", "No. of Rooms", "Payment", "Status"
-	]
-
-	const restaurentsHead = [
-		"Name", "Restaurent", "Date", "Tables", "Meal",
-	]
-
-	const pendingData = [
-		{
-			id: 1,
-			name: "Nihal Silva",
-			checkin: "2022-12-22",
-			checkout: "2022-12-25",
-			guests: 3,
-			room: "Deluxe Room",
-			roomCount: 2,
-			payment: "http://google.com",
-		},
-		{
-			id: 2,
-			name: "Kumara Gamage",
-			checkin: "2022-12-20",
-			checkout: "2022-12-25",
-			guests: 2,
-			room: "Varenda Garden Room",
-			roomCount: 1,
-			payment: "http://facebook.com",
-		}
-	];
-
-	const restaurentsData = [
+	const { setMessage_func, setMessageStatus_func } =
+		useContext(DefaultContext);
+	
+	const [pendingData, setPendingData] = useState([])
+	const [approvedData, setApprovedData] = useState([])
+	const [checkinData, setCheckinData] = useState([])
+	const [checkoutData, setCheckoutData] = useState([])
+	const [cancelledData, setCancelledData] = useState([])
+	const [restaurentsData, setRestaurentsData] = useState([
 		{
 			id: 1,
 			name: "Maduka Weerasinge",
@@ -61,7 +39,93 @@ const TabsContent = (props) => {
 			tables: 1,
 			meal: "Lunch",
 		},
-	];
+	])
+
+	const tab = props.tab
+
+	const pending = [
+		"Client Email", "Check-in", "Check-out", "Guests", "Room", "No. of Rooms", "Payment", "Status"
+	]
+
+	const restaurentsHead = [
+		"Name", "Restaurent", "Date", "Tables", "Meal",
+	]
+
+	useEffect(()=> {
+		async function getAllPending() {
+			const data = await Booking__connection.getAllPending()
+
+			if(data.error){
+				await setMessage_func(false, data.error);
+				await setMessageStatus_func();
+				return;
+			}
+			else {
+				data.data.forEach(async item => {
+					const data1 = await Booking__connection.getRoomById(item.roomType)
+					let roomName
+
+					if(data1.room) {
+						roomName = data1.room
+					}else {
+						roomName = "---"
+					}
+					const checkin = Dates.formatDate(item.fromDate);
+					const checkout = Dates.formatDate(item.toDate);
+
+					await setPendingData([
+						...pendingData,
+						{
+							id: item.id,
+							name: item.userEmail,
+							checkin: checkin,
+							checkout: checkout,
+							guests: item.numberOfPersons,
+							room: roomName,
+							roomCount: item.numberOfRooms,
+							payment: ""
+						},
+					]);
+				});
+			}
+		}
+
+		async function getAllApproved() {}
+
+		async function getAllCheckin() {}
+
+		async function getAllCheckout() {}
+
+		async function getAllCancelled() {}
+
+		async function getAllRestaurentBookings() {}
+
+		getAllPending()
+	}, [])
+
+	// const pendingData = [
+	// 	{
+	// 		id: 1,
+	// 		name: "Nihal Silva",
+	// 		checkin: "2022-12-22",
+	// 		checkout: "2022-12-25",
+	// 		guests: 3,
+	// 		room: "Deluxe Room",
+	// 		roomCount: 2,
+	// 		payment: "http://google.com",
+	// 	}
+	// ];
+
+	// const restaurentsData = [
+	// 	{
+	// 		id: 1,
+	// 		name: "Maduka Weerasinge",
+	// 		restaurent: "Sky Dine",
+	// 		date: "2022-12-23",
+	// 		tables: 2,
+	// 		meal: "Breakfast",
+	// 	}
+	// ];
 
 	return (
 		<>
