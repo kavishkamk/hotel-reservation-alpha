@@ -159,7 +159,46 @@ const TabsContent = (props) => {
 			}
 		}
 
-		async function getAllCheckin() {}
+		async function getAllCheckin() {
+			const data =
+				await Booking__connection.getAllCheckin();
+			let resultFormat = [];
+
+			if (data.error) {
+				await setMessage_func(false, data.error);
+				await setMessageStatus_func();
+				return;
+			} else {
+				data.data.forEach(async (item) => {
+					const data1 =
+						await Booking__connection.getRoomById(
+							item.roomType
+						);
+					let roomName;
+
+					if (data1.room) {
+						roomName = data1.room;
+					} else {
+						roomName = "---";
+					}
+					const checkin = Dates.formatDate(item.fromDate);
+					const checkout = Dates.formatDate(item.toDate);
+
+					resultFormat.push({
+						id: item.id,
+						name: item.userEmail,
+						checkin: checkin,
+						checkout: checkout,
+						guests: item.numberOfPersons,
+						room: roomName,
+						roomCount: item.numberOfRooms,
+						// payment: "",
+					});
+				});
+
+				await setCheckinData(resultFormat);
+			}
+		}
 
 		async function getAllCheckout() {}
 
@@ -256,32 +295,6 @@ const TabsContent = (props) => {
 						<TableHead tab={tab} columns={cancel} />
 						<tbody className="">
 							{approvedData.map((data) => (
-								<TableBody tab={tab} data={data} />
-							))}
-						</tbody>
-					</table>
-				</div>
-			)}
-
-			{tab === 3 && (
-				<div className="max-w-[95%] mx-auto p-2 shadow-lg rounded-xl bg-white overflow-x-auto overflow-y-auto min-h-[calc(100vh-12rem)] max-h-[calc(100vh-12rem)]">
-					<table className="min-w-full">
-						<TableHead tab={tab} columns={pending} />
-						<tbody className="">
-							{pendingData.map((data) => (
-								<TableBody tab={tab} data={data} />
-							))}
-						</tbody>
-					</table>
-				</div>
-			)}
-
-			{tab === 4 && (
-				<div className="max-w-[95%] mx-auto p-2 shadow-lg rounded-xl bg-white overflow-x-auto overflow-y-auto min-h-[calc(100vh-12rem)] max-h-[calc(100vh-12rem)]">
-					<table className="min-w-full">
-						<TableHead tab={tab} columns={pending} />
-						<tbody className="">
-							{pendingData.map((data) => (
 								<TableBody tab={tab} data={data} />
 							))}
 						</tbody>

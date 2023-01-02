@@ -8,16 +8,27 @@ const TableBody = (props) => {
 			{Object.keys(props.data).map((key, index) => {
 				if (key !== "id") {
 					if (key === "payment") {
-						return (
-							<td
-								key={index}
-								className="text-center text-bluebg underline underline-offset-4 border-x"
-							>
-								<a href={props.data[key]} target="_blank">
-									image link
-								</a>
-							</td>
-						);
+						if (props.data[key] == "") {
+							return (
+								<td
+									key={index}
+									className="text-center text-slate-500 border-x"
+								>
+									None
+								</td>
+							);
+						} else {
+							return (
+								<td
+									key={index}
+									className="text-center text-bluebg underline underline-offset-4 border-x"
+								>
+									<a href={props.data[key]} target="_blank">
+										image link
+									</a>
+								</td>
+							);
+						}
 					}
 
 					return (
@@ -37,9 +48,12 @@ const TableBody = (props) => {
 
 			{props.tab === 1 && (
 				<td className="text-center flex flex-row items-center justify-evenly py-2 border-x">
-					<button className="text-white bg-green-600 px-4 rounded-full py-1">
-						&#10004;
-					</button>
+					{/* cannot approve until get a payment slip */}
+					{props.data["payment"] !== "" && (
+						<button className="text-white bg-green-600 px-4 rounded-full py-1">
+							&#10004;
+						</button>
+					)}
 					<button className="text-white font-sans font-extrabold bg-red-600 px-4 rounded-full py-1">
 						x
 					</button>
