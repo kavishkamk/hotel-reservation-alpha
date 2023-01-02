@@ -1,26 +1,68 @@
-import React, {useContext} from "react";
-import Booking__connection from "../../../connections/Booking"
-import {DefaultContext} from "../../../context/DefaultContext"
+import React, {
+	useContext,
+	useEffect,
+	useState,
+} from "react";
+import Booking__connection from "../../../connections/Booking";
+import { DefaultContext } from "../../../context/DefaultContext";
 
 const TableBody = (props) => {
 	// console.log(props.data.id);
-	const { setMessage_func, setMessageStatus_func } =
-		useContext(DefaultContext);
+	const [cancelBookStatus, setCancelBookStatus] =
+		useState(false);
+	const [cancelBookId, setCancelBookId] = useState("");
+
+	const {
+		setMessage_func,
+		setMessageStatus_func,
+		setSureModalDisplay_func,
+		setSure_func,
+		setSureStatus_func,
+		setSureVerify_func,
+		sureVerify,
+	} = useContext(DefaultContext);
 
 	const cancelBookHandler = async (id) => {
-		console.log("cancelled => "+ id)
+		console.log("cancelled => " + id);
+		await setCancelBookId(id);
+		await setSureModalDisplay_func(true);
+		await setSure_func(
+			"Confirm the cancellation of this reservation",
+			"Confirm"
+		);
+		await setSureStatus_func();
 
-		const result = await Booking__connection.cancelBooking(id)
-		if(result) {
-			await setMessage_func(true, "Reservation Cancelled")
-			await setMessageStatus_func()
-		}else {
-			await setMessage_func(false, "Reservation couldn't cancel");
-			await setMessageStatus_func();
+		await setCancelBookStatus(true);
+	};
+
+	useEffect(() => {
+		async function cancelBooking(id) {
+			const result =
+				await Booking__connection.cancelBooking(id);
+			if (result) {
+				await setMessage_func(
+					true,
+					"Reservation Cancelled"
+				);
+				await setMessageStatus_func();
+				// TODO: reload the table
+			} else {
+				await setMessage_func(
+					false,
+					"Reservation couldn't cancel"
+				);
+				await setMessageStatus_func();
+			}
+
+			await setCancelBookId("");
 		}
 
-		// TODO: reload the table
-	}
+		if(sureVerify === true && cancelBookStatus === true) {
+			cancelBooking(cancelBookId)
+			setSureVerify_func(false);
+			setCancelBookStatus(false)
+		}
+	}, [sureVerify, cancelBookStatus]);
 
 	return (
 		<tr className="border-b border-opacity-20 border-gray-700 bg-white text-sm">
@@ -73,7 +115,10 @@ const TableBody = (props) => {
 							&#10004;
 						</button>
 					)}
-					<button onClick={()=> cancelBookHandler(props.data.id)} className="text-white font-sans font-extrabold bg-red-600 px-4 rounded-full py-1">
+					<button
+						onClick={() => cancelBookHandler(props.data.id)}
+						className="text-white font-sans font-extrabold bg-red-600 px-4 rounded-full py-1"
+					>
 						x
 					</button>
 				</td>
