@@ -78,10 +78,6 @@ const ReservationForm = (props) => {
 			};
 			checkAvailability(checkData);
 		}
-
-		// TODO: check availability
-		// checkAvailability(formData)
-		// TODO: load available rooms list
 	}, [formData]);
 
 	useEffect(() => {

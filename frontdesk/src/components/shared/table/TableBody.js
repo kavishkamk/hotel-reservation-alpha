@@ -1,7 +1,26 @@
-import React from "react";
+import React, {useContext} from "react";
+import Booking__connection from "../../../connections/Booking"
+import {DefaultContext} from "../../../context/DefaultContext"
 
 const TableBody = (props) => {
-	// console.log(props.data);
+	// console.log(props.data.id);
+	const { setMessage_func, setMessageStatus_func } =
+		useContext(DefaultContext);
+
+	const cancelBookHandler = async (id) => {
+		console.log("cancelled => "+ id)
+
+		const result = await Booking__connection.cancelBooking(id)
+		if(result) {
+			await setMessage_func(true, "Reservation Cancelled")
+			await setMessageStatus_func()
+		}else {
+			await setMessage_func(false, "Reservation couldn't cancel");
+			await setMessageStatus_func();
+		}
+
+		// TODO: reload the table
+	}
 
 	return (
 		<tr className="border-b border-opacity-20 border-gray-700 bg-white text-sm">
@@ -54,7 +73,7 @@ const TableBody = (props) => {
 							&#10004;
 						</button>
 					)}
-					<button className="text-white font-sans font-extrabold bg-red-600 px-4 rounded-full py-1">
+					<button onClick={()=> cancelBookHandler(props.data.id)} className="text-white font-sans font-extrabold bg-red-600 px-4 rounded-full py-1">
 						x
 					</button>
 				</td>

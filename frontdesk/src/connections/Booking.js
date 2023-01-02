@@ -77,34 +77,6 @@ class Booking__connection {
 		return result;
 	}
 
-	async getAllCheckin() {
-		const thisUrl =
-			main.url + "/booking/room-booking/confirmed";
-		const token = Auth.getToken();
-
-		const res = await fetch(thisUrl, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: token,
-			},
-		});
-		const data = await res.json();
-		console.log(data);
-		let result = {};
-
-		if (data.reservationList) {
-			result.data = data.reservationList;
-		} else {
-			result.error =
-				"Something went wrong. Cannot retrieve the data";
-		}
-
-		return result;
-	}
-
-	async getAllCheckout() {}
-
 	async getAllCancelled() {
 		const thisUrl =
 			main.url + "/booking/room-booking/cancelled";
@@ -131,6 +103,32 @@ class Booking__connection {
 	}
 
 	async getAllRestaurentBookings() {}
+
+	async cancelBooking(id) {
+		const thisUrl =
+			main.url + "/booking/room-booking/cancel/"+ id;
+		const token = Auth.getToken();
+
+		console.log(thisUrl)
+
+		const res = await fetch(thisUrl, {
+			method: "PATCH",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			},
+		});
+		const data = await res.json();
+		console.log(data);
+		let result;
+
+		if (data.request === "success") {
+			result = true;
+		} else {
+			result = false
+		}
+		return result;
+	}
 }
 
 export default new Booking__connection();
