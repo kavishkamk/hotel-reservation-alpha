@@ -1,19 +1,23 @@
-import React, {useState, useEffect, useContext} from 'react'
-import TableHead from "../../components/shared/table/TableHead"
-import TableBody from "../../components/shared/table/TableBody"
-import Booking__connection from "../../connections/Booking"
-import {DefaultContext} from "../../context/DefaultContext"
-import Dates from "../../functions/Dates"
+import React, {
+	useState,
+	useEffect,
+	useContext,
+} from "react";
+import TableHead from "../../components/shared/table/TableHead";
+import TableBody from "../../components/shared/table/TableBody";
+import Booking__connection from "../../connections/Booking";
+import { DefaultContext } from "../../context/DefaultContext";
+import Dates from "../../functions/Dates";
 
 const TabsContent = (props) => {
 	const { setMessage_func, setMessageStatus_func } =
 		useContext(DefaultContext);
-	
-	const [pendingData, setPendingData] = useState([])
-	const [approvedData, setApprovedData] = useState([])
-	const [checkinData, setCheckinData] = useState([])
-	const [checkoutData, setCheckoutData] = useState([])
-	const [cancelledData, setCancelledData] = useState([])
+
+	const [pendingData, setPendingData] = useState([]);
+	const [approvedData, setApprovedData] = useState([]);
+	const [checkinData, setCheckinData] = useState([]);
+	const [checkoutData, setCheckoutData] = useState([]);
+	const [cancelledData, setCancelledData] = useState([]);
 	const [restaurentsData, setRestaurentsData] = useState([
 		{
 			id: 1,
@@ -39,13 +43,20 @@ const TabsContent = (props) => {
 			tables: 1,
 			meal: "Lunch",
 		},
-	])
+	]);
 
-	const tab = props.tab
+	const tab = props.tab;
 
 	const pending = [
-		"Client Email", "Check-in", "Check-out", "Guests", "Room", "No. of Rooms", "Payment", "Status"
-	]
+		"Client Email",
+		"Check-in",
+		"Check-out",
+		"Guests",
+		"Room",
+		"No. of Rooms",
+		"Payment",
+		"Status",
+	];
 
 	const cancel = [
 		"Client Email",
@@ -58,49 +69,95 @@ const TabsContent = (props) => {
 	];
 
 	const restaurentsHead = [
-		"Name", "Restaurent", "Date", "Tables", "Meal",
-	]
+		"Name",
+		"Restaurent",
+		"Date",
+		"Tables",
+		"Meal",
+	];
 
-	useEffect(()=> {
+	useEffect(() => {
 		async function getAllPending() {
-			const data = await Booking__connection.getAllPending()
+			const data =
+				await Booking__connection.getAllPending();
+			let resultFormat = [];
 
-			if(data.error){
+			if (data.error) {
 				await setMessage_func(false, data.error);
 				await setMessageStatus_func();
 				return;
-			}
-			else {
-				data.data.forEach(async item => {
-					const data1 = await Booking__connection.getRoomById(item.roomType)
-					let roomName
+			} else {
+				data.data.forEach(async (item) => {
+					const data1 =
+						await Booking__connection.getRoomById(
+							item.roomType
+						);
+					let roomName;
 
-					if(data1.room) {
-						roomName = data1.room
-					}else {
-						roomName = "---"
+					if (data1.room) {
+						roomName = data1.room;
+					} else {
+						roomName = "---";
 					}
 					const checkin = Dates.formatDate(item.fromDate);
 					const checkout = Dates.formatDate(item.toDate);
 
-					await setPendingData([
-						...pendingData,
-						{
-							id: item.id,
-							name: item.userEmail,
-							checkin: checkin,
-							checkout: checkout,
-							guests: item.numberOfPersons,
-							room: roomName,
-							roomCount: item.numberOfRooms,
-							payment: ""
-						},
-					]);
+					resultFormat.push({
+						id: item.id,
+						name: item.userEmail,
+						checkin: checkin,
+						checkout: checkout,
+						guests: item.numberOfPersons,
+						room: roomName,
+						roomCount: item.numberOfRooms,
+						payment: "",
+					});
 				});
+
+				await setPendingData(resultFormat);
 			}
 		}
 
-		async function getAllApproved() {}
+		async function getAllApproved() {
+			const data =
+				await Booking__connection.getAllApproved();
+			let resultFormat = [];
+
+			if (data.error) {
+				await setMessage_func(false, data.error);
+				await setMessageStatus_func();
+				return;
+			} else {
+				data.data.forEach(async (item) => {
+					const data1 =
+						await Booking__connection.getRoomById(
+							item.roomType
+						);
+					let roomName;
+
+					if (data1.room) {
+						roomName = data1.room;
+					} else {
+						roomName = "---";
+					}
+					const checkin = Dates.formatDate(item.fromDate);
+					const checkout = Dates.formatDate(item.toDate);
+
+					resultFormat.push({
+						id: item.id,
+						name: item.userEmail,
+						checkin: checkin,
+						checkout: checkout,
+						guests: item.numberOfPersons,
+						room: roomName,
+						roomCount: item.numberOfRooms,
+						// payment: "",
+					});
+				});
+
+				await setApprovedData(resultFormat);
+			}
+		}
 
 		async function getAllCheckin() {}
 
@@ -109,14 +166,14 @@ const TabsContent = (props) => {
 		async function getAllCancelled() {
 			const data =
 				await Booking__connection.getAllCancelled();
-			
-			let resultFormat = []
+
+			let resultFormat = [];
 
 			if (data.error) {
 				await setMessage_func(false, data.error);
 				await setMessageStatus_func();
 				return;
-			}else {
+			} else {
 				data.data.forEach(async (item) => {
 					const data1 =
 						await Booking__connection.getRoomById(
@@ -143,17 +200,16 @@ const TabsContent = (props) => {
 					});
 				});
 
-				await setCancelledData(resultFormat)
+				await setCancelledData(resultFormat);
 			}
 		}
 
 		async function getAllRestaurentBookings() {}
 
-		getAllPending()
-		getAllCancelled()
-
-		console.log(cancelledData)
-	}, [])
+		getAllPending();
+		getAllCancelled();
+		getAllApproved();
+	}, []);
 
 	// const pendingData = [
 	// 	{
@@ -197,9 +253,9 @@ const TabsContent = (props) => {
 			{tab === 2 && (
 				<div className="max-w-[95%] mx-auto p-2 shadow-lg rounded-xl bg-white overflow-x-auto overflow-y-auto min-h-[calc(100vh-12rem)] max-h-[calc(100vh-12rem)]">
 					<table className="min-w-full">
-						<TableHead tab={tab} columns={pending} />
+						<TableHead tab={tab} columns={cancel} />
 						<tbody className="">
-							{pendingData.map((data) => (
+							{approvedData.map((data) => (
 								<TableBody tab={tab} data={data} />
 							))}
 						</tbody>
@@ -263,6 +319,6 @@ const TabsContent = (props) => {
 			)}
 		</>
 	);
-}
+};
 
-export default TabsContent
+export default TabsContent;

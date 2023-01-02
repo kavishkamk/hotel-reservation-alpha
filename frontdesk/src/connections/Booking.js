@@ -51,7 +51,31 @@ class Booking__connection {
 		return result
 	}
 
-	async getAllApproved() {}
+	async getAllApproved() {
+		const thisUrl =
+			main.url + "/booking/room-booking/confirmed";
+		const token = Auth.getToken();
+
+		const res = await fetch(thisUrl, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			},
+		});
+		const data = await res.json();
+		console.log(data);
+		let result = {};
+
+		if (data.reservationList) {
+			result.data = data.reservationList;
+		} else {
+			result.error =
+				"Something went wrong. Cannot retrieve the data";
+		}
+
+		return result;
+	}
 
 	async getAllCheckin() {}
 
