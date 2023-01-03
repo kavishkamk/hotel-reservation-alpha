@@ -8,10 +8,14 @@ import TableBody from "../../components/shared/table/TableBody";
 import Booking__connection from "../../connections/Booking";
 import { DefaultContext } from "../../context/DefaultContext";
 import Dates from "../../functions/Dates";
+import LoadingSpinner from "../../components/shared/loading-spinner/LoadingSpinner"
 
 const TabsContent = (props) => {
 	const { setMessage_func, setMessageStatus_func } =
 		useContext(DefaultContext);
+
+	// still loading the page or not (fetching data finished or not)
+	const [loading, setLoading] = useState(true);
 
 	const [pendingData, setPendingData] = useState([]);
 	const [approvedData, setApprovedData] = useState([]);
@@ -159,49 +163,6 @@ const TabsContent = (props) => {
 			}
 		}
 
-		async function getAllCheckin() {
-			const data =
-				await Booking__connection.getAllCheckin();
-			let resultFormat = [];
-
-			if (data.error) {
-				await setMessage_func(false, data.error);
-				await setMessageStatus_func();
-				return;
-			} else {
-				data.data.forEach(async (item) => {
-					const data1 =
-						await Booking__connection.getRoomById(
-							item.roomType
-						);
-					let roomName;
-
-					if (data1.room) {
-						roomName = data1.room;
-					} else {
-						roomName = "---";
-					}
-					const checkin = Dates.formatDate(item.fromDate);
-					const checkout = Dates.formatDate(item.toDate);
-
-					resultFormat.push({
-						id: item.id,
-						name: item.userEmail,
-						checkin: checkin,
-						checkout: checkout,
-						guests: item.numberOfPersons,
-						room: roomName,
-						roomCount: item.numberOfRooms,
-						// payment: "",
-					});
-				});
-
-				await setCheckinData(resultFormat);
-			}
-		}
-
-		async function getAllCheckout() {}
-
 		async function getAllCancelled() {
 			const data =
 				await Booking__connection.getAllCancelled();
@@ -245,10 +206,21 @@ const TabsContent = (props) => {
 
 		async function getAllRestaurentBookings() {}
 
-		getAllPending();
-		getAllCancelled();
-		getAllApproved();
-	}, []);
+		if(loading) {
+			getAllPending().catch((err) => {
+				console.log(err);
+			});
+			getAllCancelled().catch((err) => {
+				console.log(err);
+			});
+			getAllApproved().catch((err) => {
+				console.log(err);
+			});
+
+			setLoading(false)
+		}
+
+	}, [loading]);
 
 	// const pendingData = [
 	// 	{
@@ -274,7 +246,7 @@ const TabsContent = (props) => {
 	// 	}
 	// ];
 
-	return (
+	return !loading ? (
 		<>
 			{tab === 1 && (
 				<div className="max-w-[95%] mx-auto p-2 shadow-lg rounded-xl bg-white overflow-x-auto overflow-y-auto min-h-[calc(100vh-12rem)] max-h-[calc(100vh-12rem)]">
@@ -331,6 +303,10 @@ const TabsContent = (props) => {
 				</div>
 			)}
 		</>
+	) : (
+		<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+			<LoadingSpinner />
+		</div>
 	);
 };
 

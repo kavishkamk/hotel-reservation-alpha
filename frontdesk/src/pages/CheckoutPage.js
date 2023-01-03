@@ -74,6 +74,56 @@ const CheckoutPage = () => {
 		}
 	}, [email]);
 
+	// useEffect(() => {
+	// 	async function getBookingSummary(id) {
+	// 		const data =
+	// 			await Checkout__connection.getBookingSummary(id);
+	// 		let result = [];
+
+	// 		if (data.error) {
+	// 			setMessage_func(false, data.error);
+	// 			setMessageStatus_func();
+	// 		} else if (data.data) {
+	// 			data.data.forEach(async (order) => {
+	// 				// console.log(order)
+
+	// 				const data1 =
+	// 					await Booking__connection.getRoomById(
+	// 						order.roomType
+	// 					);
+	// 				let roomName;
+
+	// 				if (data1.room) {
+	// 					roomName = data1.room;
+	// 				} else {
+	// 					roomName = "---";
+	// 				}
+
+	// 				const checkin = Dates.formatDateTime(
+	// 					order.checkIn
+	// 				);
+	// 				const checkout = Dates.formatDate(order.toDate);
+
+	// 				result.push({
+	// 					id: order.id,
+	// 					room: roomName,
+	// 					checkin: checkin,
+	// 					checkout: checkout,
+	// 					guests: order.numberOfPersons,
+	// 					roomCount: order.numberOfRooms,
+	// 					price: order.totalPrice,
+	// 				});
+	// 			});
+	// 			console.log("result");
+	// 			console.log(result);
+	// 			await setReservations(result);
+	// 		}
+	// 	}
+	// 	if (clientData.id) {
+	// 		getBookingSummary(clientData.id);
+	// 	}
+	// }, [clientData]);
+
 	return (
 		<PageContainer>
 			<div className="flex flex-row w-full items-start pt-2 font-manrope">
