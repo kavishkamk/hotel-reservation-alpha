@@ -17,14 +17,14 @@ const BookingPage = () => {
 			id: 2,
 			name: "Approved",
 		},
-		{
-			id: 3,
-			name: "Check-in",
-		},
-		{
-			id: 4,
-			name: "Check-out",
-		},
+		// {
+		// 	id: 3,
+		// 	name: "Check-in",
+		// },
+		// {
+		// 	id: 4,
+		// 	name: "Check-out",
+		// },
 		{
 			id: 5,
 			name: "Cancelled",

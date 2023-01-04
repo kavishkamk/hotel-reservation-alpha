@@ -6,6 +6,7 @@ import { DefaultContext } from "../context/DefaultContext";
 import BookingSummary from "../containers/shared/BookingSummary"
 import Auth from "../functions/Auth"
 import Dashboard__connection from "../connections/Dashboard"
+import Checkin__connection from "../connections/Checkin"
 
 const CheckinPage = () => {
 	const {
@@ -64,15 +65,23 @@ const CheckinPage = () => {
 					"Contact No": data.user.contactNumber,
 					Address: data.user.address,
 					NIC: data.user.nicNumber,
+					id: data.user.userId
 				});
 			}
+		}
+
+		async function getBookingSummary(id) {
+
 		}
 
 		if (email.length > 0) {
 			console.log(email);
 			getUserByEmail(email);
+			// getBookingSummary(clientData.id)
 		}
 	}, [email]);
+
+	console.log(clientData)
 
 	return (
 		<PageContainer>

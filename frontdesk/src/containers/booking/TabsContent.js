@@ -1,42 +1,28 @@
-import React from 'react'
-import TableHead from "../../components/shared/table/TableHead"
-import TableBody from "../../components/shared/table/TableBody"
+import React, {
+	useState,
+	useEffect,
+	useContext,
+} from "react";
+import TableHead from "../../components/shared/table/TableHead";
+import TableBody from "../../components/shared/table/TableBody";
+import Booking__connection from "../../connections/Booking";
+import { DefaultContext } from "../../context/DefaultContext";
+import Dates from "../../functions/Dates";
+import LoadingSpinner from "../../components/shared/loading-spinner/LoadingSpinner"
 
 const TabsContent = (props) => {
-	const tab = props.tab
+	const { setMessage_func, setMessageStatus_func } =
+		useContext(DefaultContext);
 
-	const pending = [
-		"Name", "Check-in", "Check-out", "Guests", "Room", "No. of Rooms", "Payment", "Status"
-	]
+	// still loading the page or not (fetching data finished or not)
+	const [loading, setLoading] = useState(true);
 
-	const restaurentsHead = [
-		"Name", "Restaurent", "Date", "Tables", "Meal",
-	]
-
-	const pendingData = [
-		{
-			id: 1,
-			name: "Nihal Silva",
-			checkin: "2022-12-22",
-			checkout: "2022-12-25",
-			guests: 3,
-			room: "Deluxe Room",
-			roomCount: 2,
-			payment: "http://google.com",
-		},
-		{
-			id: 2,
-			name: "Kumara Gamage",
-			checkin: "2022-12-20",
-			checkout: "2022-12-25",
-			guests: 2,
-			room: "Varenda Garden Room",
-			roomCount: 1,
-			payment: "http://facebook.com",
-		}
-	];
-
-	const restaurentsData = [
+	const [pendingData, setPendingData] = useState([]);
+	const [approvedData, setApprovedData] = useState([]);
+	const [checkinData, setCheckinData] = useState([]);
+	const [checkoutData, setCheckoutData] = useState([]);
+	const [cancelledData, setCancelledData] = useState([]);
+	const [restaurentsData, setRestaurentsData] = useState([
 		{
 			id: 1,
 			name: "Maduka Weerasinge",
@@ -61,9 +47,206 @@ const TabsContent = (props) => {
 			tables: 1,
 			meal: "Lunch",
 		},
+	]);
+
+	const tab = props.tab;
+
+	const pending = [
+		"Client Email",
+		"Check-in",
+		"Check-out",
+		"Guests",
+		"Room",
+		"No. of Rooms",
+		"Payment",
+		"Status",
 	];
 
-	return (
+	const cancel = [
+		"Client Email",
+		"Check-in",
+		"Check-out",
+		"Guests",
+		"Room",
+		"No. of Rooms",
+		"Status",
+	];
+
+	const restaurentsHead = [
+		"Name",
+		"Restaurent",
+		"Date",
+		"Tables",
+		"Meal",
+	];
+
+	useEffect(() => {
+		async function getAllPending() {
+			const data =
+				await Booking__connection.getAllPending();
+			let resultFormat = [];
+
+			if (data.error) {
+				await setMessage_func(false, data.error);
+				await setMessageStatus_func();
+				return;
+			} else {
+				data.data.forEach(async (item) => {
+					const data1 =
+						await Booking__connection.getRoomById(
+							item.roomType
+						);
+					let roomName;
+
+					if (data1.room) {
+						roomName = data1.room;
+					} else {
+						roomName = "---";
+					}
+					const checkin = Dates.formatDate(item.fromDate);
+					const checkout = Dates.formatDate(item.toDate);
+
+					resultFormat.push({
+						id: item.id,
+						name: item.userEmail,
+						checkin: checkin,
+						checkout: checkout,
+						guests: item.numberOfPersons,
+						room: roomName,
+						roomCount: item.numberOfRooms,
+						payment: "",
+					});
+				});
+
+				await setPendingData(resultFormat);
+			}
+		}
+
+		async function getAllApproved() {
+			const data =
+				await Booking__connection.getAllApproved();
+			let resultFormat = [];
+
+			if (data.error) {
+				await setMessage_func(false, data.error);
+				await setMessageStatus_func();
+				return;
+			} else {
+				data.data.forEach(async (item) => {
+					const data1 =
+						await Booking__connection.getRoomById(
+							item.roomType
+						);
+					let roomName;
+
+					if (data1.room) {
+						roomName = data1.room;
+					} else {
+						roomName = "---";
+					}
+					const checkin = Dates.formatDate(item.fromDate);
+					const checkout = Dates.formatDate(item.toDate);
+
+					resultFormat.push({
+						id: item.id,
+						name: item.userEmail,
+						checkin: checkin,
+						checkout: checkout,
+						guests: item.numberOfPersons,
+						room: roomName,
+						roomCount: item.numberOfRooms,
+						// payment: "",
+					});
+				});
+
+				await setApprovedData(resultFormat);
+			}
+		}
+
+		async function getAllCancelled() {
+			const data =
+				await Booking__connection.getAllCancelled();
+
+			let resultFormat = [];
+
+			if (data.error) {
+				await setMessage_func(false, data.error);
+				await setMessageStatus_func();
+				return;
+			} else {
+				data.data.forEach(async (item) => {
+					const data1 =
+						await Booking__connection.getRoomById(
+							item.roomType
+						);
+					let roomName;
+
+					if (data1.room) {
+						roomName = data1.room;
+					} else {
+						roomName = "---";
+					}
+					const checkin = Dates.formatDate(item.fromDate);
+					const checkout = Dates.formatDate(item.toDate);
+
+					resultFormat.push({
+						id: item.id,
+						name: item.userEmail,
+						checkin: checkin,
+						checkout: checkout,
+						guests: item.numberOfPersons,
+						room: roomName,
+						roomCount: item.numberOfRooms,
+					});
+				});
+
+				await setCancelledData(resultFormat);
+			}
+		}
+
+		async function getAllRestaurentBookings() {}
+
+		if(loading) {
+			getAllPending().catch((err) => {
+				console.log(err);
+			});
+			getAllCancelled().catch((err) => {
+				console.log(err);
+			});
+			getAllApproved().catch((err) => {
+				console.log(err);
+			});
+
+			setLoading(false)
+		}
+
+	}, [loading]);
+
+	// const pendingData = [
+	// 	{
+	// 		id: 1,
+	// 		name: "Nihal Silva",
+	// 		checkin: "2022-12-22",
+	// 		checkout: "2022-12-25",
+	// 		guests: 3,
+	// 		room: "Deluxe Room",
+	// 		roomCount: 2,
+	// 		payment: "http://google.com",
+	// 	}
+	// ];
+
+	// const restaurentsData = [
+	// 	{
+	// 		id: 1,
+	// 		name: "Maduka Weerasinge",
+	// 		restaurent: "Sky Dine",
+	// 		date: "2022-12-23",
+	// 		tables: 2,
+	// 		meal: "Breakfast",
+	// 	}
+	// ];
+
+	return !loading ? (
 		<>
 			{tab === 1 && (
 				<div className="max-w-[95%] mx-auto p-2 shadow-lg rounded-xl bg-white overflow-x-auto overflow-y-auto min-h-[calc(100vh-12rem)] max-h-[calc(100vh-12rem)]">
@@ -81,35 +264,9 @@ const TabsContent = (props) => {
 			{tab === 2 && (
 				<div className="max-w-[95%] mx-auto p-2 shadow-lg rounded-xl bg-white overflow-x-auto overflow-y-auto min-h-[calc(100vh-12rem)] max-h-[calc(100vh-12rem)]">
 					<table className="min-w-full">
-						<TableHead tab={tab} columns={pending} />
+						<TableHead tab={tab} columns={cancel} />
 						<tbody className="">
-							{pendingData.map((data) => (
-								<TableBody tab={tab} data={data} />
-							))}
-						</tbody>
-					</table>
-				</div>
-			)}
-
-			{tab === 3 && (
-				<div className="max-w-[95%] mx-auto p-2 shadow-lg rounded-xl bg-white overflow-x-auto overflow-y-auto min-h-[calc(100vh-12rem)] max-h-[calc(100vh-12rem)]">
-					<table className="min-w-full">
-						<TableHead tab={tab} columns={pending} />
-						<tbody className="">
-							{pendingData.map((data) => (
-								<TableBody tab={tab} data={data} />
-							))}
-						</tbody>
-					</table>
-				</div>
-			)}
-
-			{tab === 4 && (
-				<div className="max-w-[95%] mx-auto p-2 shadow-lg rounded-xl bg-white overflow-x-auto overflow-y-auto min-h-[calc(100vh-12rem)] max-h-[calc(100vh-12rem)]">
-					<table className="min-w-full">
-						<TableHead tab={tab} columns={pending} />
-						<tbody className="">
-							{pendingData.map((data) => (
+							{approvedData.map((data) => (
 								<TableBody tab={tab} data={data} />
 							))}
 						</tbody>
@@ -120,9 +277,9 @@ const TabsContent = (props) => {
 			{tab === 5 && (
 				<div className="max-w-[95%] mx-auto p-2 shadow-lg rounded-xl bg-white overflow-x-auto overflow-y-auto min-h-[calc(100vh-12rem)] max-h-[calc(100vh-12rem)]">
 					<table className="min-w-full">
-						<TableHead tab={tab} columns={pending} />
+						<TableHead tab={tab} columns={cancel} />
 						<tbody className="">
-							{pendingData.map((data) => (
+							{cancelledData.map((data) => (
 								<TableBody tab={tab} data={data} />
 							))}
 						</tbody>
@@ -146,7 +303,11 @@ const TabsContent = (props) => {
 				</div>
 			)}
 		</>
+	) : (
+		<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+			<LoadingSpinner />
+		</div>
 	);
-}
+};
 
-export default TabsContent
+export default TabsContent;

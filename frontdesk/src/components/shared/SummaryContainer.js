@@ -1,8 +1,11 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 import Input from "../dashboard/InputField";
 
 const SummaryContainer = (props) => {
+	console.log(props.item)
+
+	const [order, setOrder] = useState(props.item)
 	const paidHandler = () => {
 		console.log("should print")
 		// sessionStorage.setItem(
@@ -12,11 +15,16 @@ const SummaryContainer = (props) => {
 		// window.print();
 	};
 
-	const additionalHandler = ()=> {}
-
 	const checkinHandler = () => {};
 
 	const checkoutHandler = () => {};
+
+	useEffect(()=> {
+		if(props.item){
+			console.log(props.item)
+			setOrder(props.item)
+		}
+	}, [props.item])
 
 	return (
 		<div className="bg-white drop-shadow-2xl rounded-xl p-3 text-xs">
@@ -24,44 +32,44 @@ const SummaryContainer = (props) => {
 				title="Room Type"
 				id="roomtype"
 				type="text"
-				value={props.item.room}
+				value={order.room}
 			/>
 			<Input
 				title="Check-in"
 				id="checkin"
 				type="text"
-				value={props.item.checkin}
+				value={order.checkin}
 			/>
 			<Input
 				title="Check-out"
 				id="checkout"
 				type="text"
-				value={props.item.checkout}
+				value={order.checkout}
 			/>
 			<Input
 				title="No. of Guests"
 				id="guests"
 				type="number"
-				value={props.item.guests}
+				value={order.guests}
 			/>
 			<Input
 				title="No. of Rooms"
 				id="roomCount"
 				type="number"
-				value={props.item.roomCount}
+				value={order.roomCount}
 			/>
 			<Input
 				title="Price"
 				id="price"
 				type="text"
-				value={props.item.price}
+				value={order.price}
 			/>
 
 			{!props.checkout && (
 				<div className="flex flex-row items-center justify-evenly my-3">
 					{/* <Link
 						to="/print"
-						// state={{data: props.item}}
+						// state={{data: order}}
 						target="_blank"
 						rel="noopener noreferrer"
 					> */}
@@ -83,12 +91,6 @@ const SummaryContainer = (props) => {
 
 			{props.checkout && (
 				<div className="flex flex-row items-center justify-evenly my-3">
-					<button
-						onClick={additionalHandler}
-						className="bg-textBlue text-white font-bold text-base px-6 py-1"
-					>
-						Additional
-					</button>
 					<button
 						onClick={checkoutHandler}
 						className="bg-textBlue text-white font-bold text-base px-6 py-1"

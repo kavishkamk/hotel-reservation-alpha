@@ -156,7 +156,10 @@ const DashboardPage = () => {
 
 			<div className="flex flex-row w-full items-start pt-2 font-manrope">
 				<div className="w-1/2 pl-10">
-					<SearchEmail onClick={searchHandler} setEmail={setEmail} />
+					<SearchEmail
+						onClick={searchHandler}
+						setEmail={setEmail}
+					/>
 					<ClientRegistration
 						email={email}
 						clientData={clientData}
@@ -167,6 +170,7 @@ const DashboardPage = () => {
 				<div className="w-1/2 pl-5 pr-10">
 					<ReservationForm
 						roomsList={roomsList}
+						email={email}
 						setRoomsList={setRoomsList}
 						clientId={clientId}
 						clientData={clientData}

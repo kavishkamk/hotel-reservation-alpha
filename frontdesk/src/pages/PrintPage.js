@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import LogoImage from "../assets/logo.svg";
 import Auth from "../functions/Auth";
 import Dates from "../functions/Dates";
+import Dashboard__connection from "../connections/Dashboard";
 
 const PrintPage = (props) => {
 	const [printStatus, setPrintStatus] = useState(false);
@@ -19,13 +20,26 @@ const PrintPage = (props) => {
 		);
 	}
 
+	console.log(reservationDetails.id);
+
 	const printHandler = async () => {
 		await setPrintStatus(true);
 		await window.print();
 		await setPrintStatus(false);
 
-		// delete print data after printing
-		await Auth.deletePrintReserveData();
+		// confirm payment
+		const paymentStatus =
+			await Dashboard__connection.roomBookingPayment(
+				reservationDetails.id
+			);
+		if (paymentStatus) {
+			console.log("payment done");
+
+			// delete print data after printing
+			await Auth.deletePrintReserveData();
+		}else {
+			window.close()
+		}
 	};
 
 	const closeHandler = async () => {
