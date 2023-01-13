@@ -11,19 +11,19 @@ const Bookings = (props) => {
 		},
 		{
 			id: 2,
-			name: "Paid",
-		},
-		{
-			id: 3,
 			name: "Booking",
 		},
 		{
-			id: 4,
+			id: 3,
 			name: "Cancelled",
 		},
 		{
+			id: 4,
+			name: "Check-in",
+		},
+		{
 			id: 5,
-			name: "History",
+			name: "Check-out",
 		},
 	];
 
@@ -40,7 +40,7 @@ const Bookings = (props) => {
 						<div
 							onClick={() => tabSelectHandler(tab.id)}
 							className={
-								"cursor-pointer px-2 md:px-5 py-3 border-b-4 " +
+								"cursor-pointer px-2 md:px-5 py-3 border-b-4 whitespace-nowrap " +
 								(tab.id === selected
 									? "border-textBlue text-textBlue"
 									: "border-gray-400")

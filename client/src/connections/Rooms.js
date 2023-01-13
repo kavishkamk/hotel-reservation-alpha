@@ -158,6 +158,31 @@ class Rooms__connection {
 
 		return rooms;
 	}
+
+	async getRoomById(id) {
+		const thisUrl = main.url + "/services/rooms/"+ id;
+		const token = Auth.getToken();
+
+		const res = await fetch(thisUrl, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			},
+		});
+
+		const data = await res.json();
+		// console.log(data)
+		let result = {}
+
+		if(data.room) {
+			result.room = data.room.roomType
+		}else {
+			result.error = "error"
+		}
+
+		return result
+	}
 }
 
 export default new Rooms__connection();
