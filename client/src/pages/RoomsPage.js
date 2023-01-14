@@ -11,6 +11,7 @@ const RoomsPage = () => {
 		checkin: "",
 		checkout: "",
 		guests: "",
+		rooms: 0,
 	});
 
 	const [selectedTags, setSelectedTags] = useState([]);
@@ -18,7 +19,7 @@ const RoomsPage = () => {
 	const [bookStatus, setBookStatus] = useState(false);
 	const [item, setItem] = useState([]);
 	const [tags, setTags] = useState([]);
-	const [bookHide, setBookHide] = useState(true)
+	const [bookHide, setBookHide] = useState(true);
 
 	const searchHandler = async () => {
 		console.log(selectedTags);
@@ -39,15 +40,29 @@ const RoomsPage = () => {
 	};
 
 	useEffect(() => {
-		console.log(formData);
+		// console.log(formData);
+
+		async function checkAvailability(check) {
+			const data = await Rooms__connection.checkAvailability(check)
+			console.log(data)
+			// await setSearchResult(data)
+			setBookHide(false);
+		}
 
 		if (
 			formData.checkin.length > 0 &&
 			formData.checkout.length > 0 &&
-			formData.guests.length > 0
+			formData.guests.length > 0 &&
+			formData.rooms > 0
 		) {
-			setBookHide(false)
-			// TODO: check availability intergrate with the API
+			const check = {
+				checkin: formData.checkin,
+				checkout: formData.checkout,
+				guests: formData.guests,
+				rooms: formData.rooms
+			}
+
+			checkAvailability(check)
 		}
 	}, [formData]);
 
@@ -66,6 +81,11 @@ const RoomsPage = () => {
 		getAllRoomsTags();
 		getAllRooms();
 	}, []);
+
+	useEffect(()=> {
+		console.log("===")
+		console.log(searchResult)
+	}, [searchResult])
 
 	return (
 		<>

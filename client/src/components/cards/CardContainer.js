@@ -15,6 +15,8 @@ const CardContainer = (props) => {
 		setFlipped(!flipped);
 	};
 
+	console.log(item)
+
 	return (
 		<div className="cursor-pointer">
 			<ReactCardFlip isFlipped={flipped}>

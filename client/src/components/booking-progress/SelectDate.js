@@ -59,19 +59,19 @@ const SelectDate = (props) => {
 				rooms: roomsCountInput,
 			});
 
-			checkbtnRef.current.classList.remove(
-				"bg-lightPurple"
-			);
+			// checkbtnRef.current.classList.remove(
+			// 	"bg-lightPurple"
+			// );
 
 			// ***********************************
 			// if selected dates available, display "available"
-			if (availability) {
-				checkbtnRef.current.classList.add("bg-[#10B981]");
-				setCheckStatus(true);
-			}else if(availability === false) {
-				checkbtnRef.current.classList.add("bg-red-400");
-				setCheckStatus(false);
-			}
+			// if (availability) {
+			// 	checkbtnRef.current.classList.add("bg-[#10B981]");
+			// 	setCheckStatus(true);
+			// }else if(availability === false) {
+			// 	checkbtnRef.current.classList.add("bg-red-400");
+			// 	setCheckStatus(false);
+			// }
 		}
 	};
 
@@ -89,10 +89,14 @@ const SelectDate = (props) => {
 		let text;
 		if(checkStatus === null)
 			text = `CHECK AVAILABILITY`
-		else if(checkStatus === true) 
-			text = `AVAILABLE`
-		else if(checkStatus === false)
-			text = `NOT AVAILABLE`
+		
+		else
+			text = `CHECK AVAILABILITY`;
+
+		// else if(checkStatus === true) 
+		// 	text = `AVAILABLE`
+		// else if(checkStatus === false)
+		// 	text = `NOT AVAILABLE`
 		
 			return text
 	}
