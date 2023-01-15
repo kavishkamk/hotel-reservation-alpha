@@ -2,7 +2,7 @@ import { requestValidationMiddleware, requireAdminAccess, requireAuthMiddleware 
 import { Router } from "express";
 import { body } from "express-validator";
 import { getTodaysTotalPayments, getTodaysTotalReservation } from "../controllers/restaurent-booking-controller";
-import { cancelRoomReservation, checkIn, checkOut, checkRoomAvailability, createBookingForClient, createRoomBooking, getBookings, getCancelledRoomReservation, getCancelledRoomReservationOfCurrentUser, getCheckInByUserId, getCheckInCurrentUser, getCheckOutByUserId, getCheckOutCurrentUser, getConfirmAvaitingRoomReservation, getConfirmAvaitingRoomReservationOfCurrentUser, getConfirmedRoomReservation, getConfirmedRoomReservationOfCurrentUser, getPendingRoomReservation, getPendingRoomReservationOfCurrentUser } from "../controllers/room-booking-controller";
+import { cancelRoomReservation, checkIn, checkOut, checkRoomAvailability, createBookingForClient, createRoomBooking, getBookings, getCancelledRoomReservation, getCancelledRoomReservationOfCurrentUser, getCheckInByUserId, getCheckInCurrentUser, getCheckOutByUserId, getCheckOutCurrentUser, getConfirmAvaitingRoomReservation, getConfirmAvaitingRoomReservationOfCurrentUser, getConfirmedRoomReservation, getConfirmedRoomReservationOfCurrentUser, getPendingRoomReservation, getPendingRoomReservationByUserId, getPendingRoomReservationOfCurrentUser } from "../controllers/room-booking-controller";
 
 const router = Router();
 
@@ -176,5 +176,15 @@ router.get(
     "/total-paied-reservation",
     getTodaysTotalPayments
 )
+
+router.get(
+    "/confirmed/user/:userId",
+    getConfirmedRoomReservation
+);
+
+router.get(
+    "/pending-reservation/user/:userId",
+    getPendingRoomReservationByUserId
+);
 
 export { router as roomBookingRouter };

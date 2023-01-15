@@ -58,7 +58,7 @@ const getRestaurentBookings = async (req: Request, res: Response, next: NextFunc
 
 const restaurentBookingLogic = async (req: Request, client: string, email: string) => {
 
-    const { restaurentTypeId, numberOfTables, numberOfPersons, fromDate, toDate } = req.body;
+    const { restaurentTypeId, numberOfTables, numberOfPersons, fromDate, meal } = req.body;
 
     let reservationTypeObj;
 
@@ -73,10 +73,10 @@ const restaurentBookingLogic = async (req: Request, client: string, email: strin
         throw new CommonError(404, ErrorTypes.NOT_FOUND, "Table type not found");
     };
 
-    // check toDate grater than fromDate
-    if (fromDate > toDate) {
-        throw new CommonError(400, ErrorTypes.INPUT_VALIDATION_ERROR, "dipacher date should not before than arrival date");
-    };
+    // // check toDate grater than fromDate
+    // if (fromDate > toDate) {
+    //     throw new CommonError(400, ErrorTypes.INPUT_VALIDATION_ERROR, "dipacher date should not before than arrival date");
+    // };
 
     // check gust number match for number of tables
     if (numberOfPersons > reservationTypeObj.maxGuest * numberOfTables) {
@@ -86,7 +86,7 @@ const restaurentBookingLogic = async (req: Request, client: string, email: strin
 
     let day = new Date(fromDate);
     let fromDay = new Date(fromDate);
-    let toDay = new Date(toDate);
+    let toDay = new Date(fromDate);
 
     // check number of tables availble
 
@@ -136,8 +136,9 @@ const restaurentBookingLogic = async (req: Request, client: string, email: strin
         numberOfPersons,
         status: ReservationStatus.Created,
         fromDate,
-        toDate,
-        userEmail: email
+        toDate: fromDate,
+        userEmail: email,
+        meal
     });
 
     try {
@@ -152,12 +153,12 @@ const restaurentBookingLogic = async (req: Request, client: string, email: strin
 
 const checkRestaurentAvailability = async (req: Request, res: Response, next: NextFunction) => {
 
-    const { numberOfTables, numberOfPersons, fromDate, toDate } = req.body;
+    const { numberOfTables, numberOfPersons, fromDate } = req.body;
 
-    // check toDate grater than fromDate
-    if (fromDate > toDate) {
-        return next(new CommonError(400, ErrorTypes.INPUT_VALIDATION_ERROR, "dipacher date should not before than arrival date"));
-    };
+    // // check toDate grater than fromDate
+    // if (fromDate > toDate) {
+    //     return next(new CommonError(400, ErrorTypes.INPUT_VALIDATION_ERROR, "dipacher date should not before than arrival date"));
+    // };
 
     let restaurentTypeList;
 
@@ -168,7 +169,7 @@ const checkRestaurentAvailability = async (req: Request, res: Response, next: Ne
     };
 
     let fromDay = new Date(fromDate);
-    let toDay = new Date(toDate);
+    let toDay = new Date(fromDate);
     // check number of rooms availble
 
     // get the all dates request for booking

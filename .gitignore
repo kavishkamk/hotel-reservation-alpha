@@ -131,3 +131,7 @@ dist
 
 # application specific files
 command-file.txt
+.pem
+cert.pem
+key.pem
+key.unencrypted.pem

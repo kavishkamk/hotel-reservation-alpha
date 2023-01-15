@@ -26,7 +26,7 @@ app.use(cors(options))
 // set request rate limit
 const limiter = rateLimit({
     windowMs: 1 * 60 * 1000, // 1 minute
-    max: 50
+    max: 200
 });
 
 app.use(limiter);

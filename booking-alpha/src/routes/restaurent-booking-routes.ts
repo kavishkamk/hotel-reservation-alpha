@@ -16,10 +16,7 @@ router.patch(
             .withMessage("Number of persons should be grater than 0"),
         body("fromDate")
             .isDate()
-            .withMessage("from Date required"),
-        body("toDate")
-            .isDate()
-            .withMessage("to Date required")
+            .withMessage("from Date required")
     ],
     requestValidationMiddleware,
     checkRestaurentAvailability
@@ -43,9 +40,10 @@ router.post(
         body("fromDate")
             .isDate()
             .withMessage("from Date required"),
-        body("toDate")
-            .isDate()
-            .withMessage("to Date required")
+        body("meal")
+            .not()
+            .isEmpty()
+            .withMessage("meal required"),
     ],
     requestValidationMiddleware,
     createRestaurentBooking
@@ -89,9 +87,6 @@ router.post(
         body("fromDate")
             .isDate()
             .withMessage("from Date required"),
-        body("toDate")
-            .isDate()
-            .withMessage("to Date required"),
         body("clientId")
             .not()
             .isEmpty()
@@ -101,6 +96,10 @@ router.post(
             .normalizeEmail()
             .isEmail()
             .withMessage("valid email required"),
+        body("meal")
+            .not()
+            .isEmpty()
+            .withMessage("meal required"),
     ],
     requestValidationMiddleware,
     createRestaurentBookingForClient
