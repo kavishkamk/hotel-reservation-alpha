@@ -15,6 +15,7 @@ interface IRestaurentOrder {
     fromDate: Date;
     toDate: Date;
     userEmail?: string;
+    meal?: string;
 };
 
 // this is the interface that describe
@@ -32,6 +33,7 @@ interface RestaurentOrderDoc extends Document {
     checkOut?: Date;
     arrivalStatus: ArrivalStatus;
     userEmail?: string;
+    meal?: string;
 };
 
 // a interface that describe the properties
@@ -85,6 +87,9 @@ const restaurentOrderSchema = new Schema({
         default: ArrivalStatus.Pending
     },
     userEmail: {
+        type: String
+    },
+    meal: {
         type: String
     }
 }, {

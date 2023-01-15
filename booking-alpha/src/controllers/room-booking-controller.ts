@@ -14,11 +14,17 @@ const EXPIRATION_WINDOW_SECOND = 60 * 60;
 
 const createRoomBooking = async (req: Request, res: Response, next: NextFunction) => {
 
+    let booking;
+
     if (req.currentUser!.isAdmin) {
         return next(new CommonError(401, ErrorTypes.NOT_AUTHERIZED, "Don't have access to use this route"));
     };
 
-    const booking = await roomBookingLogic(req, req.currentUser!.id, req.currentUser!.email);
+    try {
+        booking = await roomBookingLogic(req, req.currentUser!.id, req.currentUser!.email);
+    } catch (err) {
+        return next(err);
+    };
 
     res.status(201).json({ booking });
 };
@@ -509,6 +515,34 @@ const getCheckOutByUserId = async (req: Request, res: Response, next: NextFuncti
 
 };
 
+const getConfirmedRoomReservationByUserId = async (req: Request, res: Response, next: NextFunction) => {
+
+    let reservationList;
+
+    try {
+        reservationList = await Order.find({ status: ReservationStatus.Complete, userId: req.params.userId, arrivalStatus: ArrivalStatus.Pending }).exec();
+    } catch (err) {
+        return next(err);
+    };
+
+    res.status(200).json({ reservationList });
+
+};
+
+const getPendingRoomReservationByUserId = async (req: Request, res: Response, next: NextFunction) => {
+
+    let reservationList;
+
+    try {
+        reservationList = await Order.find({ status: ReservationStatus.Created, userId: req.params.userId }).exec();
+    } catch (err) {
+        return next(err);
+    }
+
+    res.status(200).json({ reservationList });
+
+};
+
 
 const filterFreeList = async (roomTypeList: (RoomTypeDoc & { _id: Types.ObjectId; })[],
     numberOfRooms: number, numberOfPersons: number, dateArray: Date[]) => {
@@ -578,5 +612,7 @@ export {
     getCheckInCurrentUser,
     getCheckOutCurrentUser,
     getCheckInByUserId,
-    getCheckOutByUserId
+    getCheckOutByUserId,
+    getConfirmedRoomReservationByUserId,
+    getPendingRoomReservationByUserId
 };

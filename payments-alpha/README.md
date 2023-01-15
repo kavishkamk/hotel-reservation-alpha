@@ -49,7 +49,7 @@
    }
 ```
 
-- response (201 status code) - create payment success \
+- response (201 status code) - create payment success 
 
 ```
    {
@@ -88,7 +88,7 @@
    }
 ```
 
-- response (201 status code) - create payment success \
+- response (201 status code) - create payment success 
 
 ```
 {
@@ -117,7 +117,7 @@
     PATCH -> /api/payments/room-type/set-to-paid/:orderId
 ```
 
-- response (200 status code) - set as paid success \
+- response (200 status code) - set as paid success 
 
 ```
    {
@@ -161,10 +161,10 @@
 - get payment by order id
 
 ```
-   GET -> https://alphahotelreservation.dev/api/payments/room-type/payment/:orderId
+   GET -> api/payments/room-type/payment/:orderId
 ```
 
-- response (200 status code) - get payment success \
+- response (200 status code) - get payment success 
 
 ```
    {
@@ -195,7 +195,7 @@
    }
 ```
 
-- response (201 status code) - cancel payment success \
+- response (201 status code) - cancel payment success 
 
 ```
 {
