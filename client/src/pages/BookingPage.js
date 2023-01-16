@@ -1,19 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useLocation } from "react-router-dom";
-
-// components
 import ProgressTracker from "../components/booking-progress/ProgressTracker";
-
-// containers
 import CheckinCheckout from "../containers/booking-progress/CheckinCheckout";
 import ReservationType from "../containers/booking-progress/ReservationType";
 import ItemsFilter from "../containers/booking-progress/ItemsFilter";
 import Summary from "../containers/booking-progress/Summary";
 import PaymentUpload from "../containers/booking-progress/PaymentUpload";
+import {DefaultContext} from "../context/DefaultContext"
 
 const BookingPage = (props) => {
 	const location = useLocation();
 	console.log(location.state);
+
+	const {setMessageStatus_func, setMessage_func, messageStatus} = useContext(DefaultContext)
 
 	let defaultPage;
 	if (location.state) defaultPage = location.state.page;
@@ -31,7 +30,11 @@ const BookingPage = (props) => {
 		};
 
 	let backHide = false;
-	if (location.state) backHide = location.state.backHide;
+	if (location.state) {
+		backHide = location.state.backHide;
+
+		if(messageStatus) setMessageStatus_func();
+	}
 
 	const [page, setPage] = useState(defaultPage);
 	const [formData, setFormData] = useState(defaultFormData);
@@ -67,8 +70,8 @@ const BookingPage = (props) => {
 			setPage={setPage}
 			formData={formData}
 			setFormData={setFormData}
-			backHide={backHide}
-		/>
+			// backHide={backHide}
+		/>,
 	];
 
 	return (

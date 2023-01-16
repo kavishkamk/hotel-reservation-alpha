@@ -1,15 +1,14 @@
-import React, { useState } from "react";
-
-// components
+import React, { useState, useContext, useEffect } from "react";
 import BackButton from "../../components/booking-progress/BackButton";
 import NextButton from "../../components/booking-progress/NextButton";
 import Container from "../../components/booking-progress/Container";
 import Topic from "../../components/booking-progress/Topic";
 import CardContainer from "../../components/cards/CardContainer";
 import SummaryLine from "../../components/booking-progress/SummaryLine";
+import RoomBook__connection from "../../connections/RoomBook"
+import {DefaultContext} from "../../context/DefaultContext"
 
 const Summary = (props) => {
-	// props
 	const page = props.page;
 	const setPage = props.setPage;
 	const formData = props.formData;
@@ -19,13 +18,51 @@ const Summary = (props) => {
 	console.log("inside summary ===>>");
 	console.log(formData);
 
+	const {setMessage_func, setMessageStatus_func, messageStatus} = useContext(DefaultContext)
+	const [bookStatus, setBookStatus] = useState(false)
+
 	const backHandler = () => {
 		setPage(page - 1);
 	};
 
-	const nextHandler = () => {
-		setPage(page + 1)
+	const bookHandler = async () => {
+		const details = {
+			roomTypeId: formData.item.id,
+			numberOfRooms: formData.rooms,
+			numberOfPersons: formData.guests,
+			fromDate: formData.checkin,
+			toDate: formData.checkout
+		}
+
+		const res = await RoomBook__connection.roomBook(details)
+
+		if(res){
+			setMessage_func(true, "successfully made the reservation!")
+			setMessageStatus_func();
+			setBookStatus(true)
+
+			setFormData({...formData, bookStatus: true})
+		}else {
+			setMessage_func(
+				false,
+				"Something went wrong! Could not reserved"
+			);
+			setMessageStatus_func();
+		}
 	};
+
+	const nextHandler = ()=> {
+		if(formData.bookStatus)
+			setPage(page + 1);
+	}
+	
+	useEffect(()=> {
+		if(!messageStatus && bookStatus) {
+			// once the displaying message popup is closed
+			// redirect to the payment section of the booking process
+			setPage(page + 1)
+		}
+	}, [messageStatus])
 
 	return (
 		<div className="">
@@ -83,10 +120,17 @@ const Summary = (props) => {
 					)}
 
 					<div className="ml-auto">
-						<NextButton
-							onClick={nextHandler}
-							name="Book Now"
-						/>
+						{!formData.bookStatus ? (
+							<NextButton
+								onClick={bookHandler}
+								name="Book Now"
+							/>
+						) : (
+							<NextButton
+								onClick={nextHandler}
+								name="Next"
+							/>
+						)}
 					</div>
 				</div>
 			</Container>
