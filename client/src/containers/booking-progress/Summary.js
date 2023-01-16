@@ -36,12 +36,12 @@ const Summary = (props) => {
 
 		const res = await RoomBook__connection.roomBook(details)
 
-		if(res){
+		if(res.status){
 			setMessage_func(true, "successfully made the reservation!")
 			setMessageStatus_func();
 			setBookStatus(true)
 
-			setFormData({...formData, bookStatus: true})
+			setFormData({...formData, bookStatus: true, orderId: res.orderId})
 		}else {
 			setMessage_func(
 				false,

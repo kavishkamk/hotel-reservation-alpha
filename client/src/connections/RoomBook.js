@@ -17,12 +17,46 @@ class RoomBook__connection {
 
 		const data = await res.json();
 		console.log(data);
-		let result;
+		let result = {};
 
-		if (data.booking) result = true;
-		else result = false;
+		if (data.booking){
+			result.status = true;
+			result.orderId = data.booking._id
+		}
+		else result.status = false;
 
 		return result;
+	}
+
+	async paymentUpload(details) {
+		const thisUrl = main.url + "/payments/room-type";
+		const token = Auth.getToken();
+
+		const formData = new FormData()
+		formData.append('orderId', details.orderId)
+		formData.append('paymentSlip', details.paymentSlip)
+
+		const res = await fetch(thisUrl, {
+			method: "POST",
+			headers: {
+				// "Content-Type": "application/json",
+				Authorization: token,
+			},
+			body: formData,
+		});
+
+		const data = await res.json();
+		console.log(data);
+		let result={}
+
+		if(data.errors){
+			result.status = false
+			result.error = data.errors[0].message
+		}else {
+			result.status = true
+			result.payment = data.payment
+		}
+		return result
 	}
 }
 

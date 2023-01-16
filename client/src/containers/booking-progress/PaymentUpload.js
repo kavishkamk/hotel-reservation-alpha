@@ -1,12 +1,12 @@
-import React from "react";
-
-// components
+import React, {useState, useEffect, useContext} from "react";
 import BackButton from "../../components/booking-progress/BackButton";
 import NextButton from "../../components/booking-progress/NextButton";
 import Container from "../../components/booking-progress/Container";
 import Topic from "../../components/booking-progress/Topic";
 import SummaryLine from "../../components/booking-progress/SummaryLine";
 import ImageUpload from "../../components/shared/ImageUpload";
+import RoomBook__connection from "../../connections/RoomBook"
+import {DefaultContext} from "../../context/DefaultContext"
 
 const PaymentUpload = (props) => {
 	// props
@@ -16,13 +16,33 @@ const PaymentUpload = (props) => {
 	const setFormData = props.setFormData;
 	const item = formData.item;
 
+	const {setMessage_func, setMessageStatus_func} = useContext(DefaultContext)
+
 	const backHandler = () => {
 		setPage(page - 1);
 	};
 
-	const bookHandler = () => {
-		// setPage(page + 1);
+	const bookHandler = async() => {
+		const details = {
+			paymentSlip: formData.paymentImage,
+			orderId: formData.orderId
+		}
+
+		// console.log(details)
+		const res = await RoomBook__connection.paymentUpload(details)
+
+		if(res.status){
+			setMessage_func(true, "Successfully uploaded the payment slip")
+			setMessageStatus_func()
+		}else {
+			setMessage_func(false, res.error)
+			setMessageStatus_func()
+		}
 	};
+
+	// useEffect(()=> {
+	// 	if(formData.paymentImage) console.log(formData.paymentImage)
+	// }, [formData])
 
 	return (
 		<div className="">
@@ -45,7 +65,7 @@ const PaymentUpload = (props) => {
 					</div>
 				</div>
 				<div className="w-fit mx-auto">
-					<ImageUpload />
+					<ImageUpload formData={formData} setFormData={setFormData} />
 				</div>
 
 				<div className="flex flex-row mt-auto pt-5">
