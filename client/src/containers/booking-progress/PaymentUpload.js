@@ -9,15 +9,15 @@ import RoomBook__connection from "../../connections/RoomBook"
 import {DefaultContext} from "../../context/DefaultContext"
 
 const PaymentUpload = (props) => {
-	// props
 	const page = props.page;
 	const setPage = props.setPage;
 	const formData = props.formData;
 	const setFormData = props.setFormData;
 	const item = formData.item;
 
-	const {setMessage_func, setMessageStatus_func} = useContext(DefaultContext)
+	const {setMessage_func, setMessageStatus_func, messageStatus} = useContext(DefaultContext)
 
+	console.log(page)
 	const backHandler = () => {
 		setPage(page - 1);
 	};
@@ -28,21 +28,18 @@ const PaymentUpload = (props) => {
 			orderId: formData.orderId
 		}
 
-		// console.log(details)
+		console.log(details)
 		const res = await RoomBook__connection.paymentUpload(details)
 
 		if(res.status){
 			setMessage_func(true, "Successfully uploaded the payment slip")
 			setMessageStatus_func()
+			
 		}else {
 			setMessage_func(false, res.error)
 			setMessageStatus_func()
 		}
 	};
-
-	// useEffect(()=> {
-	// 	if(formData.paymentImage) console.log(formData.paymentImage)
-	// }, [formData])
 
 	return (
 		<div className="">

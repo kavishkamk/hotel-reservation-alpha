@@ -21,6 +21,9 @@ const Summary = (props) => {
 	const {setMessage_func, setMessageStatus_func, messageStatus} = useContext(DefaultContext)
 	const [bookStatus, setBookStatus] = useState(false)
 
+	// hide previous section's popup message
+	if(messageStatus) setMessageStatus_func();
+
 	const backHandler = () => {
 		setPage(page - 1);
 	};
@@ -37,11 +40,10 @@ const Summary = (props) => {
 		const res = await RoomBook__connection.roomBook(details)
 
 		if(res.status){
-			setMessage_func(true, "successfully made the reservation!")
-			setMessageStatus_func();
-			setBookStatus(true)
+			await setBookStatus(true)
+			await props.setFormData({...formData, bookStatus: true, orderId: res.orderId})
+			await setPage(page + 1);
 
-			setFormData({...formData, bookStatus: true, orderId: res.orderId})
 		}else {
 			setMessage_func(
 				false,
@@ -55,14 +57,6 @@ const Summary = (props) => {
 		if(formData.bookStatus)
 			setPage(page + 1);
 	}
-	
-	useEffect(()=> {
-		if(!messageStatus && bookStatus) {
-			// once the displaying message popup is closed
-			// redirect to the payment section of the booking process
-			setPage(page + 1)
-		}
-	}, [messageStatus])
 
 	return (
 		<div className="">

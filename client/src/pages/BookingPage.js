@@ -32,8 +32,6 @@ const BookingPage = (props) => {
 	let backHide = false;
 	if (location.state) {
 		backHide = location.state.backHide;
-
-		if(messageStatus) setMessageStatus_func();
 	}
 
 	const [page, setPage] = useState(defaultPage);
@@ -73,6 +71,8 @@ const BookingPage = (props) => {
 			// backHide={backHide}
 		/>,
 	];
+
+	console.log(page)
 
 	return (
 		<div className="relative top-16 min-h-[calc(100vh-10rem)]">
