@@ -6,7 +6,7 @@ const TabsItem = (props) => {
 	const statusColor = props.statusColor
 	
 	return (
-		<div className="flex flex-row items-center justify-between p-3 rounded-lg my-2 text-textBlue font-medium bg-[#E2E8F0]">
+		<div onClick={props.onClick} className="hover:cursor-pointer flex flex-row items-center justify-between p-3 rounded-lg my-2 text-textBlue font-medium bg-[#E2E8F0]">
 			<div className="w-full">
 				{item.checkIn && (
 					<div className="flex flex-row">

@@ -137,7 +137,7 @@ class Rooms__connection {
 		});
 
 		const data = await res.json();
-		console.log(data)
+		console.log(data);
 		let rooms = [];
 
 		const details = Rooms__connection.#roomDetails;
@@ -201,8 +201,15 @@ class Rooms__connection {
 		// console.log(data)
 		let result = {};
 
+		const details = Rooms__connection.#roomDetails;
+		const images = Rooms__connection.#images;
+
 		if (data.room) {
-			result.room = data.room;
+			result.room = {
+				...data.room,
+				details: details,
+				images: images,
+			};
 		} else {
 			result.error = "error";
 		}
@@ -238,9 +245,9 @@ class Rooms__connection {
 		const images = Rooms__connection.#images;
 
 		data.freeRoomList.forEach(async (room) => {
-			const roomData = await this.getFullRoomById(room.id)
+			const roomData = await this.getFullRoomById(room.id);
 
-			if(roomData.room) {
+			if (roomData.room) {
 				rooms.push({
 					id: room.id,
 					name: room.roomType,
@@ -253,7 +260,6 @@ class Rooms__connection {
 					tags: roomData.room.tags,
 				});
 			}
-			
 		});
 
 		return rooms;
