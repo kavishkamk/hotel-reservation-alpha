@@ -7,6 +7,7 @@ const SelectDate = (props) => {
 	const [checkStatus, setCheckStatus] = useState(null);
 	const [date, setDate] = useState("");
 	const [Tables, setTables] = useState();
+	const [guests, setGuests] = useState();
 	const [meal, setMeal] = useState([]);
 
 	let selectedMeal = [];
@@ -15,10 +16,10 @@ const SelectDate = (props) => {
 	const formData = props.formData;
 	const setFormData = props.setFormData;
 
-	if(formData.meal){
-		selectedMeal = formData.meal
+	if (formData.meal) {
+		selectedMeal = formData.meal;
 	}
-	
+
 	let availability = true;
 
 	const mealsList = [
@@ -35,21 +36,23 @@ const SelectDate = (props) => {
 			setDate(formData.date);
 			setTables(formData.Tables);
 			setMeal(formData.meal);
+			setGuests(formData.guests);
 		}
 	}, [formData]);
 
 	// check for availability
-	const checkHandler = async() => {
+	const checkHandler = async () => {
 		const dateInput = document.getElementById("date").value;
 		const TableCountInput =
 			document.getElementById("TableCount").value;
-		const mealInput = selectedMeal
+		const GuestCountInput = document.getElementById("GuestCount").value;
+		const mealInput = selectedMeal;
 
 		// all the options are selected
-		if (dateInput && TableCountInput && mealInput) {
+		if (dateInput && TableCountInput && mealInput && GuestCountInput) {
 			// console.log(dateInput, TableCountInput, mealInput);
 
-			await setMeal(selectedMeal)
+			await setMeal(selectedMeal);
 			// console.log("after set meal => ")
 			// console.log(meal)
 
@@ -58,6 +61,7 @@ const SelectDate = (props) => {
 				date: dateInput,
 				Tables: TableCountInput,
 				meal: mealInput,
+				guests: GuestCountInput
 			});
 
 			checkbtnRef.current.classList.remove(
@@ -74,10 +78,15 @@ const SelectDate = (props) => {
 				setCheckStatus(false);
 			}
 		}
-	}
+	};
 
 	// control tables count
 	const TableInputHandler = (e) => {
+		if (e.target.value < 1) e.target.value = 1;
+	};
+
+	// control guests count
+	const guestsInputHandler = (e) => {
 		if (e.target.value < 1) e.target.value = 1;
 	};
 
@@ -90,19 +99,16 @@ const SelectDate = (props) => {
 		return text;
 	};
 
-	const setMealHandler = useCallback(
-		async (selection) => {
-			await setMeal(selection);
-			// console.log(meal)
-			// prevent re-rendering the dropdown component when click on search button
-		},
-		[]
-	);
+	const setMealHandler = useCallback(async (selection) => {
+		await setMeal(selection);
+		// console.log(meal)
+		// prevent re-rendering the dropdown component when click on search button
+	}, []);
 
-	useEffect(()=> {
+	useEffect(() => {
 		// console.log("use effect")
 		// console.log(meal)
-	},[meal])
+	}, [meal]);
 
 	return (
 		<div className="mx-auto w-full font-inter">
@@ -135,6 +141,20 @@ const SelectDate = (props) => {
 
 				<div className="bg-lightBlueGray w-fit">
 					<div className="uppercase text-textBlue font-semibold text-sm px-3 py-2">
+						Guests
+					</div>
+					<input
+						type="number"
+						id="GuestCount"
+						min="1"
+						defaultValue={guests}
+						onKeyUp={guestsInputHandler}
+						className="bg-lightBlueGray w-[120px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0 md:text-lg "
+					/>
+				</div>
+
+				<div className="bg-lightBlueGray w-fit">
+					<div className="uppercase text-textBlue font-semibold text-sm px-3 py-2">
 						meal
 					</div>
 					<div className="bg-lightBlueGray w-[160px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0">
@@ -150,7 +170,7 @@ const SelectDate = (props) => {
 									// )}
 									defaultValue={selectedMeal}
 									onChange={(values) => {
-										selectedMeal = values
+										selectedMeal = values;
 									}}
 								/>
 							</div>

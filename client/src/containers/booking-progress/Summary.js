@@ -1,12 +1,17 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, {
+	useState,
+	useContext,
+	useEffect,
+} from "react";
 import BackButton from "../../components/booking-progress/BackButton";
 import NextButton from "../../components/booking-progress/NextButton";
 import Container from "../../components/booking-progress/Container";
 import Topic from "../../components/booking-progress/Topic";
 import CardContainer from "../../components/cards/CardContainer";
 import SummaryLine from "../../components/booking-progress/SummaryLine";
-import RoomBook__connection from "../../connections/RoomBook"
-import {DefaultContext} from "../../context/DefaultContext"
+import RoomBook__connection from "../../connections/RoomBook";
+import RestaurentBook__connection from "../../connections/RestaurentBook";
+import { DefaultContext } from "../../context/DefaultContext";
 
 const Summary = (props) => {
 	const page = props.page;
@@ -18,33 +23,74 @@ const Summary = (props) => {
 	console.log("inside summary ===>>");
 	console.log(formData);
 
-	const {setMessage_func, setMessageStatus_func, messageStatus} = useContext(DefaultContext)
-	const [bookStatus, setBookStatus] = useState(false)
+	const {
+		setMessage_func,
+		setMessageStatus_func,
+		messageStatus,
+	} = useContext(DefaultContext);
+	const [bookStatus, setBookStatus] = useState(false);
 
 	// hide previous section's popup message
-	if(messageStatus) setMessageStatus_func();
+	if (messageStatus) setMessageStatus_func();
 
 	const backHandler = () => {
 		setPage(page - 1);
 	};
 
 	const bookHandler = async () => {
-		const details = {
-			roomTypeId: formData.item.id,
-			numberOfRooms: formData.rooms,
-			numberOfPersons: formData.guests,
-			fromDate: formData.checkin,
-			toDate: formData.checkout
+		let res;
+
+		if (formData.type == 1) {
+			const details = {
+				roomTypeId: formData.item.id,
+				numberOfRooms: formData.rooms,
+				numberOfPersons: formData.guests,
+				fromDate: formData.checkin,
+				toDate: formData.checkout,
+			};
+
+			res = await RoomBook__connection.roomBook(
+				details
+			);
+
+			if (res.status) {
+				await setBookStatus(true);
+				await props.setFormData({
+					...formData,
+					bookStatus: true,
+					orderId: res.orderId,
+				});
+				await setPage(page + 1);
+			} 
+		}
+		else if(formData.type == 4) {
+			const details = {
+				restaurentTypeId: formData.item.id,
+				numberOfTables: formData.Tables,
+				numberOfPersons: formData.guests,
+				fromDate: formData.date,
+				meal: formData.meal[0].content
+			}
+
+			console.log(details)
+			res = await RestaurentBook__connection.tableBook(details)
+
+			if(res.status) {
+				props.setFormData({
+					...formData,
+					orderId: res.orderId,
+				});
+
+				// TODO: popup not display
+				setMessage_func(
+					true,
+					"Tables are reserved successfully!"
+				);
+				setMessageStatus_func();
+			}
 		}
 
-		const res = await RoomBook__connection.roomBook(details)
-
-		if(res.status){
-			await setBookStatus(true)
-			await props.setFormData({...formData, bookStatus: true, orderId: res.orderId})
-			await setPage(page + 1);
-
-		}else {
+		if(res.status === false) {
 			setMessage_func(
 				false,
 				"Something went wrong! Could not reserved"
@@ -53,10 +99,9 @@ const Summary = (props) => {
 		}
 	};
 
-	const nextHandler = ()=> {
-		if(formData.bookStatus)
-			setPage(page + 1);
-	}
+	const nextHandler = () => {
+		if (formData.bookStatus) setPage(page + 1);
+	};
 
 	return (
 		<div className="">
