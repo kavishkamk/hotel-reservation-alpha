@@ -8,7 +8,8 @@ import TableBody from "../../components/shared/table/TableBody";
 import Booking__connection from "../../connections/Booking";
 import { DefaultContext } from "../../context/DefaultContext";
 import Dates from "../../functions/Dates";
-import LoadingSpinner from "../../components/shared/loading-spinner/LoadingSpinner"
+import LoadingSpinner from "../../components/shared/loading-spinner/LoadingSpinner";
+import * as main from "../../connections/main-url"
 
 const TabsContent = (props) => {
 	const { setMessage_func, setMessageStatus_func } =
@@ -22,32 +23,7 @@ const TabsContent = (props) => {
 	const [checkinData, setCheckinData] = useState([]);
 	const [checkoutData, setCheckoutData] = useState([]);
 	const [cancelledData, setCancelledData] = useState([]);
-	const [restaurentsData, setRestaurentsData] = useState([
-		{
-			id: 1,
-			name: "Maduka Weerasinge",
-			restaurent: "Sky Dine",
-			date: "2022-12-23",
-			tables: 2,
-			meal: "Breakfast",
-		},
-		{
-			id: 2,
-			name: "Rashmi Wijesekara",
-			restaurent: "Sky Dine",
-			date: "2022-12-12",
-			tables: 2,
-			meal: "Dinner",
-		},
-		{
-			id: 3,
-			name: "Tharanga Silva",
-			restaurent: "Chinese",
-			date: "2022-12-23",
-			tables: 1,
-			meal: "Lunch",
-		},
-	]);
+	const [restaurentsData, setRestaurentsData] = useState([]);
 
 	const tab = props.tab;
 
@@ -73,10 +49,11 @@ const TabsContent = (props) => {
 	];
 
 	const restaurentsHead = [
-		"Name",
+		"Client Email",
 		"Restaurent",
 		"Date",
 		"Tables",
+		"Guests",
 		"Meal",
 	];
 
@@ -248,133 +225,180 @@ const TabsContent = (props) => {
 
 	useEffect(() => {
 		const getAllPending = async () => {
-			const pendingResultData = await Booking__connection.getAllPending();
+			const pendingResultData =
+				await Booking__connection.getAllPending();
+
+				console.log(pendingResultData);
 
 			if (pendingResultData.error) {
-				await setMessage_func(false, pendingResultData.error);
+				await setMessage_func(
+					false,
+					pendingResultData.error
+				);
 				await setMessageStatus_func();
 				return;
 			} else {
-				const pendingResult = await Promise.all(pendingResultData.data.map(async (item) => {
-					let roomName;
+				const pendingResult = await Promise.all(
+					pendingResultData.data.map(async (item) => {
+						let roomName;
 
-					const roomType =
-						await Booking__connection.getRoomById(
-							item.roomType
-						);
+						const roomType =
+							await Booking__connection.getRoomById(
+								item.roomType
+							);
+							
+							if (roomType.room) {
+								roomName = roomType.room;
+							} else {
+								roomName = "---";
+							}
+						const slip = await Booking__connection.getPaymentSlip(item.id)
+						const url = main.url + "/payments" + slip;
 
-					if (roomType.room) {
-						roomName = roomType.room;
-					} else {
-						roomName = "---";
-					}
+						const checkin = Dates.formatDate(item.fromDate);
+						const checkout = Dates.formatDate(item.toDate);
 
-					const checkin = Dates.formatDate(item.fromDate);
-					const checkout = Dates.formatDate(item.toDate);
-
-					return ({
-						id: item.id,
-						name: item.userEmail,
-						checkin: checkin,
-						checkout: checkout,
-						guests: item.numberOfPersons,
-						room: roomName,
-						roomCount: item.numberOfRooms,
-						payment: "",
-					});
-				}));
-
+						return {
+							id: item.id,
+							name: item.userEmail,
+							checkin: checkin,
+							checkout: checkout,
+							guests: item.numberOfPersons,
+							room: roomName,
+							roomCount: item.numberOfRooms,
+							payment: url,
+						};
+					})
+				);
+				
+				console.log(pendingResult)
 				setPendingData(pendingResult);
 			}
-		}
+		};
 
 		const getAllApproved = async () => {
-
-			const approvedResultData = await Booking__connection.getAllApproved();
+			const approvedResultData =
+				await Booking__connection.getAllApproved();
 
 			if (approvedResultData.error) {
-				await setMessage_func(false, approvedResultData.error);
+				await setMessage_func(
+					false,
+					approvedResultData.error
+				);
 				await setMessageStatus_func();
 				return;
 			} else {
-				const approvedResult = await Promise.all(approvedResultData.data.map(async (item) => {
-					const roomType =
-						await Booking__connection.getRoomById(
-							item.roomType
-						);
+				const approvedResult = await Promise.all(
+					approvedResultData.data.map(async (item) => {
+						const roomType =
+							await Booking__connection.getRoomById(
+								item.roomType
+							);
 
-					let roomName;
+						let roomName;
 
-					if (roomType.room) {
-						roomName = roomType.room;
-					} else {
-						roomName = "---";
-					}
-					const checkin = Dates.formatDate(item.fromDate);
-					const checkout = Dates.formatDate(item.toDate);
+						if (roomType.room) {
+							roomName = roomType.room;
+						} else {
+							roomName = "---";
+						}
+						const checkin = Dates.formatDate(item.fromDate);
+						const checkout = Dates.formatDate(item.toDate);
 
-					return ({
-						id: item.id,
-						name: item.userEmail,
-						checkin: checkin,
-						checkout: checkout,
-						guests: item.numberOfPersons,
-						room: roomName,
-						roomCount: item.numberOfRooms,
-						// payment: "",
-					});
-				}));
+						return {
+							id: item.id,
+							name: item.userEmail,
+							checkin: checkin,
+							checkout: checkout,
+							guests: item.numberOfPersons,
+							room: roomName,
+							roomCount: item.numberOfRooms,
+							// payment: "",
+						};
+					})
+				);
 
 				setApprovedData(approvedResult);
 			}
 		};
 
 		const getAllCancelled = async () => {
-
 			const cancelledResultData =
 				await Booking__connection.getAllCancelled();
 
 			if (cancelledResultData.error) {
-				await setMessage_func(false, cancelledResultData.error);
+				await setMessage_func(
+					false,
+					cancelledResultData.error
+				);
 				await setMessageStatus_func();
 				return;
 			} else {
-				const cancelledResult = await Promise.all(cancelledResultData.data.map(async (item) => {
+				const cancelledResult = await Promise.all(
+					cancelledResultData.data.map(async (item) => {
+						const roomType =
+							await Booking__connection.getRoomById(
+								item.roomType
+							);
+						let roomName;
 
-					const roomType =
-						await Booking__connection.getRoomById(
-							item.roomType
-						);
-					let roomName;
+						if (roomType.room) {
+							roomName = roomType.room;
+						} else {
+							roomName = "---";
+						}
+						const checkin = Dates.formatDate(item.fromDate);
+						const checkout = Dates.formatDate(item.toDate);
 
-					if (roomType.room) {
-						roomName = roomType.room;
-					} else {
-						roomName = "---";
-					}
-					const checkin = Dates.formatDate(item.fromDate);
-					const checkout = Dates.formatDate(item.toDate);
-
-					return ({
-						id: item.id,
-						name: item.userEmail,
-						checkin: checkin,
-						checkout: checkout,
-						guests: item.numberOfPersons,
-						room: roomName,
-						roomCount: item.numberOfRooms,
-					});
-
-				}));
+						return {
+							id: item.id,
+							name: item.userEmail,
+							checkin: checkin,
+							checkout: checkout,
+							guests: item.numberOfPersons,
+							room: roomName,
+							roomCount: item.numberOfRooms,
+						};
+					})
+				);
 
 				setCancelledData(cancelledResult);
 			}
+		};
 
+		const getTableBookings = async () => {
+			const tableData =
+				await Booking__connection.getAllRestaurentBookings();
+
+			if (tableData.error) {
+				await setMessage_func(false, tableData.error);
+				await setMessageStatus_func();
+				return;
+			} else {
+				const tableBookingData = await Promise.all(
+					tableData.data.map(async (item) => {
+						const date = Dates.formatDate(item.fromDate)
+
+						return {
+							id: item.id,
+							name: item.userEmail,
+							restaurent: item.restaurentType.restaurentType,
+							date: date,
+							tables: item.numberOfTables,
+							guests: item.numberOfPersons,
+							meal: item.meal,
+						};
+					})
+				);
+
+				setRestaurentsData(tableBookingData);
+			}
 		};
 
 		getAllPending();
 		getAllApproved();
 		getAllCancelled();
+		getTableBookings();
 	}, []);
 
 	return (
@@ -434,7 +458,7 @@ const TabsContent = (props) => {
 				</div>
 			)}
 		</>
-	)
+	);
 };
 
 export default TabsContent;
