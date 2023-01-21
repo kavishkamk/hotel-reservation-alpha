@@ -78,7 +78,11 @@ function App() {
 				<Route exact path="/" element={<HomePage />} />
 				<Route
 					path="/booking-process"
-					element={<BookingPage />}
+					element={
+						<ProtectedRoute>
+							<BookingPage />
+						</ProtectedRoute>
+					}
 				/>
 				<Route
 					path="/login"

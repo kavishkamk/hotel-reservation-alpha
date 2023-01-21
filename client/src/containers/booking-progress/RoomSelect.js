@@ -1,47 +1,58 @@
-import React, {useState, useEffect, useCallback} from 'react'
-
-// components
+import React, {
+	useState,
+	useEffect,
+	useCallback,
+} from "react";
 import BackButton from "../../components/booking-progress/BackButton";
 import NextButton from "../../components/booking-progress/NextButton";
 import Container from "../../components/booking-progress/Container";
 import Topic from "../../components/booking-progress/Topic";
-import Dropdown from "../../components/booking-progress/Dropdown"
-import CardContainer from "../../components/cards/CardContainer"
-
-// data
-import roomData from "../../data/rooms.json"
-import tags from "../../data/tags.json"
+import Dropdown from "../../components/booking-progress/Dropdown";
+import CardContainer from "../../components/cards/CardContainer";
+import roomData from "../../data/rooms.json";
+import Rooms__connection from "../../connections/Rooms";
 
 const RoomSelect = (props) => {
-	const [selected, setSelected] = useState([])
-	const [loadOptions, setLoadOptions] = useState(false)
-	const [searchResult, setSearchResult] = useState(roomData)
-
-	// props
 	const page = props.page;
 	const setPage = props.setPage;
 	const formData = props.formData;
 	const setFormData = props.setFormData;
 
-	useEffect(() => {
-		// *************************************
-		// not working
+	const [selected, setSelected] = useState([]);
+	const [loadOptions, setLoadOptions] = useState(false);
+	const [searchResult, setSearchResult] = useState(
+		formData.searchResultRooms
+	);
+	const [tags, setTags] = useState([]);
 
-		// selected.forEach((tag) => {
-		// 	roomData.forEach((room) => {
-		// 		room.tags.forEach((roomTag)=> {
-		// 			if(tag === roomTag){
-		// 				setSearchResult(searchResult =>[...searchResult, room])
-		// 			}
-		// 		})
-		// 	})
-		// });
-		if(selected.length > 0){
-			setSearchResult([roomData[0], roomData[1]])
-			console.log(searchResult)
+	useEffect(() => {
+		async function getAllRoomsTags() {
+			const data =
+				await Rooms__connection.getAllRoomsTags();
+			console.log(data);
+			await setTags(data);
 		}
-	}, [selected])
-	
+
+		getAllRoomsTags();
+	}, []);
+
+	useEffect(() => {
+		async function loadRooms() {
+			let selectedTags = []
+			selected.forEach(tag => {
+				selectedTags.push(tag.id)
+			});
+
+			const data = await Rooms__connection.filterRooms(
+				selectedTags
+			);
+			console.log(data);
+			setSearchResult(data);
+		}
+		if (selected.length > 0) {
+			loadRooms()
+		}
+	}, [selected]);
 
 	const backHandler = () => {
 		setPage(page - 1);
@@ -51,10 +62,13 @@ const RoomSelect = (props) => {
 		setPage(page + 1);
 	};
 
-	const setSelectedHandler = useCallback(async(options)=> {
-		await setSelected(options)
-		// prevent re-rendering the dropdown component when click on search button
-	}, [])
+	const setSelectedHandler = useCallback(
+		async (options) => {
+			await setSelected(options);
+			// prevent re-rendering the dropdown component when click on search button
+		},
+		[]
+	);
 
 	const bookClickHandler = (item) => {
 		setFormData({ ...formData, item: item });
@@ -66,10 +80,12 @@ const RoomSelect = (props) => {
 			<Topic topic="Select Room" />
 
 			<div className="w-full">
-				<Dropdown
-					tags={tags}
-					setSelectedHandler={setSelectedHandler}
-				/>
+				{tags && (
+					<Dropdown
+						tags={tags}
+						setSelectedHandler={setSelectedHandler}
+					/>
+				)}
 			</div>
 
 			<div className="flex flex-wrap w-full justify-evenly gap-y-6 my-10">
@@ -95,6 +111,6 @@ const RoomSelect = (props) => {
 			</div>
 		</Container>
 	);
-}
+};
 
-export default RoomSelect
+export default RoomSelect;

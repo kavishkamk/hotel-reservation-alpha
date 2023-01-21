@@ -102,7 +102,7 @@ const SelectDate = (props) => {
 	}
 
 	return (
-		<div className="mx-auto w-full font-inter">
+		<div className="mx-auto font-inter">
 			<div className="flex flex-col xl:flex-row rounded-lg py-5 md:p-10 my-5 bg-lightBlueGray w-full md:w-fit mx-auto xl:p-3">
 				<div className="bg-lightBlueGray w-fit">
 					<div className="uppercase text-textBlue font-semibold text-sm px-3 py-2">
@@ -112,7 +112,7 @@ const SelectDate = (props) => {
 						type="date"
 						id="checkin"
 						defaultValue={checkinDate}
-						className="bg-lightBlueGray w-fit text-[#10B981] font-semibold my-3 md:my-0 md:text-lg rounded-lg px-3 mx-2"
+						className="bg-lightBlueGray w-fit text-[#10B981] font-semibold my-3 md:my-0 md:text-lg rounded-lg px-0 mx-2"
 					/>
 				</div>
 
@@ -124,7 +124,7 @@ const SelectDate = (props) => {
 						type="date"
 						id="checkout"
 						defaultValue={checkoutDate}
-						className="bg-lightBlueGray w-fit text-[#10B981] font-semibold my-3 md:my-0 md:text-lg rounded-lg px-3 mx-2"
+						className="bg-lightBlueGray w-fit text-[#10B981] font-semibold my-3 md:my-0 md:text-lg rounded-lg px-0 mx-2"
 					/>
 				</div>
 
@@ -138,7 +138,7 @@ const SelectDate = (props) => {
 						min="1"
 						defaultValue={guests}
 						onKeyUp={GuestInputHandler}
-						className="bg-lightBlueGray w-[120px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0 md:text-lg "
+						className="bg-lightBlueGray w-[80px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0 md:text-lg "
 					/>
 				</div>
 
@@ -152,7 +152,7 @@ const SelectDate = (props) => {
 						min="1"
 						defaultValue={rooms}
 						onKeyUp={RoomsInputHandler}
-						className="bg-lightBlueGray w-[120px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0 md:text-lg "
+						className="bg-lightBlueGray w-[80px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0 md:text-lg "
 					/>
 				</div>
 

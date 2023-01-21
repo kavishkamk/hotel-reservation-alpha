@@ -3,16 +3,12 @@ import React, {
 	useEffect,
 	useCallback,
 } from "react";
-
-// components
 import BackButton from "../../components/booking-progress/BackButton";
 import NextButton from "../../components/booking-progress/NextButton";
 import Container from "../../components/booking-progress/Container";
 import Topic from "../../components/booking-progress/Topic";
 import Dropdown from "../../components/booking-progress/Dropdown";
 import CardContainer from "../../components/cards/CardContainer";
-
-// data
 import restaurentsData from "../../data/restaurents.json";
 import tags from "../../data/restaurent-tags.json"
 
@@ -21,7 +17,6 @@ const RestaurentSelect = (props) => {
 	const [loadOptions, setLoadOptions] = useState(false);
 	const [searchResult, setSearchResult] = useState(restaurentsData);
 
-	// props
 	const page = props.page;
 	const setPage = props.setPage;
 	const formData = props.formData;

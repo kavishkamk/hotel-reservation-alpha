@@ -121,7 +121,7 @@ const SelectDate = (props) => {
 						type="date"
 						id="date"
 						defaultValue={date}
-						className="bg-lightBlueGray w-fit text-[#10B981] font-semibold my-3 md:my-0 md:text-lg rounded-lg px-3 mx-2"
+						className="bg-lightBlueGray w-fit text-[#10B981] font-semibold my-3 md:my-0 md:text-lg rounded-lg px-0 mx-2"
 					/>
 				</div>
 
@@ -135,7 +135,7 @@ const SelectDate = (props) => {
 						min="1"
 						defaultValue={Tables}
 						onKeyUp={TableInputHandler}
-						className="bg-lightBlueGray w-[120px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0 md:text-lg "
+						className="bg-lightBlueGray w-[100px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0 md:text-lg "
 					/>
 				</div>
 
@@ -149,7 +149,7 @@ const SelectDate = (props) => {
 						min="1"
 						defaultValue={guests}
 						onKeyUp={guestsInputHandler}
-						className="bg-lightBlueGray w-[120px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0 md:text-lg "
+						className="bg-lightBlueGray w-[100px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0 md:text-lg "
 					/>
 				</div>
 
@@ -157,7 +157,7 @@ const SelectDate = (props) => {
 					<div className="uppercase text-textBlue font-semibold text-sm px-3 py-2">
 						meal
 					</div>
-					<div className="bg-lightBlueGray w-[160px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0">
+					<div className="bg-lightBlueGray w-[120px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0">
 						{/* <SingleDropdown items={mealsList} setSelected={setMealHandler} meals={meal} /> */}
 
 						<div className="">
