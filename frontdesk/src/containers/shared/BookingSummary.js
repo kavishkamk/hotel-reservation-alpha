@@ -31,6 +31,7 @@ const BookingSummary = (props) => {
 							item={order}
 							checkout={props.checkout}
 							checkinHandler={props.checkinHandler}
+							checkoutHandler={props.checkoutHandler}
 						/>
 					))}
 				</div>

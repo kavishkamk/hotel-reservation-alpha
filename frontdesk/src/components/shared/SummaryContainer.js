@@ -67,19 +67,6 @@ const SummaryContainer = (props) => {
 
 			{!props.checkout && (
 				<div className="flex flex-row items-center justify-evenly my-3">
-					{/* <Link
-						to="/print"
-						// state={{data: order}}
-						target="_blank"
-						rel="noopener noreferrer"
-					> */}
-					{/* <button
-						onClick={() => props.paidHandler(order)}
-						className="bg-textBlue text-white font-bold text-base px-6 py-1"
-					>
-						Paid
-					</button> */}
-					{/* </Link> */}
 					<button
 						onClick={() => props.checkinHandler(order.id)}
 						className="bg-textBlue text-white font-bold text-base px-6 py-1"
@@ -92,7 +79,7 @@ const SummaryContainer = (props) => {
 			{props.checkout && (
 				<div className="flex flex-row items-center justify-evenly my-3">
 					<button
-						onClick={checkoutHandler}
+						onClick={() => props.checkoutHandler(order.id)}
 						className="bg-textBlue text-white font-bold text-base px-6 py-1"
 					>
 						Check-out
