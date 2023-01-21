@@ -80,147 +80,147 @@ const TabsContent = (props) => {
 		"Meal",
 	];
 
-	useEffect(() => {
-		async function getAllPending() {
-			const data =
-				await Booking__connection.getAllPending();
-			let resultFormat = [];
+	// useEffect(() => {
+	// 	async function getAllPending() {
+	// 		const data =
+	// 			await Booking__connection.getAllPending();
+	// 		let resultFormat = [];
 
-			if (data.error) {
-				await setMessage_func(false, data.error);
-				await setMessageStatus_func();
-				return;
-			} else {
-				data.data.forEach(async (item) => {
-					const data1 =
-						await Booking__connection.getRoomById(
-							item.roomType
-						);
-					let roomName;
+	// 		if (data.error) {
+	// 			await setMessage_func(false, data.error);
+	// 			await setMessageStatus_func();
+	// 			return;
+	// 		} else {
+	// 			data.data.forEach(async (item) => {
+	// 				const data1 =
+	// 					await Booking__connection.getRoomById(
+	// 						item.roomType
+	// 					);
+	// 				let roomName;
 
-					if (data1.room) {
-						roomName = data1.room;
-					} else {
-						roomName = "---";
-					}
-					const checkin = Dates.formatDate(item.fromDate);
-					const checkout = Dates.formatDate(item.toDate);
+	// 				if (data1.room) {
+	// 					roomName = data1.room;
+	// 				} else {
+	// 					roomName = "---";
+	// 				}
+	// 				const checkin = Dates.formatDate(item.fromDate);
+	// 				const checkout = Dates.formatDate(item.toDate);
 
-					resultFormat.push({
-						id: item.id,
-						name: item.userEmail,
-						checkin: checkin,
-						checkout: checkout,
-						guests: item.numberOfPersons,
-						room: roomName,
-						roomCount: item.numberOfRooms,
-						payment: "",
-					});
-				});
+	// 				resultFormat.push({
+	// 					id: item.id,
+	// 					name: item.userEmail,
+	// 					checkin: checkin,
+	// 					checkout: checkout,
+	// 					guests: item.numberOfPersons,
+	// 					room: roomName,
+	// 					roomCount: item.numberOfRooms,
+	// 					payment: "",
+	// 				});
+	// 			});
 
-				await setPendingData(resultFormat);
-			}
-		}
+	// 			await setPendingData(resultFormat);
+	// 		}
+	// 	}
 
-		async function getAllApproved() {
-			const data =
-				await Booking__connection.getAllApproved();
-			let resultFormat = [];
+	// 	async function getAllApproved() {
+	// 		const data =
+	// 			await Booking__connection.getAllApproved();
+	// 		let resultFormat = [];
 
-			if (data.error) {
-				await setMessage_func(false, data.error);
-				await setMessageStatus_func();
-				return;
-			} else {
-				data.data.forEach(async (item) => {
-					const data1 =
-						await Booking__connection.getRoomById(
-							item.roomType
-						);
-					let roomName;
+	// 		if (data.error) {
+	// 			await setMessage_func(false, data.error);
+	// 			await setMessageStatus_func();
+	// 			return;
+	// 		} else {
+	// 			data.data.forEach(async (item) => {
+	// 				const data1 =
+	// 					await Booking__connection.getRoomById(
+	// 						item.roomType
+	// 					);
+	// 				let roomName;
 
-					if (data1.room) {
-						roomName = data1.room;
-					} else {
-						roomName = "---";
-					}
-					const checkin = Dates.formatDate(item.fromDate);
-					const checkout = Dates.formatDate(item.toDate);
+	// 				if (data1.room) {
+	// 					roomName = data1.room;
+	// 				} else {
+	// 					roomName = "---";
+	// 				}
+	// 				const checkin = Dates.formatDate(item.fromDate);
+	// 				const checkout = Dates.formatDate(item.toDate);
 
-					resultFormat.push({
-						id: item.id,
-						name: item.userEmail,
-						checkin: checkin,
-						checkout: checkout,
-						guests: item.numberOfPersons,
-						room: roomName,
-						roomCount: item.numberOfRooms,
-						// payment: "",
-					});
-				});
+	// 				resultFormat.push({
+	// 					id: item.id,
+	// 					name: item.userEmail,
+	// 					checkin: checkin,
+	// 					checkout: checkout,
+	// 					guests: item.numberOfPersons,
+	// 					room: roomName,
+	// 					roomCount: item.numberOfRooms,
+	// 					// payment: "",
+	// 				});
+	// 			});
 
-				await setApprovedData(resultFormat);
-			}
-		}
+	// 			await setApprovedData(resultFormat);
+	// 		}
+	// 	}
 
-		async function getAllCancelled() {
-			const data =
-				await Booking__connection.getAllCancelled();
+	// 	async function getAllCancelled() {
+	// 		const data =
+	// 			await Booking__connection.getAllCancelled();
 
-			let resultFormat = [];
+	// 		let resultFormat = [];
 
-			if (data.error) {
-				await setMessage_func(false, data.error);
-				await setMessageStatus_func();
-				return;
-			} else {
-				data.data.forEach(async (item) => {
-					const data1 =
-						await Booking__connection.getRoomById(
-							item.roomType
-						);
-					let roomName;
+	// 		if (data.error) {
+	// 			await setMessage_func(false, data.error);
+	// 			await setMessageStatus_func();
+	// 			return;
+	// 		} else {
+	// 			data.data.forEach(async (item) => {
+	// 				const data1 =
+	// 					await Booking__connection.getRoomById(
+	// 						item.roomType
+	// 					);
+	// 				let roomName;
 
-					if (data1.room) {
-						roomName = data1.room;
-					} else {
-						roomName = "---";
-					}
-					const checkin = Dates.formatDate(item.fromDate);
-					const checkout = Dates.formatDate(item.toDate);
+	// 				if (data1.room) {
+	// 					roomName = data1.room;
+	// 				} else {
+	// 					roomName = "---";
+	// 				}
+	// 				const checkin = Dates.formatDate(item.fromDate);
+	// 				const checkout = Dates.formatDate(item.toDate);
 
-					resultFormat.push({
-						id: item.id,
-						name: item.userEmail,
-						checkin: checkin,
-						checkout: checkout,
-						guests: item.numberOfPersons,
-						room: roomName,
-						roomCount: item.numberOfRooms,
-					});
-				});
+	// 				resultFormat.push({
+	// 					id: item.id,
+	// 					name: item.userEmail,
+	// 					checkin: checkin,
+	// 					checkout: checkout,
+	// 					guests: item.numberOfPersons,
+	// 					room: roomName,
+	// 					roomCount: item.numberOfRooms,
+	// 				});
+	// 			});
 
-				await setCancelledData(resultFormat);
-			}
-		}
+	// 			await setCancelledData(resultFormat);
+	// 		}
+	// 	}
 
-		async function getAllRestaurentBookings() {}
+	// 	async function getAllRestaurentBookings() { }
 
-		if(loading) {
-			getAllPending().catch((err) => {
-				console.log(err);
-			});
-			getAllCancelled().catch((err) => {
-				console.log(err);
-			});
-			getAllApproved().catch((err) => {
-				console.log(err);
-			});
+	// 	if (loading) {
+	// 		getAllPending().catch((err) => {
+	// 			console.log(err);
+	// 		});
+	// 		getAllCancelled().catch((err) => {
+	// 			console.log(err);
+	// 		});
+	// 		getAllApproved().catch((err) => {
+	// 			console.log(err);
+	// 		});
 
-			setLoading(false)
-		}
+	// 		setLoading(false)
+	// 	}
 
-	}, [loading]);
+	// }, [loading]);
 
 	// const pendingData = [
 	// 	{
@@ -246,7 +246,138 @@ const TabsContent = (props) => {
 	// 	}
 	// ];
 
-	return !loading ? (
+	useEffect(() => {
+		const getAllPending = async () => {
+			const pendingResultData = await Booking__connection.getAllPending();
+
+			if (pendingResultData.error) {
+				await setMessage_func(false, pendingResultData.error);
+				await setMessageStatus_func();
+				return;
+			} else {
+				const pendingResult = await Promise.all(pendingResultData.data.map(async (item) => {
+					let roomName;
+
+					const roomType =
+						await Booking__connection.getRoomById(
+							item.roomType
+						);
+
+					if (roomType.room) {
+						roomName = roomType.room;
+					} else {
+						roomName = "---";
+					}
+
+					const checkin = Dates.formatDate(item.fromDate);
+					const checkout = Dates.formatDate(item.toDate);
+
+					return ({
+						id: item.id,
+						name: item.userEmail,
+						checkin: checkin,
+						checkout: checkout,
+						guests: item.numberOfPersons,
+						room: roomName,
+						roomCount: item.numberOfRooms,
+						payment: "",
+					});
+				}));
+
+				setPendingData(pendingResult);
+			}
+		}
+
+		const getAllApproved = async () => {
+
+			const approvedResultData = await Booking__connection.getAllApproved();
+
+			if (approvedResultData.error) {
+				await setMessage_func(false, approvedResultData.error);
+				await setMessageStatus_func();
+				return;
+			} else {
+				const approvedResult = await Promise.all(approvedResultData.data.map(async (item) => {
+					const roomType =
+						await Booking__connection.getRoomById(
+							item.roomType
+						);
+
+					let roomName;
+
+					if (roomType.room) {
+						roomName = roomType.room;
+					} else {
+						roomName = "---";
+					}
+					const checkin = Dates.formatDate(item.fromDate);
+					const checkout = Dates.formatDate(item.toDate);
+
+					return ({
+						id: item.id,
+						name: item.userEmail,
+						checkin: checkin,
+						checkout: checkout,
+						guests: item.numberOfPersons,
+						room: roomName,
+						roomCount: item.numberOfRooms,
+						// payment: "",
+					});
+				}));
+
+				setApprovedData(approvedResult);
+			}
+		};
+
+		const getAllCancelled = async () => {
+
+			const cancelledResultData =
+				await Booking__connection.getAllCancelled();
+
+			if (cancelledResultData.error) {
+				await setMessage_func(false, cancelledResultData.error);
+				await setMessageStatus_func();
+				return;
+			} else {
+				const cancelledResult = await Promise.all(cancelledResultData.data.map(async (item) => {
+
+					const roomType =
+						await Booking__connection.getRoomById(
+							item.roomType
+						);
+					let roomName;
+
+					if (roomType.room) {
+						roomName = roomType.room;
+					} else {
+						roomName = "---";
+					}
+					const checkin = Dates.formatDate(item.fromDate);
+					const checkout = Dates.formatDate(item.toDate);
+
+					return ({
+						id: item.id,
+						name: item.userEmail,
+						checkin: checkin,
+						checkout: checkout,
+						guests: item.numberOfPersons,
+						room: roomName,
+						roomCount: item.numberOfRooms,
+					});
+
+				}));
+
+				setCancelledData(cancelledResult);
+			}
+
+		};
+
+		getAllPending();
+		getAllApproved();
+		getAllCancelled();
+	}, []);
+
+	return (
 		<>
 			{tab === 1 && (
 				<div className="max-w-[95%] mx-auto p-2 shadow-lg rounded-xl bg-white overflow-x-auto overflow-y-auto min-h-[calc(100vh-12rem)] max-h-[calc(100vh-12rem)]">
@@ -303,11 +434,7 @@ const TabsContent = (props) => {
 				</div>
 			)}
 		</>
-	) : (
-		<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-			<LoadingSpinner />
-		</div>
-	);
+	)
 };
 
 export default TabsContent;
