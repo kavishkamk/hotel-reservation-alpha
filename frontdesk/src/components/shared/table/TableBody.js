@@ -10,7 +10,9 @@ const TableBody = (props) => {
 	// console.log(props.data.id);
 	const [cancelBookStatus, setCancelBookStatus] =
 		useState(false);
+	const [approveBookStatus, setApproveBookStatus] = useState(false);
 	const [cancelBookId, setCancelBookId] = useState("");
+	const [approveBookId, setApproveBookId] = useState("")
 
 	const {
 		setMessage_func,
@@ -35,6 +37,18 @@ const TableBody = (props) => {
 		await setCancelBookStatus(true);
 	};
 
+	const approveBookHandler = async (id) => {
+		console.log("approved => " + id);
+		await setApproveBookId(id)
+		await setSureModalDisplay_func(true);
+		await setSure_func(
+			"Confirm the approval of this reservation",
+			"Confirm"
+		);
+		await setSureStatus_func();
+		await setApproveBookStatus(true)
+	}
+
 	useEffect(() => {
 		async function cancelBooking(id) {
 			const result =
@@ -45,7 +59,9 @@ const TableBody = (props) => {
 					"Reservation Cancelled"
 				);
 				await setMessageStatus_func();
-				// TODO: reload the table
+
+				// reload the table
+				props.setDeleteLine(id, 5)
 			} else {
 				await setMessage_func(
 					false,
@@ -57,12 +73,39 @@ const TableBody = (props) => {
 			await setCancelBookId("");
 		}
 
+		async function approveBooking(id) {
+			const result =
+				await Booking__connection.approveBooking(id);
+			if (result) {
+				await setMessage_func(
+					true,
+					"Reservation Approved"
+				);
+				await setMessageStatus_func();
+
+				// reload the table
+				props.setDeleteLine(id, 2);
+			} else {
+				await setMessage_func(
+					false,
+					"Reservation couldn't approve"
+				);
+				await setMessageStatus_func();
+			}
+
+			await setApproveBookId("");
+		}
+
 		if(sureVerify === true && cancelBookStatus === true) {
 			cancelBooking(cancelBookId)
 			setSureVerify_func(false);
 			setCancelBookStatus(false)
+		}else if(sureVerify === true && approveBookStatus === true) {
+			approveBooking(approveBookId)
+			setSureVerify_func(false)
+			setApproveBookStatus(false)
 		}
-	}, [sureVerify, cancelBookStatus]);
+	}, [sureVerify, cancelBookStatus, approveBookStatus]);
 
 	return (
 		<tr className="border-b border-opacity-20 border-gray-700 bg-white text-sm">
@@ -111,7 +154,12 @@ const TableBody = (props) => {
 				<td className="text-center flex flex-row items-center justify-evenly py-2 border-x">
 					{/* cannot approve until get a payment slip */}
 					{props.data["payment"] !== "" && (
-						<button className="text-white bg-green-600 px-4 rounded-full py-1">
+						<button
+							onClick={() =>
+								approveBookHandler(props.data.id)
+							}
+							className="text-white bg-green-600 px-4 rounded-full py-1"
+						>
 							&#10004;
 						</button>
 					)}

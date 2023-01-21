@@ -176,6 +176,28 @@ class Booking__connection {
 		}
 		return result;
 	}
+
+	async approveBooking(id) {
+		const thisUrl =
+			main.url + "/payments/room-type/payment-confirm";
+		const token = Auth.getToken();
+
+		const res = await fetch(thisUrl, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			},
+			body: JSON.stringify({orderId: id})
+		});
+		const data = await res.json();
+		
+		if(data.order && data.payment) {
+			return true
+		}else {
+			return false
+		}
+	}
 }
 
 export default new Booking__connection();
