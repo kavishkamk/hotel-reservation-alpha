@@ -93,11 +93,6 @@ const RoomsPage = () => {
 		getAllRooms();
 	}, []);
 
-	// useEffect(()=> {
-	// 	console.log("===")
-	// 	console.log(searchResult)
-	// }, [searchResult])
-
 	return (
 		<>
 			{bookStatus && (
