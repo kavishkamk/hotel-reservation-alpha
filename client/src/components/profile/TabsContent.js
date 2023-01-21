@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Profile__connection from "../../connections/Profile";
 import Rooms__connection from "../../connections/Rooms";
 import Dates from "../../functions/Dates";
 import TabsItem from "./TabsItem";
 import { Navigate } from "react-router-dom";
+import {DefaultContext} from "../../context/DefaultContext"
 
 const TabsContent = (props) => {
 	const [confirmedData, setConfirmedData] = useState([]);
@@ -11,9 +12,11 @@ const TabsContent = (props) => {
 	const [bookingData, setBookingData] = useState([]);
 	const [cancelledData, setCancelledData] = useState([]);
 	const [checkinData, setCheckinData] = useState([]);
-	const [checkoutData, setCheckoutData] = useState([])
+	const [checkoutData, setCheckoutData] = useState([]);
 	const [paymentStatus, setPaymentStatus] = useState(false);
-	const [paymentData, setPaymentData] = useState({})
+	const [paymentData, setPaymentData] = useState({});
+
+	const {setMessageStatus_func, setMessage_func} = useContext(DefaultContext)
 
 	let statusColor = "bg-textBlue";
 	let status = props.status;
@@ -29,17 +32,12 @@ const TabsContent = (props) => {
 		statusColor = "bg-red-400";
 	}
 
-	useEffect(() => {
-		async function getBookingData() {
-			const data =
-				await Profile__connection.bookingRecords();
-			let result = [];
+	const getBookingData = async () => {
+		const data = await Profile__connection.bookingRecords();
 
-			console.log("bookings")
-			console.log(data);
-
-			if (data.data) {
-				data.data.forEach(async (record) => {
+		if (data.data) {
+			const result = await Promise.all(
+				data.data.map(async (record) => {
 					const data1 = await Rooms__connection.getRoomById(
 						record.roomType
 					);
@@ -54,7 +52,7 @@ const TabsContent = (props) => {
 					const checkin = Dates.formatDate(record.fromDate);
 					const checkout = Dates.formatDate(record.toDate);
 
-					result.push({
+					return {
 						id: record.id,
 						checkIn: checkin,
 						checkOut: checkout,
@@ -62,28 +60,25 @@ const TabsContent = (props) => {
 						cost: record.totalPrice,
 						rooms: record.numberOfRooms,
 						guests: record.numberOfPersons,
-						roomId: record.roomType
-					});
-				});
+						roomId: record.roomType,
+					};
+				})
+			);
 
-				// console.log(result)
-
-				await setBookingData(result);
-			} else {
-				console.log(data.error);
-			}
+			setBookingData(result);
+		} else {
+			await setMessage_func(false, data.error);
+			await setMessageStatus_func();
 		}
+	};
 
-		async function getConfirmedData() {
-			const data =
-				await Profile__connection.confirmedRecords();
-			let result = [];
+	const getConfirmedData = async () => {
+		const data =
+			await Profile__connection.confirmedRecords();
 
-			console.log("confirmed")
-			console.log(data);
-
-			if (data.data) {
-				data.data.forEach(async (record) => {
+		if (data.data) {
+			const result = await Promise.all(
+				data.data.map(async (record) => {
 					const data1 = await Rooms__connection.getRoomById(
 						record.roomType
 					);
@@ -98,30 +93,29 @@ const TabsContent = (props) => {
 					const checkin = Dates.formatDate(record.fromDate);
 					const checkout = Dates.formatDate(record.toDate);
 
-					result.push({
+					return {
 						id: record.id,
 						checkIn: checkin,
 						checkOut: checkout,
 						room: roomName,
 						cost: record.totalPrice,
-					});
-				});
-				await setConfirmedData(result);
-			} else {
-				console.log(data.error);
-			}
+					};
+				})
+			);
+			await setConfirmedData(result);
+		} else {
+			await setMessage_func(false, data.error);
+			await setMessageStatus_func();
 		}
+	};
 
-		async function getCancelledData() {
-			const data =
-				await Profile__connection.cancelledRecords();
-			let result = [];
+	const getCancelledData = async () => {
+		const data =
+			await Profile__connection.cancelledRecords();
 
-			console.log("cancelled")
-			console.log(data);
-
-			if (data.data) {
-				data.data.forEach(async (record) => {
+		if (data.data) {
+			const result = await Promise.all(
+				data.data.map(async (record) => {
 					const data1 = await Rooms__connection.getRoomById(
 						record.roomType
 					);
@@ -136,30 +130,28 @@ const TabsContent = (props) => {
 					const checkin = Dates.formatDate(record.fromDate);
 					const checkout = Dates.formatDate(record.toDate);
 
-					result.push({
+					return {
 						id: record.id,
 						checkIn: checkin,
 						checkOut: checkout,
 						room: roomName,
 						cost: record.totalPrice,
-					});
-				});
-				await setCancelledData(result);
-			} else {
-				console.log(data.error);
-			}
+					};
+				})
+			);
+			await setCancelledData(result);
+		} else {
+			await setMessage_func(false, data.error);
+			await setMessageStatus_func();
 		}
+	};
 
-		async function getCheckinData() {
-			const data =
-				await Profile__connection.checkinRecords();
-			let result = [];
+	const getCheckinData = async () => {
+		const data = await Profile__connection.checkinRecords();
 
-			console.log("checkin");
-			console.log(data);
-
-			if (data.data) {
-				data.data.forEach(async (record) => {
+		if (data.data) {
+			const result = await Promise.all(
+				data.data.map(async (record) => {
 					const data1 = await Rooms__connection.getRoomById(
 						record.roomType
 					);
@@ -174,30 +166,29 @@ const TabsContent = (props) => {
 					const checkin = Dates.formatDate(record.fromDate);
 					const checkout = Dates.formatDate(record.toDate);
 
-					result.push({
+					return {
 						id: record.id,
 						checkIn: checkin,
 						checkOut: checkout,
 						room: roomName,
 						cost: record.totalPrice,
-					});
-				});
-				await setCheckinData(result);
-			} else {
-				console.log(data.error);
-			}
+					};
+				})
+			);
+			await setCheckinData(result);
+		} else {
+			await setMessage_func(false, data.error);
+			await setMessageStatus_func();
 		}
+	};
 
-		async function getCheckoutData() {
-			const data =
-				await Profile__connection.checkoutRecords();
-			let result = [];
+	const getCheckoutData = async () => {
+		const data =
+			await Profile__connection.checkoutRecords();
 
-			console.log("checkout");
-			console.log(data);
-
-			if (data.data) {
-				data.data.forEach(async (record) => {
+		if (data.data) {
+			const result = await Promise.all(
+				data.data.map(async (record) => {
 					const data1 = await Rooms__connection.getRoomById(
 						record.roomType
 					);
@@ -212,36 +203,36 @@ const TabsContent = (props) => {
 					const checkin = Dates.formatDate(record.fromDate);
 					const checkout = Dates.formatDate(record.toDate);
 
-					result.push({
+					return {
 						id: record.id,
 						checkIn: checkin,
 						checkOut: checkout,
 						room: roomName,
 						cost: record.totalPrice,
-					});
-				});
-				await setCheckoutData(result);
-			} else {
-				console.log(data.error);
-			}
+					};
+				})
+			);
+			await setCheckoutData(result);
+		} else {
+			await setMessage_func(false, data.error);
+			await setMessageStatus_func();
 		}
+	};
 
+	useEffect(() => {
 		getBookingData();
 		getConfirmedData();
 		getCancelledData();
 		getCheckinData();
 		getCheckoutData();
-
 	}, []);
 
-	const paymentHandler = async (item)=> {
-		console.log(item)
+	const paymentHandler = async (item) => {
+		console.log(item);
 
-		const data1 =
-			await Rooms__connection.getFullRoomById(item.roomId)
-
-		// const details = Rooms__connection.roomDetails;
-		// const images = Rooms__connection.images;
+		const data1 = await Rooms__connection.getFullRoomById(
+			item.roomId
+		);
 
 		const roomData = {
 			name: data1.room.roomType,
@@ -264,15 +255,14 @@ const TabsContent = (props) => {
 			guests: item.guests,
 			rooms: item.rooms,
 			item: roomData,
-			bookStatus: true
-		})
+			bookStatus: true,
+		});
 		setPaymentStatus(true);
-		
-	}
+	};
 
-	useEffect(()=> {
+	useEffect(() => {
 		console.log(paymentData);
-	}, [paymentData])
+	}, [paymentData]);
 
 	return (
 		<>
@@ -302,7 +292,9 @@ const TabsContent = (props) => {
 								);
 							})
 						) : (
-							<div className="w-full text-center text-lg font-semibold mt-20">No Data</div>
+							<div className="w-full text-center text-lg font-semibold mt-20">
+								No Data
+							</div>
 						))}
 
 					{status === "Confirmed" &&
@@ -317,7 +309,9 @@ const TabsContent = (props) => {
 								);
 							})
 						) : (
-							<div className="w-full text-center text-lg font-semibold mt-20">No Data</div>
+							<div className="w-full text-center text-lg font-semibold mt-20">
+								No Data
+							</div>
 						))}
 
 					{status === "Cancelled" &&
@@ -332,7 +326,9 @@ const TabsContent = (props) => {
 								);
 							})
 						) : (
-							<div className="w-full text-center text-lg font-semibold mt-20">No Data</div>
+							<div className="w-full text-center text-lg font-semibold mt-20">
+								No Data
+							</div>
 						))}
 
 					{props.status == "Check-in" &&
@@ -347,7 +343,9 @@ const TabsContent = (props) => {
 								);
 							})
 						) : (
-							<div className="w-full text-center text-lg font-semibold mt-20">No Data</div>
+							<div className="w-full text-center text-lg font-semibold mt-20">
+								No Data
+							</div>
 						))}
 
 					{props.status == "Check-out" &&
@@ -362,7 +360,9 @@ const TabsContent = (props) => {
 								);
 							})
 						) : (
-							<div className="w-full text-center text-lg font-semibold mt-20">No Data</div>
+							<div className="w-full text-center text-lg font-semibold mt-20">
+								No Data
+							</div>
 						))}
 				</div>
 			</div>

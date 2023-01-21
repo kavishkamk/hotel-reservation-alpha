@@ -14,10 +14,17 @@ const PrintPage = (props) => {
 
 	let checkin, checkout;
 	if (Object.keys(reservationDetails).length > 0) {
-		checkin = Dates.formatDate(reservationDetails.checkin);
-		checkout = Dates.formatDate(
-			reservationDetails.checkout
-		);
+		if (!reservationDetails.datesSet) {
+			checkin = Dates.formatDate(
+				reservationDetails.checkin
+			);
+			checkout = Dates.formatDate(
+				reservationDetails.checkout
+			);
+		}else {
+			checkin = reservationDetails.checkin
+			checkout = reservationDetails.checkout
+		}
 	}
 
 	console.log(reservationDetails.id);
@@ -37,8 +44,8 @@ const PrintPage = (props) => {
 
 			// delete print data after printing
 			await Auth.deletePrintReserveData();
-		}else {
-			window.close()
+		} else {
+			window.close();
 		}
 	};
 
@@ -191,16 +198,18 @@ const PrintPage = (props) => {
 									</td>
 								</tr>
 
-								<tr className="border border-opacity-20 border-gray-700 ">
-									<td className="p-2">
-										<p>Nights</p>
-									</td>
-									<td className="p-2 text-right">
-										<p>
-											{"x " + reservationDetails.nights}
-										</p>
-									</td>
-								</tr>
+								{/* {reservationDetails.nights && ( */}
+									<tr className="border border-opacity-20 border-gray-700 ">
+										<td className="p-2">
+											<p>Nights</p>
+										</td>
+										<td className="p-2 text-right">
+											<p>
+												{"x " + reservationDetails.nights}
+											</p>
+										</td>
+									</tr>
+								{/* )} */}
 
 								<tr className="border border-y-4 border-opacity-20 border-gray-700 text-lg font-bold font-poppins">
 									<td className="p-2">

@@ -1,7 +1,5 @@
 import React, {useState} from 'react'
 import ReactCardFlip from "react-card-flip";
-
-// components
 import CardFront from "./CardFront"
 import CardBack from "./CardBack"
 
@@ -14,8 +12,6 @@ const CardContainer = (props) => {
 	const flip = () => {
 		setFlipped(!flipped);
 	};
-
-	// console.log(item)
 
 	return (
 		<div className="cursor-pointer">

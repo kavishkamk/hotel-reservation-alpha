@@ -83,19 +83,16 @@ const CheckoutPage = () => {
 		}
 	}, [email]);
 
-	useEffect(() => {
-		async function getBookingSummary(id) {
-			const data =
-				await Checkout__connection.getBookingSummary(id);
-			let result = [];
+	async function getBookingSummary(id) {
+		const data =
+			await Checkout__connection.getBookingSummary(id);
 
-			if (data.error) {
-				setMessage_func(false, data.error);
-				setMessageStatus_func();
-			} else if (data.data) {
-				data.data.forEach(async (order) => {
-					// console.log(order)
-
+		if (data.error) {
+			setMessage_func(false, data.error);
+			setMessageStatus_func();
+		} else if (data.data) {
+			const fullData = await Promise.all(
+				data.data.map(async (order) => {
 					const data1 =
 						await Booking__connection.getRoomById(
 							order.roomType
@@ -113,7 +110,7 @@ const CheckoutPage = () => {
 					);
 					const checkout = Dates.formatDate(order.toDate);
 
-					result.push({
+					return {
 						id: order.id,
 						room: roomName,
 						checkin: checkin,
@@ -121,21 +118,42 @@ const CheckoutPage = () => {
 						guests: order.numberOfPersons,
 						roomCount: order.numberOfRooms,
 						price: order.totalPrice,
-					});
-				});
-				// console.log("result");
-				// console.log(result);
-				await setReservations(result);
-			}
+					};
+				})
+			);
+			setReservations(fullData);
 		}
+	}
+
+	useEffect(() => {
 		if (clientData.id) {
 			getBookingSummary(clientData.id);
 		}
 	}, [clientData]);
 
-	useEffect(() => {
-		console.log(reservations);
-	}, [reservations]);
+	// useEffect(() => {
+	// 	console.log(reservations);
+	// }, [reservations]);
+
+	const checkoutHandler = async (id) => {
+		if (Object.keys(clientData).length > 0) {
+			const res = await Checkout__connection.setCheckout(id);
+			console.log(res);
+
+			if (res.error) {
+				setMessage_func(false, res.error);
+				setMessageStatus_func();
+			} else if (res.status) {
+				await setMessage_func(
+					true,
+					"Successfully checked-out"
+				);
+				await setMessageStatus_func();
+
+				await Promise.all(getBookingSummary(clientData.id));
+			}
+		}
+	};
 
 	return (
 		<PageContainer>
@@ -155,6 +173,7 @@ const CheckoutPage = () => {
 						<BookingSummary
 							reservations={reservations}
 							checkout={true}
+							checkoutHandler={checkoutHandler}
 						/>
 					)}
 				</div>

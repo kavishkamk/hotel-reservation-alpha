@@ -25,10 +25,9 @@ class Booking__connection {
 		return result
 	}
 
-	async getAllPending() {
+	async getPaymentSlip(id) {
 		const thisUrl =
-			main.url +
-			"/booking/room-booking/pending-reservation";
+			main.url + "/payments/room-type/payment/" + id;
 		const token = Auth.getToken();
 
 		const res = await fetch(thisUrl, {
@@ -39,7 +38,32 @@ class Booking__connection {
 			},
 		});
 		const data = await res.json();
-		console.log(data);
+
+		if(data.roomPayments) {
+			let url = data.roomPayments.slipUrl.substring(8,)
+			// console.log(url)
+			return url
+
+		}else {
+			return "error"
+		}
+	}
+
+	async getAllPending() {
+		const thisUrl =
+			main.url +
+			"/booking/room-booking/awaiting-confirm-reservation";
+		const token = Auth.getToken();
+
+		const res = await fetch(thisUrl, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			},
+		});
+		const data = await res.json();
+		// console.log(data);
 		let result = {}
 
 		if(data.reservationList) {
@@ -64,7 +88,7 @@ class Booking__connection {
 			},
 		});
 		const data = await res.json();
-		console.log(data);
+		// console.log(data);
 		let result = {};
 
 		if (data.reservationList) {
@@ -90,7 +114,7 @@ class Booking__connection {
 			},
 		});
 		const data = await res.json();
-		console.log(data);
+		// console.log(data);
 		let result = {};
 
 		if (data.reservationList) {
@@ -102,14 +126,37 @@ class Booking__connection {
 		return result;
 	}
 
-	async getAllRestaurentBookings() {}
+	async getAllRestaurentBookings() {
+		const thisUrl =
+			main.url + "/booking/restaurent-booking";
+		const token = Auth.getToken();
+
+		const res = await fetch(thisUrl, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			},
+		});
+		const data = await res.json();
+		// console.log(data);
+		let result = {};
+
+		if (data.bookings) {
+			result.data = data.bookings;
+		} else {
+			result.error =
+				"Something went wrong. Cannot retrieve the data";
+		}
+		return result;
+	}
 
 	async cancelBooking(id) {
 		const thisUrl =
 			main.url + "/booking/room-booking/cancel/"+ id;
 		const token = Auth.getToken();
 
-		console.log(thisUrl)
+		// console.log(thisUrl)
 
 		const res = await fetch(thisUrl, {
 			method: "PATCH",
@@ -119,7 +166,7 @@ class Booking__connection {
 			},
 		});
 		const data = await res.json();
-		console.log(data);
+		// console.log(data);
 		let result;
 
 		if (data.request === "success") {
@@ -128,6 +175,28 @@ class Booking__connection {
 			result = false
 		}
 		return result;
+	}
+
+	async approveBooking(id) {
+		const thisUrl =
+			main.url + "/payments/room-type/payment-confirm";
+		const token = Auth.getToken();
+
+		const res = await fetch(thisUrl, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			},
+			body: JSON.stringify({orderId: id})
+		});
+		const data = await res.json();
+		
+		if(data.order && data.payment) {
+			return true
+		}else {
+			return false
+		}
 	}
 }
 

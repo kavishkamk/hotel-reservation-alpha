@@ -8,7 +8,8 @@ import TableBody from "../../components/shared/table/TableBody";
 import Booking__connection from "../../connections/Booking";
 import { DefaultContext } from "../../context/DefaultContext";
 import Dates from "../../functions/Dates";
-import LoadingSpinner from "../../components/shared/loading-spinner/LoadingSpinner"
+import LoadingSpinner from "../../components/shared/loading-spinner/LoadingSpinner";
+import * as main from "../../connections/main-url"
 
 const TabsContent = (props) => {
 	const { setMessage_func, setMessageStatus_func } =
@@ -22,32 +23,9 @@ const TabsContent = (props) => {
 	const [checkinData, setCheckinData] = useState([]);
 	const [checkoutData, setCheckoutData] = useState([]);
 	const [cancelledData, setCancelledData] = useState([]);
-	const [restaurentsData, setRestaurentsData] = useState([
-		{
-			id: 1,
-			name: "Maduka Weerasinge",
-			restaurent: "Sky Dine",
-			date: "2022-12-23",
-			tables: 2,
-			meal: "Breakfast",
-		},
-		{
-			id: 2,
-			name: "Rashmi Wijesekara",
-			restaurent: "Sky Dine",
-			date: "2022-12-12",
-			tables: 2,
-			meal: "Dinner",
-		},
-		{
-			id: 3,
-			name: "Tharanga Silva",
-			restaurent: "Chinese",
-			date: "2022-12-23",
-			tables: 1,
-			meal: "Lunch",
-		},
-	]);
+	const [restaurentsData, setRestaurentsData] = useState([]);
+	const [deleteLine, setDeleteLine] = useState({});
+	const [refreshTab, setRefreshTab] = useState(0)
 
 	const tab = props.tab;
 
@@ -73,189 +51,27 @@ const TabsContent = (props) => {
 	];
 
 	const restaurentsHead = [
-		"Name",
+		"Client Email",
 		"Restaurent",
 		"Date",
 		"Tables",
+		"Guests",
 		"Meal",
 	];
 
-	// useEffect(() => {
-	// 	async function getAllPending() {
-	// 		const data =
-	// 			await Booking__connection.getAllPending();
-	// 		let resultFormat = [];
+	const getAllPending = async () => {
+		const pendingResultData =
+			await Booking__connection.getAllPending();
 
-	// 		if (data.error) {
-	// 			await setMessage_func(false, data.error);
-	// 			await setMessageStatus_func();
-	// 			return;
-	// 		} else {
-	// 			data.data.forEach(async (item) => {
-	// 				const data1 =
-	// 					await Booking__connection.getRoomById(
-	// 						item.roomType
-	// 					);
-	// 				let roomName;
+		console.log(pendingResultData);
 
-	// 				if (data1.room) {
-	// 					roomName = data1.room;
-	// 				} else {
-	// 					roomName = "---";
-	// 				}
-	// 				const checkin = Dates.formatDate(item.fromDate);
-	// 				const checkout = Dates.formatDate(item.toDate);
-
-	// 				resultFormat.push({
-	// 					id: item.id,
-	// 					name: item.userEmail,
-	// 					checkin: checkin,
-	// 					checkout: checkout,
-	// 					guests: item.numberOfPersons,
-	// 					room: roomName,
-	// 					roomCount: item.numberOfRooms,
-	// 					payment: "",
-	// 				});
-	// 			});
-
-	// 			await setPendingData(resultFormat);
-	// 		}
-	// 	}
-
-	// 	async function getAllApproved() {
-	// 		const data =
-	// 			await Booking__connection.getAllApproved();
-	// 		let resultFormat = [];
-
-	// 		if (data.error) {
-	// 			await setMessage_func(false, data.error);
-	// 			await setMessageStatus_func();
-	// 			return;
-	// 		} else {
-	// 			data.data.forEach(async (item) => {
-	// 				const data1 =
-	// 					await Booking__connection.getRoomById(
-	// 						item.roomType
-	// 					);
-	// 				let roomName;
-
-	// 				if (data1.room) {
-	// 					roomName = data1.room;
-	// 				} else {
-	// 					roomName = "---";
-	// 				}
-	// 				const checkin = Dates.formatDate(item.fromDate);
-	// 				const checkout = Dates.formatDate(item.toDate);
-
-	// 				resultFormat.push({
-	// 					id: item.id,
-	// 					name: item.userEmail,
-	// 					checkin: checkin,
-	// 					checkout: checkout,
-	// 					guests: item.numberOfPersons,
-	// 					room: roomName,
-	// 					roomCount: item.numberOfRooms,
-	// 					// payment: "",
-	// 				});
-	// 			});
-
-	// 			await setApprovedData(resultFormat);
-	// 		}
-	// 	}
-
-	// 	async function getAllCancelled() {
-	// 		const data =
-	// 			await Booking__connection.getAllCancelled();
-
-	// 		let resultFormat = [];
-
-	// 		if (data.error) {
-	// 			await setMessage_func(false, data.error);
-	// 			await setMessageStatus_func();
-	// 			return;
-	// 		} else {
-	// 			data.data.forEach(async (item) => {
-	// 				const data1 =
-	// 					await Booking__connection.getRoomById(
-	// 						item.roomType
-	// 					);
-	// 				let roomName;
-
-	// 				if (data1.room) {
-	// 					roomName = data1.room;
-	// 				} else {
-	// 					roomName = "---";
-	// 				}
-	// 				const checkin = Dates.formatDate(item.fromDate);
-	// 				const checkout = Dates.formatDate(item.toDate);
-
-	// 				resultFormat.push({
-	// 					id: item.id,
-	// 					name: item.userEmail,
-	// 					checkin: checkin,
-	// 					checkout: checkout,
-	// 					guests: item.numberOfPersons,
-	// 					room: roomName,
-	// 					roomCount: item.numberOfRooms,
-	// 				});
-	// 			});
-
-	// 			await setCancelledData(resultFormat);
-	// 		}
-	// 	}
-
-	// 	async function getAllRestaurentBookings() { }
-
-	// 	if (loading) {
-	// 		getAllPending().catch((err) => {
-	// 			console.log(err);
-	// 		});
-	// 		getAllCancelled().catch((err) => {
-	// 			console.log(err);
-	// 		});
-	// 		getAllApproved().catch((err) => {
-	// 			console.log(err);
-	// 		});
-
-	// 		setLoading(false)
-	// 	}
-
-	// }, [loading]);
-
-	// const pendingData = [
-	// 	{
-	// 		id: 1,
-	// 		name: "Nihal Silva",
-	// 		checkin: "2022-12-22",
-	// 		checkout: "2022-12-25",
-	// 		guests: 3,
-	// 		room: "Deluxe Room",
-	// 		roomCount: 2,
-	// 		payment: "http://google.com",
-	// 	}
-	// ];
-
-	// const restaurentsData = [
-	// 	{
-	// 		id: 1,
-	// 		name: "Maduka Weerasinge",
-	// 		restaurent: "Sky Dine",
-	// 		date: "2022-12-23",
-	// 		tables: 2,
-	// 		meal: "Breakfast",
-	// 	}
-	// ];
-
-	useEffect(() => {
-		const getAllPending = async () => {
-			const pendingResultData = await Booking__connection.getAllPending();
-
-			if (pendingResultData.error) {
-				await setMessage_func(false, pendingResultData.error);
-				await setMessageStatus_func();
-				return;
-			} else {
-				const pendingResult = await Promise.all(pendingResultData.data.map(async (item) => {
+		if (pendingResultData.error) {
+			await setMessage_func(false, pendingResultData.error);
+			await setMessageStatus_func();
+			return;
+		} else {
+			const pendingResult = await Promise.all(
+				pendingResultData.data.map(async (item) => {
 					let roomName;
 
 					const roomType =
@@ -268,11 +84,19 @@ const TabsContent = (props) => {
 					} else {
 						roomName = "---";
 					}
+					const slip =
+						await Booking__connection.getPaymentSlip(
+							item.id
+						);
+
+					let url;
+					if (slip == "error") url = "";
+					else url = main.url + "/payments" + slip;
 
 					const checkin = Dates.formatDate(item.fromDate);
 					const checkout = Dates.formatDate(item.toDate);
 
-					return ({
+					return {
 						id: item.id,
 						name: item.userEmail,
 						checkin: checkin,
@@ -280,24 +104,30 @@ const TabsContent = (props) => {
 						guests: item.numberOfPersons,
 						room: roomName,
 						roomCount: item.numberOfRooms,
-						payment: "",
-					});
-				}));
+						payment: url,
+					};
+				})
+			);
 
-				setPendingData(pendingResult);
-			}
+			console.log(pendingResult);
+			setPendingData(pendingResult);
 		}
+	};
 
-		const getAllApproved = async () => {
+	const getAllApproved = async () => {
+		const approvedResultData =
+			await Booking__connection.getAllApproved();
 
-			const approvedResultData = await Booking__connection.getAllApproved();
-
-			if (approvedResultData.error) {
-				await setMessage_func(false, approvedResultData.error);
-				await setMessageStatus_func();
-				return;
-			} else {
-				const approvedResult = await Promise.all(approvedResultData.data.map(async (item) => {
+		if (approvedResultData.error) {
+			await setMessage_func(
+				false,
+				approvedResultData.error
+			);
+			await setMessageStatus_func();
+			return;
+		} else {
+			const approvedResult = await Promise.all(
+				approvedResultData.data.map(async (item) => {
 					const roomType =
 						await Booking__connection.getRoomById(
 							item.roomType
@@ -313,7 +143,7 @@ const TabsContent = (props) => {
 					const checkin = Dates.formatDate(item.fromDate);
 					const checkout = Dates.formatDate(item.toDate);
 
-					return ({
+					return {
 						id: item.id,
 						name: item.userEmail,
 						checkin: checkin,
@@ -322,25 +152,28 @@ const TabsContent = (props) => {
 						room: roomName,
 						roomCount: item.numberOfRooms,
 						// payment: "",
-					});
-				}));
+					};
+				})
+			);
 
-				setApprovedData(approvedResult);
-			}
-		};
+			setApprovedData(approvedResult);
+		}
+	};
 
-		const getAllCancelled = async () => {
+	const getAllCancelled = async () => {
+		const cancelledResultData =
+			await Booking__connection.getAllCancelled();
 
-			const cancelledResultData =
-				await Booking__connection.getAllCancelled();
-
-			if (cancelledResultData.error) {
-				await setMessage_func(false, cancelledResultData.error);
-				await setMessageStatus_func();
-				return;
-			} else {
-				const cancelledResult = await Promise.all(cancelledResultData.data.map(async (item) => {
-
+		if (cancelledResultData.error) {
+			await setMessage_func(
+				false,
+				cancelledResultData.error
+			);
+			await setMessageStatus_func();
+			return;
+		} else {
+			const cancelledResult = await Promise.all(
+				cancelledResultData.data.map(async (item) => {
 					const roomType =
 						await Booking__connection.getRoomById(
 							item.roomType
@@ -355,7 +188,7 @@ const TabsContent = (props) => {
 					const checkin = Dates.formatDate(item.fromDate);
 					const checkout = Dates.formatDate(item.toDate);
 
-					return ({
+					return {
 						id: item.id,
 						name: item.userEmail,
 						checkin: checkin,
@@ -363,19 +196,84 @@ const TabsContent = (props) => {
 						guests: item.numberOfPersons,
 						room: roomName,
 						roomCount: item.numberOfRooms,
-					});
+					};
+				})
+			);
 
-				}));
+			setCancelledData(cancelledResult);
+		}
+	};
 
-				setCancelledData(cancelledResult);
-			}
+	const getTableBookings = async () => {
+		const tableData =
+			await Booking__connection.getAllRestaurentBookings();
 
-		};
+		if (tableData.error) {
+			await setMessage_func(false, tableData.error);
+			await setMessageStatus_func();
+			return;
+		} else {
+			const tableBookingData = await Promise.all(
+				tableData.data.map(async (item) => {
+					const date = Dates.formatDate(item.fromDate);
 
+					return {
+						id: item.id,
+						name: item.userEmail,
+						restaurent: item.restaurentType.restaurentType,
+						date: date,
+						tables: item.numberOfTables,
+						guests: item.numberOfPersons,
+						meal: item.meal,
+					};
+				})
+			);
+
+			setRestaurentsData(tableBookingData);
+		}
+	};
+
+	useEffect(() => {
 		getAllPending();
 		getAllApproved();
 		getAllCancelled();
+		getTableBookings();
 	}, []);
+
+	useEffect(()=> {
+		if(refreshTab === 5){
+			// cancelled
+			getAllCancelled();
+		}else if(refreshTab === 2) {
+			// approved
+			getAllApproved();
+		}
+	}, [refreshTab])
+
+	useEffect(()=> {
+		console.log(deleteLine)
+		if(deleteLine.length > 0) {
+			const newPendingData = pendingData
+				.map((item) => {
+					console.log(item);
+					if (deleteLine !== item.id) {
+						return item;
+					}
+				})
+				.filter(
+					(notUndefined) => notUndefined !== undefined
+				);
+			console.log(newPendingData)
+			setPendingData(newPendingData)
+			setDeleteLine("")
+		}
+	}, [deleteLine])
+
+	const deleteLineHandler = (id, refreshTab) => {
+		console.log(id + ", "+ refreshTab)
+		setDeleteLine(id)
+		setRefreshTab(refreshTab)
+	}
 
 	return (
 		<>
@@ -384,8 +282,8 @@ const TabsContent = (props) => {
 					<table className="min-w-full">
 						<TableHead tab={tab} columns={pending} />
 						<tbody className="">
-							{pendingData.map((data) => (
-								<TableBody tab={tab} data={data} />
+							{pendingData.map((data) => data !== undefined && (
+								<TableBody tab={tab} data={data} setDeleteLine={deleteLineHandler} />
 							))}
 						</tbody>
 					</table>
@@ -434,7 +332,7 @@ const TabsContent = (props) => {
 				</div>
 			)}
 		</>
-	)
+	);
 };
 
 export default TabsContent;
