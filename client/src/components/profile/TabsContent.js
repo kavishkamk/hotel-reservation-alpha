@@ -302,7 +302,7 @@ const TabsContent = (props) => {
 								);
 							})
 						) : (
-							<div className="">no data</div>
+							<div className="w-full text-center text-lg font-semibold mt-20">No Data</div>
 						))}
 
 					{status === "Confirmed" &&
@@ -317,7 +317,7 @@ const TabsContent = (props) => {
 								);
 							})
 						) : (
-							<div className="">no data</div>
+							<div className="w-full text-center text-lg font-semibold mt-20">No Data</div>
 						))}
 
 					{status === "Cancelled" &&
@@ -332,7 +332,7 @@ const TabsContent = (props) => {
 								);
 							})
 						) : (
-							<div className="">no data</div>
+							<div className="w-full text-center text-lg font-semibold mt-20">No Data</div>
 						))}
 
 					{props.status == "Check-in" &&
@@ -347,7 +347,7 @@ const TabsContent = (props) => {
 								);
 							})
 						) : (
-							<div className="">no data</div>
+							<div className="w-full text-center text-lg font-semibold mt-20">No Data</div>
 						))}
 
 					{props.status == "Check-out" &&
@@ -362,7 +362,7 @@ const TabsContent = (props) => {
 								);
 							})
 						) : (
-							<div className="">no data</div>
+							<div className="w-full text-center text-lg font-semibold mt-20">No Data</div>
 						))}
 				</div>
 			</div>

@@ -33,7 +33,7 @@ const Bookings = (props) => {
 	};
 
 	return (
-		<div className="bg-white p-5 rounded-xl shadow-xl max-w-[99%] overflow-x-auto">
+		<div className="bg-white p-5 rounded-xl shadow-xl max-w-[99%] overflow-x-auto min-h-[calc(100vh-10rem)] max-h-[calc(100vh-10rem)]">
 			<div className="-ml-2 flex items-center text-gray-900 font-poppins font-semibold mb-5">
 				{tabsList.map((tab) => {
 					return (

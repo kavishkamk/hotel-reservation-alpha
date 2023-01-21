@@ -21,7 +21,7 @@ class RestaurentBook__connection {
 
 		if (data.booking) {
 			result.status = true;
-			result.orderId = data.booking._id;
+			result.orderId = data.booking.id;
 		} else result.status = false;
 
 		return result;

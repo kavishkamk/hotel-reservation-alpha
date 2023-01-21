@@ -29,10 +29,12 @@ const Summary = (props) => {
 		messageStatus,
 	} = useContext(DefaultContext);
 	const [bookStatus, setBookStatus] = useState(false);
+	const [restaurentBookStatus, setRestaurentBookStatus] = useState(false);
 
 	// hide previous section's popup message
-	if (messageStatus) setMessageStatus_func();
-
+	if (messageStatus && formData.type == 1) setMessageStatus_func();
+	if(messageStatus && formData.type == 4 && !restaurentBookStatus) setMessageStatus_func();
+	
 	const backHandler = () => {
 		setPage(page - 1);
 	};
@@ -52,6 +54,8 @@ const Summary = (props) => {
 			res = await RoomBook__connection.roomBook(
 				details
 			);
+			
+			console.log(res)
 
 			if (res.status) {
 				await setBookStatus(true);
@@ -74,19 +78,17 @@ const Summary = (props) => {
 
 			console.log(details)
 			res = await RestaurentBook__connection.tableBook(details)
+			console.log(res)
 
 			if(res.status) {
-				props.setFormData({
+				await setRestaurentBookStatus(true)
+				await props.setFormData({
 					...formData,
+					restaurentBookStatus: true,
 					orderId: res.orderId,
 				});
 
-				// TODO: popup not display
-				setMessage_func(
-					true,
-					"Tables are reserved successfully!"
-				);
-				setMessageStatus_func();
+				
 			}
 		}
 
@@ -98,6 +100,19 @@ const Summary = (props) => {
 			setMessageStatus_func();
 		}
 	};
+
+	useEffect(()=> {
+		console.log("restaurentBookStatus => "+ restaurentBookStatus)
+		if(restaurentBookStatus) {
+			// TODO: popup not display
+			setMessage_func(
+				true,
+				"Tables are reserved successfully!"
+			);
+			setMessageStatus_func();
+			console.log(messageStatus)
+		}
+	}, [restaurentBookStatus])
 
 	const nextHandler = () => {
 		if (formData.bookStatus) setPage(page + 1);
