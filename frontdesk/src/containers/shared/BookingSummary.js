@@ -15,7 +15,7 @@ const BookingSummary = (props) => {
 			setData();
 		}
 
-		console.log(reservation);
+		console.log("reservation");
 	}, [props.reservations]);
 
 	return (
@@ -30,6 +30,7 @@ const BookingSummary = (props) => {
 						<SummaryContainer
 							item={order}
 							checkout={props.checkout}
+							checkinHandler={props.checkinHandler}
 						/>
 					))}
 				</div>

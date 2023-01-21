@@ -3,17 +3,17 @@ import { Link } from "react-router-dom";
 import Input from "../dashboard/InputField";
 
 const SummaryContainer = (props) => {
-	console.log(props.item)
 
 	const [order, setOrder] = useState(props.item)
-	const paidHandler = () => {
-		console.log("should print")
-		// sessionStorage.setItem(
-		// 	"loginStatus", true
-		// );
-		window.open("/print", "_blank", 'height=full')
-		// window.print();
-	};
+
+	// const paidHandler = () => {
+	// 	Auth.savePrintReserveData({
+
+	// 	})
+
+	// 	// make the payment
+	// 	window.open("/print", "_blank", 'height=full')
+	// };
 
 	const checkinHandler = () => {};
 
@@ -21,7 +21,7 @@ const SummaryContainer = (props) => {
 
 	useEffect(()=> {
 		if(props.item){
-			console.log(props.item)
+			// console.log(props.item)
 			setOrder(props.item)
 		}
 	}, [props.item])
@@ -73,15 +73,15 @@ const SummaryContainer = (props) => {
 						target="_blank"
 						rel="noopener noreferrer"
 					> */}
-						<button
-							onClick={paidHandler}
-							className="bg-textBlue text-white font-bold text-base px-6 py-1"
-						>
-							Paid
-						</button>
+					{/* <button
+						onClick={() => props.paidHandler(order)}
+						className="bg-textBlue text-white font-bold text-base px-6 py-1"
+					>
+						Paid
+					</button> */}
 					{/* </Link> */}
 					<button
-						onClick={checkinHandler}
+						onClick={() => props.checkinHandler(order.id)}
 						className="bg-textBlue text-white font-bold text-base px-6 py-1"
 					>
 						Check-in
