@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react'
 
-const ImageUpload = () => {
+const ImageUpload = (props) => {
 	const [file, setFile] = useState()
 	const fileSelectRef = useRef()
 
@@ -19,6 +19,7 @@ const ImageUpload = () => {
 		const fileReader = new FileReader()
 		fileReader.onload = ()=> {
 			console.log(file)
+			props.setFormData({...props.formData, paymentImage: file})
 		}
 		fileReader.readAsDataURL(file)
 

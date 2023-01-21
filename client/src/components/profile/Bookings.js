@@ -11,19 +11,19 @@ const Bookings = (props) => {
 		},
 		{
 			id: 2,
-			name: "Paid",
-		},
-		{
-			id: 3,
 			name: "Booking",
 		},
 		{
-			id: 4,
+			id: 3,
 			name: "Cancelled",
 		},
 		{
+			id: 4,
+			name: "Check-in",
+		},
+		{
 			id: 5,
-			name: "History",
+			name: "Check-out",
 		},
 	];
 
@@ -33,14 +33,14 @@ const Bookings = (props) => {
 	};
 
 	return (
-		<div className="bg-white p-5 rounded-xl shadow-xl max-w-[99%] overflow-x-auto">
+		<div className="bg-white p-5 rounded-xl shadow-xl max-w-[99%] overflow-x-auto min-h-[calc(100vh-10rem)] max-h-[calc(100vh-10rem)]">
 			<div className="-ml-2 flex items-center text-gray-900 font-poppins font-semibold mb-5">
 				{tabsList.map((tab) => {
 					return (
 						<div
 							onClick={() => tabSelectHandler(tab.id)}
 							className={
-								"cursor-pointer px-2 md:px-5 py-3 border-b-4 " +
+								"cursor-pointer px-2 md:px-5 py-3 border-b-4 whitespace-nowrap " +
 								(tab.id === selected
 									? "border-textBlue text-textBlue"
 									: "border-gray-400")

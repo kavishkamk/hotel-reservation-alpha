@@ -3,33 +3,53 @@ import React, {
 	useEffect,
 	useCallback,
 } from "react";
-
-// components
 import BackButton from "../../components/booking-progress/BackButton";
 import NextButton from "../../components/booking-progress/NextButton";
 import Container from "../../components/booking-progress/Container";
 import Topic from "../../components/booking-progress/Topic";
 import Dropdown from "../../components/booking-progress/Dropdown";
 import CardContainer from "../../components/cards/CardContainer";
-
-// data
 import restaurentsData from "../../data/restaurents.json";
-import tags from "../../data/restaurent-tags.json"
+import Restaurents__connection from "../../connections/Restaurents"
 
 const RestaurentSelect = (props) => {
-	const [selected, setSelected] = useState([]);
-	const [loadOptions, setLoadOptions] = useState(false);
-	const [searchResult, setSearchResult] = useState(restaurentsData);
-
-	// props
 	const page = props.page;
 	const setPage = props.setPage;
 	const formData = props.formData;
 	const setFormData = props.setFormData;
 
+	const [selected, setSelected] = useState([]);
+	const [loadOptions, setLoadOptions] = useState(false);
+	const [searchResult, setSearchResult] = useState(formData.searchResultRestaurents);
+	const [tags, setTags] = useState([]);
+
 	useEffect(()=> {
+		async function getAllTags() {
+			const data =
+				await Restaurents__connection.getAllTags();
+			console.log(data);
+			await setTags(data);
+		}
+
+		getAllTags()
+	}, [])
+
+	useEffect(()=> {
+		async function loadRooms() {
+			let selectedTags = [];
+			selected.forEach((tag) => {
+				selectedTags.push(tag.id);
+			});
+
+			const data =
+				await Restaurents__connection.filterRestaurents(
+					selectedTags
+				);
+			console.log(data);
+			setSearchResult(data);
+		}
 		if (selected.length > 0) {
-			setSearchResult([restaurentsData[0], restaurentsData[1]]);
+			loadRooms();
 		}
 	}, [selected])
 

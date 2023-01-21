@@ -117,7 +117,7 @@ class Rooms__connection {
 			});
 		});
 
-		console.log(rooms);
+		// console.log(rooms);
 		return rooms;
 	}
 
@@ -137,6 +137,7 @@ class Rooms__connection {
 		});
 
 		const data = await res.json();
+		console.log(data);
 		let rooms = [];
 
 		const details = Rooms__connection.#roomDetails;
@@ -154,6 +155,111 @@ class Rooms__connection {
 				stars: room.stars,
 				tags: room.tags,
 			});
+		});
+
+		return rooms;
+	}
+
+	async getRoomById(id) {
+		const thisUrl = main.url + "/services/rooms/" + id;
+		const token = Auth.getToken();
+
+		const res = await fetch(thisUrl, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			},
+		});
+
+		const data = await res.json();
+		// console.log(data)
+		let result = {};
+
+		if (data.room) {
+			result.room = data.room.roomType;
+		} else {
+			result.error = "error";
+		}
+
+		return result;
+	}
+
+	async getFullRoomById(id) {
+		const thisUrl = main.url + "/services/rooms/" + id;
+		const token = Auth.getToken();
+
+		const res = await fetch(thisUrl, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			},
+		});
+
+		const data = await res.json();
+		// console.log(data)
+		let result = {};
+
+		const details = Rooms__connection.#roomDetails;
+		const images = Rooms__connection.#images;
+
+		if (data.room) {
+			result.room = {
+				...data.room,
+				details: details,
+				images: images,
+			};
+		} else {
+			result.error = "error";
+		}
+
+		return result;
+	}
+
+	async checkAvailability(check) {
+		const thisUrl =
+			main.url + "/booking/room-booking/check-availability";
+		const token = Auth.getToken();
+
+		const res = await fetch(thisUrl, {
+			method: "PATCH",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			},
+			body: JSON.stringify({
+				numberOfRooms: check.rooms,
+				numberOfPersons: check.guests,
+				fromDate: check.checkin,
+				toDate: check.checkout,
+			}),
+		});
+
+		const data = await res.json();
+		// console.log(data);
+
+		let rooms = [];
+
+		const details = Rooms__connection.#roomDetails;
+		const images = Rooms__connection.#images;
+
+		data.freeRoomList.forEach(async (room) => {
+			const roomData = await this.getFullRoomById(room.id);
+
+			if (roomData.room) {
+				rooms.push({
+					id: room.id,
+					name: room.roomType,
+					details: details,
+					images: images,
+					price: room.price,
+					description: roomData.room.description,
+					image: roomData.room.imageURL,
+					stars: roomData.room.stars,
+					tags: roomData.room.tags,
+				});
+			}
 		});
 
 		return rooms;

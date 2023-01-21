@@ -71,7 +71,7 @@ class Restaurents__connection {
 			count += 1;
 		});
 
-		console.log(tagsFormat);
+		// console.log(tagsFormat);
 		return tagsFormat;
 	}
 
@@ -108,7 +108,7 @@ class Restaurents__connection {
 			})
 		})
 
-		console.log(restaurents)
+		// console.log(restaurents)
 		return restaurents
 	}
 
@@ -150,6 +150,88 @@ class Restaurents__connection {
 		});
 
 		console.log(restaurents);
+		return restaurents;
+	}
+
+	async getFullRestaurentById(id) {
+		const thisUrl =
+			main.url + "/services/restaurents/" + id;
+		const token = Auth.getToken();
+
+		const res = await fetch(thisUrl, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			},
+		});
+
+		const data = await res.json();
+		// console.log(data)
+		let result = {};
+
+		const details = Restaurents__connection.#details;
+		const images = Restaurents__connection.#images;
+
+		if (data.restaurent) {
+			result.restaurent = {
+				...data.restaurent,
+				details: details,
+				images: images,
+			};
+		} else {
+			result.error = "error";
+		}
+
+		return result;
+	}
+
+	async checkAvailability(check) {
+		const thisUrl =
+			main.url +
+			"/booking/restaurent-booking/check-availability";
+		const token = Auth.getToken();
+
+		const res = await fetch(thisUrl, {
+			method: "PATCH",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			},
+			body: JSON.stringify({
+				numberOfTables: check.tables,
+				numberOfPersons: check.guests,
+				fromDate: check.date
+			}),
+		});
+
+		const data = await res.json();
+		// console.log(data);
+
+		let restaurents = [];
+
+		// const details = Restaurents__connection.#details;
+		// const images = Restaurents__connection.#images;
+
+		data.freeRestaurentList.forEach(async (item) => {
+			const restaurent = await this.getFullRestaurentById(item.id);
+
+			if (restaurent.restaurent) {
+				const rest = restaurent.restaurent;
+
+				restaurents.push({
+					id: item.id,
+					name: item.restaurentType,
+					description: rest.description,
+					image: rest.imageURL,
+					images: rest.images,
+					details: rest.details,
+					stars: rest.stars,
+					tags: rest.tags,
+				});
+			}
+		});
+
 		return restaurents;
 	}
 }

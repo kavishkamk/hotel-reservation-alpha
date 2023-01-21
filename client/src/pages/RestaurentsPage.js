@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import Restaurents__connection from "../connections/Restaurents"
 import SelectMeal from "../components/booking-progress/SelectMeal";
 import Search from "../components/rooms/Search";
 import CardContainer from "../components/cards/CardContainer";
+import { DefaultContext } from "../context/DefaultContext";
 
 const RestaurentsPage = () => {
 	const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const RestaurentsPage = () => {
 		checkin: "",
 		checkout: "",
 		guests: "",
+		date: ""
 	});
 
 	const [selectedTags, setSelectedTags] = useState([]);
@@ -21,8 +23,11 @@ const RestaurentsPage = () => {
 	const [tags, setTags] = useState([]);
 	const [bookHide, setBookHide] = useState(true);
 
+	const { setMessage_func, setMessageStatus_func } =
+		useContext(DefaultContext);
+
 	const searchHandler = async () => {
-		console.log(selectedTags);
+		// console.log(selectedTags);
 		// parse the selected tags to the backend
 
 		const data = await Restaurents__connection.filterRestaurents(selectedTags)
@@ -35,6 +40,40 @@ const RestaurentsPage = () => {
 		setFormData({ ...formData, item });
 		setBookStatus(true);
 	};
+
+	useEffect(() => {
+		// console.log(formData);
+
+		async function checkAvailability(check) {
+			const data =
+				await Restaurents__connection.checkAvailability(
+					check
+				);
+			// console.log(data)
+
+			// TODO: available list couldn't re-render
+			// await setSearchResult(data)
+
+			setBookHide(false);
+			setMessage_func(true, "Available Restaurents List updated!");
+			setMessageStatus_func();
+		}
+
+		if (
+			formData.date.length > 0 &&
+			formData.Tables.length > 0 &&
+			formData.guests.length > 0 &&
+			formData.meal.length === 1
+		) {
+			const check = {
+				date: formData.date,
+				guests: formData.guests,
+				tables: formData.Tables,
+			};
+
+			checkAvailability(check);
+		}
+	}, [formData]);
 
 	useEffect(() => {
 		async function getAllRoomsTags() {

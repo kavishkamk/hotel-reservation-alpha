@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import Rooms__connection from "../connections/Rooms";
 import SelectDate from "../components/booking-progress/SelectDate";
 import Search from "../components/rooms/Search";
 import CardContainer from "../components/cards/CardContainer";
+import {DefaultContext} from "../context/DefaultContext"
 
 const RoomsPage = () => {
 	const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const RoomsPage = () => {
 		checkin: "",
 		checkout: "",
 		guests: "",
+		rooms: 0,
 	});
 
 	const [selectedTags, setSelectedTags] = useState([]);
@@ -18,7 +20,12 @@ const RoomsPage = () => {
 	const [bookStatus, setBookStatus] = useState(false);
 	const [item, setItem] = useState([]);
 	const [tags, setTags] = useState([]);
-	const [bookHide, setBookHide] = useState(true)
+	const [bookHide, setBookHide] = useState(true);
+
+	const {
+		setMessage_func,
+		setMessageStatus_func
+	} = useContext(DefaultContext);
 
 	const searchHandler = async () => {
 		console.log(selectedTags);
@@ -27,7 +34,7 @@ const RoomsPage = () => {
 		const data = await Rooms__connection.filterRooms(
 			selectedTags
 		);
-		console.log(data);
+		// console.log(data);
 		setSearchResult(data);
 	};
 
@@ -39,15 +46,34 @@ const RoomsPage = () => {
 	};
 
 	useEffect(() => {
-		console.log(formData);
+		// console.log(formData);
+
+		async function checkAvailability(check) {
+			const data = await Rooms__connection.checkAvailability(check)
+			// console.log(data)
+
+			// TODO: available room list couldn't re-render
+			// await setSearchResult(data)
+
+			setBookHide(false);
+			setMessage_func(true, "Available Room List updated!")
+			setMessageStatus_func();
+		}
 
 		if (
 			formData.checkin.length > 0 &&
 			formData.checkout.length > 0 &&
-			formData.guests.length > 0
+			formData.guests.length > 0 &&
+			formData.rooms > 0
 		) {
-			setBookHide(false)
-			// TODO: check availability intergrate with the API
+			const check = {
+				checkin: formData.checkin,
+				checkout: formData.checkout,
+				guests: formData.guests,
+				rooms: formData.rooms
+			}
+
+			checkAvailability(check)
 		}
 	}, [formData]);
 
@@ -66,6 +92,11 @@ const RoomsPage = () => {
 		getAllRoomsTags();
 		getAllRooms();
 	}, []);
+
+	// useEffect(()=> {
+	// 	console.log("===")
+	// 	console.log(searchResult)
+	// }, [searchResult])
 
 	return (
 		<>
