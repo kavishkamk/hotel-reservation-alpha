@@ -12,7 +12,6 @@ const SelectDate = (props) => {
 
 	let selectedMeal = [];
 
-	// props
 	const formData = props.formData;
 	const setFormData = props.setFormData;
 
@@ -29,9 +28,6 @@ const SelectDate = (props) => {
 	];
 
 	useEffect(() => {
-		console.log("form get ==> ");
-		console.log(formData);
-
 		if (formData.date) {
 			setDate(formData.date);
 			setTables(formData.Tables);
@@ -50,11 +46,7 @@ const SelectDate = (props) => {
 
 		// all the options are selected
 		if (dateInput && TableCountInput && mealInput && GuestCountInput) {
-			// console.log(dateInput, TableCountInput, mealInput);
-
 			await setMeal(selectedMeal);
-			// console.log("after set meal => ")
-			// console.log(meal)
 
 			setFormData({
 				...formData,
@@ -68,8 +60,6 @@ const SelectDate = (props) => {
 				"bg-lightPurple"
 			);
 
-			// ***********************************
-			// if selected dates available, display "available"
 			if (availability) {
 				checkbtnRef.current.classList.add("bg-[#10B981]");
 				setCheckStatus(true);
@@ -101,14 +91,8 @@ const SelectDate = (props) => {
 
 	const setMealHandler = useCallback(async (selection) => {
 		await setMeal(selection);
-		// console.log(meal)
 		// prevent re-rendering the dropdown component when click on search button
 	}, []);
-
-	useEffect(() => {
-		// console.log("use effect")
-		// console.log(meal)
-	}, [meal]);
 
 	return (
 		<div className="mx-auto w-full font-inter">
@@ -158,16 +142,11 @@ const SelectDate = (props) => {
 						meal
 					</div>
 					<div className="bg-lightBlueGray w-[120px] text-[#10B981] font-semibold px-3 mx-2 my-3 md:my-0">
-						{/* <SingleDropdown items={mealsList} setSelected={setMealHandler} meals={meal} /> */}
-
 						<div className="">
 							<div className="text-sm">
 								<Selectable
 									width="100%"
 									options={mealsList}
-									// defaultValue={meal.map(
-									// 	({ label }) => label
-									// )}
 									defaultValue={selectedMeal}
 									onChange={(values) => {
 										selectedMeal = values;

@@ -28,7 +28,6 @@ const Bookings = (props) => {
 	];
 
 	const tabSelectHandler = (id) => {
-		console.log(id);
 		setSelected(id);
 	};
 

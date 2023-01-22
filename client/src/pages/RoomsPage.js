@@ -28,13 +28,9 @@ const RoomsPage = () => {
 	} = useContext(DefaultContext);
 
 	const searchHandler = async () => {
-		console.log(selectedTags);
-		// parse the selected tags to the backend
-
 		const data = await Rooms__connection.filterRooms(
 			selectedTags
 		);
-		// console.log(data);
 		setSearchResult(data);
 	};
 
@@ -46,14 +42,8 @@ const RoomsPage = () => {
 	};
 
 	useEffect(() => {
-		// console.log(formData);
-
 		async function checkAvailability(check) {
 			const data = await Rooms__connection.checkAvailability(check)
-			// console.log(data)
-
-			// TODO: available room list couldn't re-render
-			// await setSearchResult(data)
 
 			setBookHide(false);
 			setMessage_func(true, "Available Room List updated!")

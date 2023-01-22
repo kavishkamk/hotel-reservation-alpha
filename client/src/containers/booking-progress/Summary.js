@@ -20,9 +20,6 @@ const Summary = (props) => {
 	const setFormData = props.setFormData;
 	const item = formData.item;
 
-	console.log("inside summary ===>>");
-	console.log(formData);
-
 	const {
 		setMessage_func,
 		setMessageStatus_func,
@@ -54,8 +51,6 @@ const Summary = (props) => {
 			res = await RoomBook__connection.roomBook(
 				details
 			);
-			
-			console.log(res)
 
 			if (res.status) {
 				await setBookStatus(true);
@@ -76,9 +71,7 @@ const Summary = (props) => {
 				meal: formData.meal[0].content
 			}
 
-			console.log(details)
 			res = await RestaurentBook__connection.tableBook(details)
-			console.log(res)
 
 			if(res.status) {
 				await setRestaurentBookStatus(true)
@@ -102,15 +95,12 @@ const Summary = (props) => {
 	};
 
 	useEffect(()=> {
-		console.log("restaurentBookStatus => "+ restaurentBookStatus)
 		if(restaurentBookStatus) {
-			// TODO: popup not display
 			setMessage_func(
 				true,
 				"Tables are reserved successfully!"
 			);
 			setMessageStatus_func();
-			console.log(messageStatus)
 		}
 	}, [restaurentBookStatus])
 

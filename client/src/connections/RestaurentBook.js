@@ -16,7 +16,6 @@ class RestaurentBook__connection {
 		});
 
 		const data = await res.json();
-		console.log(data);
 		let result = {};
 
 		if (data.booking) {

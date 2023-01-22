@@ -18,7 +18,6 @@ const ImageUpload = (props) => {
 
 		const fileReader = new FileReader()
 		fileReader.onload = ()=> {
-			console.log(file)
 			props.setFormData({...props.formData, paymentImage: file})
 		}
 		fileReader.readAsDataURL(file)
@@ -43,8 +42,6 @@ const ImageUpload = (props) => {
 					onChange={imageSubmitHandler}
 					className="px-8 py-12 border-2 border-dashed rounded-md text-gray-300 bg-[#1E293B] whitespace-nowrap"
 				/>
-
-				{/* <button onClick={imageSubmitHandler} className="bg-textBlue text-white h-fit px-4 py-2 my-5">submit</button> */}
 			</div>
 		</fieldset>
 	);

@@ -21,13 +21,11 @@ const PrintPage = (props) => {
 			checkout = Dates.formatDate(
 				reservationDetails.checkout
 			);
-		}else {
-			checkin = reservationDetails.checkin
-			checkout = reservationDetails.checkout
+		} else {
+			checkin = reservationDetails.checkin;
+			checkout = reservationDetails.checkout;
 		}
 	}
-
-	console.log(reservationDetails.id);
 
 	const printHandler = async () => {
 		await setPrintStatus(true);
@@ -40,8 +38,6 @@ const PrintPage = (props) => {
 				reservationDetails.id
 			);
 		if (paymentStatus) {
-			console.log("payment done");
-
 			// delete print data after printing
 			await Auth.deletePrintReserveData();
 		} else {
@@ -157,12 +153,6 @@ const PrintPage = (props) => {
 					</div>
 					<div className="overflow-x-auto font-inter">
 						<table className="min-w-full text-xs">
-							{/* <thead className="bg-gray-100">
-							<tr className="text-left">
-								<th className="p-3">Detail</th>
-								<th className="p-3 text-right">Amount</th>
-							</tr>
-						</thead> */}
 							<tbody>
 								<tr className="border border-opacity-20 border-gray-700 ">
 									<td className="p-2">
@@ -198,18 +188,16 @@ const PrintPage = (props) => {
 									</td>
 								</tr>
 
-								{/* {reservationDetails.nights && ( */}
-									<tr className="border border-opacity-20 border-gray-700 ">
-										<td className="p-2">
-											<p>Nights</p>
-										</td>
-										<td className="p-2 text-right">
-											<p>
-												{"x " + reservationDetails.nights}
-											</p>
-										</td>
-									</tr>
-								{/* )} */}
+								<tr className="border border-opacity-20 border-gray-700 ">
+									<td className="p-2">
+										<p>Nights</p>
+									</td>
+									<td className="p-2 text-right">
+										<p>
+											{"x " + reservationDetails.nights}
+										</p>
+									</td>
+								</tr>
 
 								<tr className="border border-y-4 border-opacity-20 border-gray-700 text-lg font-bold font-poppins">
 									<td className="p-2">

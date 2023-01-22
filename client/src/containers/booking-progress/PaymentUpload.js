@@ -17,7 +17,6 @@ const PaymentUpload = (props) => {
 
 	const {setMessage_func, setMessageStatus_func, messageStatus} = useContext(DefaultContext)
 
-	console.log(page)
 	const backHandler = () => {
 		setPage(page - 1);
 	};
@@ -27,8 +26,6 @@ const PaymentUpload = (props) => {
 			paymentSlip: formData.paymentImage,
 			orderId: formData.orderId
 		}
-
-		console.log(details)
 		const res = await RoomBook__connection.paymentUpload(details)
 
 		if(res.status){

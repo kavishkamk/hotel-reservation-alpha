@@ -9,8 +9,6 @@ class Checkout__connection {
 			id;
 		const token = Auth.getToken();
 
-		// console.log(thisUrl);
-
 		const res = await fetch(thisUrl, {
 			method: "GET",
 			headers: {
@@ -19,7 +17,6 @@ class Checkout__connection {
 			},
 		});
 		const data = await res.json();
-		console.log(data);
 		let result = []
 
 		if(data.order) {
@@ -43,7 +40,6 @@ class Checkout__connection {
 			},
 		});
 		const data = await res.json();
-		console.log(data);
 
 		let result = {};
 

@@ -29,7 +29,6 @@ const RoomSelect = (props) => {
 		async function getAllRoomsTags() {
 			const data =
 				await Rooms__connection.getAllRoomsTags();
-			console.log(data);
 			await setTags(data);
 		}
 
@@ -46,7 +45,6 @@ const RoomSelect = (props) => {
 			const data = await Rooms__connection.filterRooms(
 				selectedTags
 			);
-			console.log(data);
 			setSearchResult(data);
 		}
 		if (selected.length > 0) {
@@ -104,10 +102,6 @@ const RoomSelect = (props) => {
 
 			<div className="flex flex-row mt-auto">
 				<BackButton onClick={backHandler} />
-
-				{/* <div className="ml-auto">
-					<NextButton onClick={nextHandler} />
-				</div> */}
 			</div>
 		</Container>
 	);

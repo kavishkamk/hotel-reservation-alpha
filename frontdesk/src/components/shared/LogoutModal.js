@@ -43,8 +43,6 @@ const LogoutModal = () => {
 		setSureModalDisplay_func(false)
 	}
 
-	console.log("sureModalDisplay => " + sureModalDisplay);
-
 	return (
 		<>
 			<div className="font-poppins fixed inset-x-0 inset-y-0 w-fit h-fit z-30 m-auto">

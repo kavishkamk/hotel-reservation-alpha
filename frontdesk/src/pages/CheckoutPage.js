@@ -26,17 +26,11 @@ const CheckoutPage = () => {
 	const [email, setEmail] = useState(Auth.getClientEmail());
 	const [clientData, setClientData] = useState({});
 	const [reservations, setReservations] = useState([]);
-	
-	const searchHandler = (input) => {
-		console.log(input);
-		// setEmail(input);
-	};
 
 	useEffect(() => {
 		async function getUserByEmail(email) {
 			const data =
 				await Dashboard__connection.getUserByEmail(email);
-			// console.log(data);
 
 			if (data.error) {
 				setMessage_func(false, data.error);
@@ -57,7 +51,6 @@ const CheckoutPage = () => {
 		}
 
 		if (email.length > 0) {
-			// console.log(email);
 			getUserByEmail(email);
 		}
 	}, [email]);
@@ -113,7 +106,6 @@ const CheckoutPage = () => {
 	const checkoutHandler = async (id) => {
 		if (Object.keys(clientData).length > 0) {
 			const res = await Checkout__connection.setCheckout(id);
-			console.log(res);
 
 			if (res.error) {
 				setMessage_func(false, res.error);

@@ -1,7 +1,5 @@
 import React from 'react'
 import RoomSelect from "./RoomSelect"
-import PackageSelect from "./PackageSelect"
-import OfferSelect from "./OfferSelect"
 import RestaurentSelect from "./RestaurentSelect"
 
 const ItemsFilter = (props) => {
@@ -11,8 +9,6 @@ const ItemsFilter = (props) => {
 	const setFormData = props.setFormData;
 
 	let container
-
-	console.log(formData)
 
 	if (formData.type === 1) {
 		container = (

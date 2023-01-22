@@ -4,7 +4,5 @@ import auth from "./functions/Auth";
 
 export const ProtectedRoute = ({ children }) => {
 	const authStatus = auth.isAuthenticated();
-	// const authStatus = false
-
 	return authStatus ? children : <Navigate to="/login" />;
 };

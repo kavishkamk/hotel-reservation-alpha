@@ -63,8 +63,6 @@ const TabsContent = (props) => {
 		const pendingResultData =
 			await Booking__connection.getAllPending();
 
-		console.log(pendingResultData);
-
 		if (pendingResultData.error) {
 			await setMessage_func(false, pendingResultData.error);
 			await setMessageStatus_func();
@@ -108,8 +106,6 @@ const TabsContent = (props) => {
 					};
 				})
 			);
-
-			console.log(pendingResult);
 			setPendingData(pendingResult);
 		}
 	};
@@ -150,8 +146,7 @@ const TabsContent = (props) => {
 						checkout: checkout,
 						guests: item.numberOfPersons,
 						room: roomName,
-						roomCount: item.numberOfRooms,
-						// payment: "",
+						roomCount: item.numberOfRooms
 					};
 				})
 			);
@@ -251,11 +246,9 @@ const TabsContent = (props) => {
 	}, [refreshTab])
 
 	useEffect(()=> {
-		console.log(deleteLine)
 		if(deleteLine.length > 0) {
 			const newPendingData = pendingData
 				.map((item) => {
-					console.log(item);
 					if (deleteLine !== item.id) {
 						return item;
 					}
@@ -263,14 +256,12 @@ const TabsContent = (props) => {
 				.filter(
 					(notUndefined) => notUndefined !== undefined
 				);
-			console.log(newPendingData)
 			setPendingData(newPendingData)
 			setDeleteLine("")
 		}
 	}, [deleteLine])
 
 	const deleteLineHandler = (id, refreshTab) => {
-		console.log(id + ", "+ refreshTab)
 		setDeleteLine(id)
 		setRefreshTab(refreshTab)
 	}

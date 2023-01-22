@@ -30,10 +30,6 @@ const ProfilePage = () => {
 		setUser(user);
 	}, []);
 
-	// useEffect(()=> {
-	// 	console.log(user)
-	// }, [user])
-
 	useEffect(() => {
 		async function fetchData(setuser) {
 			const data = await Profile__connection.editUser(
@@ -42,8 +38,6 @@ const ProfilePage = () => {
 			await setEditedUser(data)
 			return data;
 		}
-
-		// console.log("edited => " + edited);
 
 		if (edited === true) {
 			// send edited user data

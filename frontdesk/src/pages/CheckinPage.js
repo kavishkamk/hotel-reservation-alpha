@@ -54,7 +54,6 @@ const CheckinPage = () => {
 					const checkin = Dates.formatDate(item.fromDate);
 					const checkout = Dates.formatDate(item.toDate);
 
-					// console.log(item);
 					return {
 						id: item.id,
 						checkin: checkin,
@@ -77,7 +76,6 @@ const CheckinPage = () => {
 		async function getUserByEmail(email) {
 			const data =
 				await Dashboard__connection.getUserByEmail(email);
-			// console.log(data);
 
 			if (data.error) {
 				setMessage_func(false, data.error);
@@ -98,7 +96,6 @@ const CheckinPage = () => {
 		}
 
 		if (email.length > 0) {
-			// console.log(email);
 			getUserByEmail(email);
 			getBookingSummary(clientData.id);
 		}
@@ -107,7 +104,6 @@ const CheckinPage = () => {
 	const checkinHandler = async (id) => {
 		if (Object.keys(clientData).length > 0) {
 			const res = await Checkin__connection.setCheckin(id);
-			console.log(res)
 
 			if (res.error) {
 				setMessage_func(false, res.error);

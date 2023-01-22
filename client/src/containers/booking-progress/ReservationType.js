@@ -1,13 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-
-// images
-// import offersImage from "../../assets/booking-progress/offers.png";
-// import packagesImage from "../../assets/booking-progress/packages.png";
 import restaurentsImage from "../../assets/booking-progress/restaurents.png";
 import roomsImage from "../../assets/booking-progress/rooms.png";
-
-// components
-// import BackButton from "../../components/booking-progress/BackButton";
 import NextButton from "../../components/booking-progress/NextButton";
 import Container from "../../components/booking-progress/Container";
 import Topic from "../../components/booking-progress/Topic";
@@ -15,8 +8,7 @@ import Topic from "../../components/booking-progress/Topic";
 const ReservationType = (props) => {
 	const [selected, setSelected] = useState();
 	const ref = useRef();
-
-	// props
+	
 	const page = props.page
 	const setPage = props.setPage
 	const formData = props.formData
@@ -94,8 +86,6 @@ const ReservationType = (props) => {
 			</div>
 
 			<div className="flex flex-row mt-auto">
-				{/* <BackButton onClick={backHandler} /> */}
-
 				<div className="ml-auto">
 					<NextButton onClick={nextHandler} />
 				</div>
