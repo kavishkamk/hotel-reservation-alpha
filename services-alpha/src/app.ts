@@ -23,7 +23,7 @@ app.set("trust proxy", "127.0.0.1");
 //     next();
 // });
 
-const allowedOrigins = ['http://localhost:3000', "*"];
+const allowedOrigins = ['http://localhost:3000', "https://golden-aurora-hotel.vercel.app", "https://golden-aurora-admin.vercel.app", "*"];
 
 const options: cors.CorsOptions = {
     origin: allowedOrigins

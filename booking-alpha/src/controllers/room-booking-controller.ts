@@ -332,7 +332,7 @@ const getPendingRoomReservation = async (req: Request, res: Response, next: Next
     let reservationList;
 
     try {
-        reservationList = await Order.find({ status: ReservationStatus.Created }).exec();
+        reservationList = await Order.find({ status: ReservationStatus.Created }).populate("roomType").exec();
     } catch (err) {
         return next(err);
     }
