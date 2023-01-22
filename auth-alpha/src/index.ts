@@ -29,18 +29,7 @@ const start = () => {
     };
 
     //connect to the testing database 
-    mongoose.connect(`mongodb+srv://alpha:jqvfzQGm4C6lXafM@alpha-db.j2hgeoj.mongodb.net/?retryWrites=true&w=majority`)
-        .then(() => {
-            console.log("Succesfully connected to the Database");
-            app.listen(port, () => {
-                console.log("Server start on port: " + port);
-            });
-        })
-        .catch(err => {
-            console.log("DB connection Failed. Could not connect to the database: " + err);
-        });
-
-    // mongoose.connect(process.env.MONGO_URI)
+    // mongoose.connect(`mongodb+srv://alpha:jqvfzQGm4C6lXafM@alpha-db.j2hgeoj.mongodb.net/?retryWrites=true&w=majority`)
     //     .then(() => {
     //         console.log("Succesfully connected to the Database");
     //         app.listen(port, () => {
@@ -50,6 +39,17 @@ const start = () => {
     //     .catch(err => {
     //         console.log("DB connection Failed. Could not connect to the database: " + err);
     //     });
+
+    mongoose.connect(process.env.MONGO_URI)
+        .then(() => {
+            console.log("Succesfully connected to the Database");
+            app.listen(port, () => {
+                console.log("Server start on port: " + port);
+            });
+        })
+        .catch(err => {
+            console.log("DB connection Failed. Could not connect to the database: " + err);
+        });
 };
 
 start();
