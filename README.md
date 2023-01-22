@@ -4,6 +4,11 @@
 
 ## Front dest url
 - https://golden-aurora-admin.vercel.app/
+- admin account for log into front desk
+```
+    username: micronovo234@gmail.com
+    password: alphahotel
+```
 
 
 ## API Request URL
@@ -44,6 +49,7 @@
 - bull.js for handle expiration service
 - use Redis Server for expiration service
 - use mongoDB as a database
+- Cluster IP service for internal communication
 - use docker for containerized the each service
 - kubernetes for manage containers
 - use Google kubernetes engine for host micro services and use it as a development cluste then convert to production cluster
@@ -52,7 +58,7 @@
 - Authentication and Autherization (JWT token, email verifications)
 - Front end hosted on vercel
 - Configure a domain for backend cluster
-- Configure a SSL certificate to server throug ingress-nginx
+- Configure a SSL certificate to server through ingress-nginx
 
 
 
