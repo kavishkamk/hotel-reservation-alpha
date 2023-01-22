@@ -27,7 +27,6 @@ class Auth__connection {
 			}),
 		});
 		const data = await res.json();
-		console.log(data);
 
 		let value = {};
 
@@ -86,7 +85,6 @@ class Auth__connection {
 			}),
 		});
 		const data = await res.json();
-		console.log(data)
 		
 		let value = {};
 
@@ -119,9 +117,6 @@ class Auth__connection {
 			}),
 		});
 		const data = await res.json();
-
-		console.log(email + ","+ code)
-		console.log(data)
 
 		let value = {}
 
@@ -181,7 +176,6 @@ class Auth__connection {
 			headers: { "Content-Type": "application/json" },
 		});
 		const data = await res.json();
-		console.log(data);
 		if (Object.keys(data).length === 0) {
 			return true;
 		} else return false;

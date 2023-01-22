@@ -10,7 +10,6 @@ import {DefaultContext} from "../context/DefaultContext"
 
 const BookingPage = (props) => {
 	const location = useLocation();
-	console.log(location.state);
 
 	const {setMessageStatus_func, setMessage_func, messageStatus} = useContext(DefaultContext)
 
@@ -68,11 +67,8 @@ const BookingPage = (props) => {
 			setPage={setPage}
 			formData={formData}
 			setFormData={setFormData}
-			// backHide={backHide}
 		/>,
 	];
-
-	console.log(page)
 
 	return (
 		<div className="relative top-16 min-h-[calc(100vh-10rem)]">

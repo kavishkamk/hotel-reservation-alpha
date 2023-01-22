@@ -1,7 +1,4 @@
 import React from "react";
-
-// images
-// import cardImage from "../../assets/cards/card-image.png"
 import starsImage from "../../assets/cards/5stars.png";
 import wifiIcon from "../../assets/cards/wifi.svg";
 import handIcon from "../../assets/cards/hand.svg";
@@ -29,7 +26,6 @@ const CardFront = (props) => {
 				{
 					starsDisplay
 				}
-				{/* <img src={starsImage} alt="stars" /> */}
 			</div>
 
 			<div className="relative w-fit mx-auto">

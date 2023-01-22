@@ -42,21 +42,18 @@ export default function Gallery() {
 						>
 							<SwiperSlide>
 								<img
-									// className="object-fill"
 									src={img1}
 									alt="slide 1"
 								/>
 							</SwiperSlide>
 							<SwiperSlide>
 								<img
-									// className="object-fill"
 									src={img2}
 									alt="slide 2"
 								/>
 							</SwiperSlide>
 							<SwiperSlide>
 								<img
-									// className="object-fill"
 									src={img3}
 									alt="slide 3"
 								/>

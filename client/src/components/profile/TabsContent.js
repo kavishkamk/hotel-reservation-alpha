@@ -228,8 +228,6 @@ const TabsContent = (props) => {
 	}, []);
 
 	const paymentHandler = async (item) => {
-		console.log(item);
-
 		const data1 = await Rooms__connection.getFullRoomById(
 			item.roomId
 		);
@@ -259,10 +257,6 @@ const TabsContent = (props) => {
 		});
 		setPaymentStatus(true);
 	};
-
-	useEffect(() => {
-		console.log(paymentData);
-	}, [paymentData]);
 
 	return (
 		<>

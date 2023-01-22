@@ -67,7 +67,6 @@ class Rooms__connection {
 		}
 
 		const tags = data.tags;
-		// console.log(tags);
 
 		let tagsFormat = [];
 		let count = 0;
@@ -81,7 +80,6 @@ class Rooms__connection {
 			count += 1;
 		});
 
-		// console.log(tagsFormat);
 		return tagsFormat;
 	}
 
@@ -117,7 +115,6 @@ class Rooms__connection {
 			});
 		});
 
-		// console.log(rooms);
 		return rooms;
 	}
 
@@ -137,7 +134,6 @@ class Rooms__connection {
 		});
 
 		const data = await res.json();
-		console.log(data);
 		let rooms = [];
 
 		const details = Rooms__connection.#roomDetails;
@@ -173,7 +169,6 @@ class Rooms__connection {
 		});
 
 		const data = await res.json();
-		// console.log(data)
 		let result = {};
 
 		if (data.room) {
@@ -198,7 +193,6 @@ class Rooms__connection {
 		});
 
 		const data = await res.json();
-		// console.log(data)
 		let result = {};
 
 		const details = Rooms__connection.#roomDetails;
@@ -237,7 +231,6 @@ class Rooms__connection {
 		});
 
 		const data = await res.json();
-		// console.log(data);
 
 		let rooms = [];
 

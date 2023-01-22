@@ -1,7 +1,5 @@
 import React, { useContext } from "react";
 import { DefaultContext } from "../../context/DefaultContext";
-
-// images
 import cardImage from "../../assets/cards/card-image.png";
 import starsImage from "../../assets/cards/5stars.png";
 import favIcon from "../../assets/cards/fav-icon.svg";
@@ -65,20 +63,6 @@ const CardBack = (props) => {
 				</div>
 
 				<div className=" absolute bottom-0 left-0 right-0">
-					{/* <div className="flex flex-row w-full mx-auto justify-evenly items-center">
-						<div onClick={reviewHandler} className="cursor-pointer">
-							<img src={reviewIcon} alt="review" />
-						</div>
-
-						<div onClick={favHandler} className="cursor-pointer">
-							<img src={favIcon} alt="favourite" />
-						</div>
-
-						<div onClick={shareHandler} className="cursor-pointer">
-							<img src={shareIcon} alt="share" />
-						</div>
-					</div> */}
-
 					<div className="bg-black flex flex-row py-3 w-full justify-evenly">
 						{!hideBookBtn && (
 							<button

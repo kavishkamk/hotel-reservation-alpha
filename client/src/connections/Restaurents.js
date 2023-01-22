@@ -71,7 +71,6 @@ class Restaurents__connection {
 			count += 1;
 		});
 
-		// console.log(tagsFormat);
 		return tagsFormat;
 	}
 
@@ -93,8 +92,6 @@ class Restaurents__connection {
 		const details = Restaurents__connection.#details
 		const images = Restaurents__connection.#images
 
-		// console.log(data)
-
 		data.restaurent.forEach((item)=> {
 			restaurents.push({
 				id: item.id,
@@ -108,7 +105,6 @@ class Restaurents__connection {
 			})
 		})
 
-		// console.log(restaurents)
 		return restaurents
 	}
 
@@ -134,8 +130,6 @@ class Restaurents__connection {
 		const details = Restaurents__connection.#details;
 		const images = Restaurents__connection.#images;
 
-		// console.log(data);
-
 		data.restaurents.forEach((item) => {
 			restaurents.push({
 				id: item.id,
@@ -149,7 +143,6 @@ class Restaurents__connection {
 			});
 		});
 
-		console.log(restaurents);
 		return restaurents;
 	}
 
@@ -167,7 +160,6 @@ class Restaurents__connection {
 		});
 
 		const data = await res.json();
-		// console.log(data)
 		let result = {};
 
 		const details = Restaurents__connection.#details;
@@ -206,12 +198,7 @@ class Restaurents__connection {
 		});
 
 		const data = await res.json();
-		// console.log(data);
-
 		let restaurents = [];
-
-		// const details = Restaurents__connection.#details;
-		// const images = Restaurents__connection.#images;
 
 		data.freeRestaurentList.forEach(async (item) => {
 			const restaurent = await this.getFullRestaurentById(item.id);

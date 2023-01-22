@@ -27,7 +27,6 @@ const RestaurentSelect = (props) => {
 		async function getAllTags() {
 			const data =
 				await Restaurents__connection.getAllTags();
-			console.log(data);
 			await setTags(data);
 		}
 
@@ -45,7 +44,6 @@ const RestaurentSelect = (props) => {
 				await Restaurents__connection.filterRestaurents(
 					selectedTags
 				);
-			console.log(data);
 			setSearchResult(data);
 		}
 		if (selected.length > 0) {
@@ -100,10 +98,6 @@ const RestaurentSelect = (props) => {
 
 			<div className="flex flex-row mt-auto">
 				<BackButton onClick={backHandler} />
-
-				{/* <div className="ml-auto">
-					<NextButton onClick={nextHandler} />
-				</div> */}
 			</div>
 		</Container>
 	);

@@ -6,18 +6,12 @@ const SingleDropdown = memo((props) => {
 	const setSelected = props.setSelected
 
 	const [option, setOption] = useState()
-
 	let selection = []
-	// if(props.meals !== null) selection = props.meals
-	// else selection = []
 
 	useEffect(()=> {
 		if(option !== null){
 			setSelected(option)
 		}
-		// if(selection.length >0){
-		// 	setSelected(selection);
-		// }
 	}, [option])
 
 	return (
@@ -31,11 +25,7 @@ const SingleDropdown = memo((props) => {
 							({ label }) => label
 						)}
 						onChange={(values) => {
-							// selection = values;
 							setOption(values)
-							console.log(values)
-							console.log(option)
-							// setSelected(selection)
 						}}
 					/>
 				</div>

@@ -16,7 +16,6 @@ class RoomBook__connection {
 		});
 
 		const data = await res.json();
-		console.log(data);
 		let result = {};
 
 		if (data.booking){
@@ -46,7 +45,6 @@ class RoomBook__connection {
 		});
 
 		const data = await res.json();
-		console.log(data);
 		let result={}
 
 		if(data.errors){

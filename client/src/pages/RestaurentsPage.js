@@ -27,9 +27,6 @@ const RestaurentsPage = () => {
 		useContext(DefaultContext);
 
 	const searchHandler = async () => {
-		// console.log(selectedTags);
-		// parse the selected tags to the backend
-
 		const data = await Restaurents__connection.filterRestaurents(selectedTags)
 		setSearchResult(data)
 	};
@@ -42,17 +39,11 @@ const RestaurentsPage = () => {
 	};
 
 	useEffect(() => {
-		// console.log(formData);
-
 		async function checkAvailability(check) {
 			const data =
 				await Restaurents__connection.checkAvailability(
 					check
 				);
-			// console.log(data)
-
-			// TODO: available list couldn't re-render
-			// await setSearchResult(data)
 
 			setBookHide(false);
 			setMessage_func(true, "Available Restaurents List updated!");

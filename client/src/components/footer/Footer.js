@@ -1,6 +1,4 @@
 import React from 'react'
-
-// images
 import Socials from "../../assets/home-page/social-medias.png"
 
 const Footer = () => {

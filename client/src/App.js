@@ -39,11 +39,6 @@ function App() {
 		setDetailPopup_func(!detailPopup);
 	};
 
-	// useEffect(()=> {
-	// 	console.log("login status changed ==> "+ loginStatus)
-		
-	// },[loginStatus])
-
 	return (
 		<>
 			{/* blurred background when a detailPopup is showing */}
@@ -71,7 +66,6 @@ function App() {
 				/>
 			)}
 
-			{/* {loginStatus > 0 && (<Navbar />)} */}
 			{loginStatus && <Navbar loginStatus={loginStatus} />}
 
 			<Routes>

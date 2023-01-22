@@ -38,13 +38,10 @@ const CheckinCheckout = (props) => {
 	] = useState([]);
 
 	useEffect(() => {
-		console.log(formData);
-
 		async function checkAvailabilityRooms(check) {
 			const data =
 				await Rooms__connection.checkAvailability(check);
 
-			console.log(data);
 			setSearchResult(data);
 		}
 
@@ -53,7 +50,6 @@ const CheckinCheckout = (props) => {
 				await Restaurents__connection.checkAvailability(
 					check
 				);
-			console.log(data);
 			setSearchResultRestaurents(data);
 		}
 

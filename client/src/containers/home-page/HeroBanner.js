@@ -1,7 +1,5 @@
 import React from 'react'
 import { useNavigate } from "react-router-dom";
-
-// images
 import Hero from "../../assets/home-page/hero.png"
 import Calendar from "../../assets/home-page/calendar.svg"
 

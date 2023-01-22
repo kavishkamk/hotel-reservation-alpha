@@ -8,16 +8,12 @@ const SelectDate = (props) => {
 	const [guests, setGuests] = useState();
 	const [rooms, setRooms] = useState();
 
-	// props
 	const formData = props.formData;
 	const setFormData = props.setFormData;
 
 	let availability = false;
 
 	useEffect(() => {
-		console.log("form get ==> ");
-		console.log(formData);
-
 		if (formData.checkin) {
 			setCheckinDate(formData.checkin);
 			setCheckoutDate(formData.checkout);
@@ -44,12 +40,6 @@ const SelectDate = (props) => {
 			guestCountInput &&
 			roomsCountInput
 		) {
-			console.log(
-				checkinInput,
-				checkoutInput,
-				guestCountInput,
-				roomsCountInput
-			);
 
 			setFormData({
 				...formData,
@@ -58,20 +48,6 @@ const SelectDate = (props) => {
 				guests: guestCountInput,
 				rooms: roomsCountInput,
 			});
-
-			// checkbtnRef.current.classList.remove(
-			// 	"bg-lightPurple"
-			// );
-
-			// ***********************************
-			// if selected dates available, display "available"
-			// if (availability) {
-			// 	checkbtnRef.current.classList.add("bg-[#10B981]");
-			// 	setCheckStatus(true);
-			// }else if(availability === false) {
-			// 	checkbtnRef.current.classList.add("bg-red-400");
-			// 	setCheckStatus(false);
-			// }
 		}
 	};
 
@@ -89,15 +65,9 @@ const SelectDate = (props) => {
 		let text;
 		if(checkStatus === null)
 			text = `CHECK AVAILABILITY`
-		
 		else
 			text = `CHECK AVAILABILITY`;
-
-		// else if(checkStatus === true) 
-		// 	text = `AVAILABLE`
-		// else if(checkStatus === false)
-		// 	text = `NOT AVAILABLE`
-		
+			
 			return text
 	}
 
