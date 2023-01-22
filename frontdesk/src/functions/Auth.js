@@ -99,13 +99,6 @@ class Auth {
 		);
 	}
 
-	// getPrintReserveStatus() {
-	// 	const tokenString =
-	// 		sessionStorage.getItem("print_reserve_status");
-	// 	const data = JSON.parse(tokenString);
-	// 	return data ? data : "";
-	// }
-
 	getPrintReserveData() {
 		const tokenString =
 			sessionStorage.getItem("print_reserve");

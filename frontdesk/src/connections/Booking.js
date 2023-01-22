@@ -41,7 +41,6 @@ class Booking__connection {
 
 		if(data.roomPayments) {
 			let url = data.roomPayments.slipUrl.substring(8,)
-			// console.log(url)
 			return url
 
 		}else {
@@ -63,7 +62,6 @@ class Booking__connection {
 			},
 		});
 		const data = await res.json();
-		// console.log(data);
 		let result = {}
 
 		if(data.reservationList) {
@@ -88,7 +86,6 @@ class Booking__connection {
 			},
 		});
 		const data = await res.json();
-		// console.log(data);
 		let result = {};
 
 		if (data.reservationList) {
@@ -114,7 +111,6 @@ class Booking__connection {
 			},
 		});
 		const data = await res.json();
-		// console.log(data);
 		let result = {};
 
 		if (data.reservationList) {
@@ -139,7 +135,6 @@ class Booking__connection {
 			},
 		});
 		const data = await res.json();
-		// console.log(data);
 		let result = {};
 
 		if (data.bookings) {
@@ -156,8 +151,6 @@ class Booking__connection {
 			main.url + "/booking/room-booking/cancel/"+ id;
 		const token = Auth.getToken();
 
-		// console.log(thisUrl)
-
 		const res = await fetch(thisUrl, {
 			method: "PATCH",
 			headers: {
@@ -166,7 +159,6 @@ class Booking__connection {
 			},
 		});
 		const data = await res.json();
-		// console.log(data);
 		let result;
 
 		if (data.request === "success") {

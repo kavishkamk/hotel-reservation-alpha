@@ -39,7 +39,6 @@ const ReservationForm = (props) => {
 				await Dashboard__connection.checkAvailability(
 					check
 				);
-			console.log(data);
 
 			// set rooms list according to the availability
 			if (data.error) {
@@ -59,15 +58,11 @@ const ReservationForm = (props) => {
 		}
 
 		if (formData) {
-			console.log(formData);
 			const diff = Dates.getDifferenceInDays(
 				formData.checkin,
 				formData.checkout
 			);
-			console.log("diff => " + diff);
 			setMultiply(diff * formData.rooms);
-
-			console.log(props.clientId);
 
 			// check availability
 			const checkData = {
@@ -83,14 +78,6 @@ const ReservationForm = (props) => {
 	useEffect(() => {
 		setAvailableRooms(props.roomsList);
 	}, [props.roomsList]);
-
-	// const availableRooms = [
-	// 	{
-	// 		id: 1,
-	// 		name: "Executive Garden Room",
-	// 		price: 15000,
-	// 	}
-	// ];
 
 	const roomCheckHandler = (event, id, room) => {
 		const status = event.target.checked;
@@ -112,7 +99,6 @@ const ReservationForm = (props) => {
 		setSure_func("Confirm the reservation ?", "Confirm");
 		setSureStatus_func();
 
-		console.log(selectedRooms);
 		await setSubmitHandleStatus(true);
 	};
 
@@ -149,12 +135,9 @@ const ReservationForm = (props) => {
 				clientId: props.clientId,
 				email: props.email
 			};
-			console.log("confirm booking");
 			fetchData(book);
 			setSureVerify_func(false);
 			setSubmitHandleStatus(false);
-
-			// console.log(Object.keys(reservationData).length);
 		}
 	}, [sureVerify, submitHandleStatus]);
 

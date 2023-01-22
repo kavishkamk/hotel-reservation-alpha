@@ -7,7 +7,6 @@ import Booking__connection from "../../../connections/Booking";
 import { DefaultContext } from "../../../context/DefaultContext";
 
 const TableBody = (props) => {
-	// console.log(props.data.id);
 	const [cancelBookStatus, setCancelBookStatus] =
 		useState(false);
 	const [approveBookStatus, setApproveBookStatus] = useState(false);
@@ -25,7 +24,6 @@ const TableBody = (props) => {
 	} = useContext(DefaultContext);
 
 	const cancelBookHandler = async (id) => {
-		console.log("cancelled => " + id);
 		await setCancelBookId(id);
 		await setSureModalDisplay_func(true);
 		await setSure_func(
@@ -38,7 +36,6 @@ const TableBody = (props) => {
 	};
 
 	const approveBookHandler = async (id) => {
-		console.log("approved => " + id);
 		await setApproveBookId(id)
 		await setSureModalDisplay_func(true);
 		await setSure_func(

@@ -7,7 +7,6 @@ const SearchEmail = (props) => {
 	const searchHandler = () => {
 		const input = document.getElementById("searchInput").value;
 		props.onClick(input);
-		// document.getElementById("searchInput").value = ""
 	};
 
 	const deleteEmailHandler = async () => {

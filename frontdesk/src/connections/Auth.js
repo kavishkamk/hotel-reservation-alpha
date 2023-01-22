@@ -15,8 +15,6 @@ class Auth__connection {
 		const data = await res.json();
 		let value = {}
 
-		// console.log(data)
-
 		if(data.errorType){
 			value.status = false
 
@@ -44,7 +42,6 @@ class Auth__connection {
 			headers: { "Content-Type": "application/json" },
 		});
 		const data = await res.json();
-    console.log(data)
 		if(Object.keys(data).length === 0){
 			return true
 		}else return false

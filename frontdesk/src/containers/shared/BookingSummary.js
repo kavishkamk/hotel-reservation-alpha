@@ -14,8 +14,6 @@ const BookingSummary = (props) => {
 		if (props.reservations) {
 			setData();
 		}
-
-		console.log("reservation");
 	}, [props.reservations]);
 
 	return (

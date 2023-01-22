@@ -36,7 +36,6 @@ const BookingPage = () => {
 	];
 
 	const tabSelectHandler = (id) => {
-		// console.log(id);
 		setSelected(id);
 	};
 

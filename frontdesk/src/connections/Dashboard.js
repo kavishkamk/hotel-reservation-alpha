@@ -7,9 +7,6 @@ class Dashboard__connection {
 		const thisUrl = main.url + "/users/email/" + email;
 		const token = Auth.getToken();
 
-		// console.log(thisUrl);
-		// console.log(token);
-
 		const res = await fetch(thisUrl, {
 			method: "GET",
 			headers: {
@@ -44,7 +41,6 @@ class Dashboard__connection {
 			body: JSON.stringify(client),
 		});
 		const data = await res.json();
-		console.log(data);
 
 		let result = {};
 
@@ -123,14 +119,12 @@ class Dashboard__connection {
 			},
 		});
 		const data = await res.json();
-		// console.log(data);
 		
 		let result = {
 			data : []
 		};
 
 		if(data.roomType){
-			// result.data = data.roomType
 			data.roomType.forEach((roomType) => {
 				result.data.push({
 					id: roomType.id,
@@ -142,8 +136,6 @@ class Dashboard__connection {
 		else {
 			result.error = "Rooms list couldn't be retrieved"
 		}
-
-		// console.log(result)
 		return result;
 	}
 
@@ -161,7 +153,6 @@ class Dashboard__connection {
 			body: JSON.stringify(check),
 		});
 		const data = await res.json();
-		console.log(data);
 		let result = {
 			rooms: []
 		}
@@ -195,7 +186,6 @@ class Dashboard__connection {
 			body: JSON.stringify(book)
 		});
 		const data = await res.json();
-		console.log(data);
 
 		let result = {};
 		if(data.booking){
@@ -212,8 +202,6 @@ class Dashboard__connection {
 			main.url + "/payments/room-type/set-to-paid/"+ orderId;
 		const token = Auth.getToken();
 
-		console.log(thisUrl)
-
 		const res = await fetch(thisUrl, {
 			method: "PATCH",
 			headers: {
@@ -222,7 +210,6 @@ class Dashboard__connection {
 			}
 		});
 		const data = await res.json();
-		console.log(data);
 
 		if(data.order){
 			return true

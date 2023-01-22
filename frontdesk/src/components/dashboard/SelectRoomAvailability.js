@@ -8,23 +8,10 @@ const SelectRoomAvailability = (props) => {
 	const [guests, setGuests] = useState();
 	const [rooms, setRooms] = useState();
 
-	// props
 	const formData = props.formData;
 	const setFormData = props.setFormData;
 
 	let availability = false;
-
-	useEffect(() => {
-		// console.log("form get ==> ");
-		// console.log(formData);
-
-		// if (formData.checkin) {
-		// 	setCheckinDate(formData.checkin);
-		// 	setCheckoutDate(formData.checkout);
-		// 	setGuests(formData.guests);
-		// 	// setRooms(formData.rooms);
-		// }
-	}, [formData]);
 
 	// check for availability
 	const checkHandler = () => {
@@ -69,15 +56,6 @@ const SelectRoomAvailability = (props) => {
 	const RoomsInputHandler = (e) => {
 		if (e.target.value < 1) e.target.value = 1;
 	};
-
-	// const StatusDisplayHandler = (checkStatus) => {
-	// 	let text;
-	// 	if (checkStatus === null) text = `CHECK AVAILABILITY`;
-	// 	else if (checkStatus === true) text = `AVAILABLE`;
-	// 	else if (checkStatus === false) text = `NOT AVAILABLE`;
-
-	// 	return text;
-	// };
 
 	return (
 		<div className="mx-auto w-full">

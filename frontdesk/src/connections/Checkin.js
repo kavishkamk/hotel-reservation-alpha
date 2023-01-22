@@ -18,7 +18,6 @@ class Checkin__connection {
 			},
 		});
 		const data = await res.json();
-		console.log(data)
 		let result = {}
 
 		if(data.reservationList){
@@ -40,8 +39,6 @@ class Checkin__connection {
 		return result;
 	}
 
-	// async setPaid(orderId) {}
-
 	async setCheckin(id) {
 		const thisUrl =
 			main.url + "/booking/room-booking/checkIn/" + id;
@@ -55,7 +52,6 @@ class Checkin__connection {
 			},
 		});
 		const data = await res.json();
-		console.log(data)
 
 		let result = {};
 

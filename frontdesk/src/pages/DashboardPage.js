@@ -63,7 +63,6 @@ const DashboardPage = () => {
 			} 
 			else if(data.data) {
 				const rooms = data.data;
-				// console.log(rooms)
 				await setRoomsList(rooms);
 			}
 		}
@@ -72,15 +71,12 @@ const DashboardPage = () => {
 		getReservationtCount()
 		getPaymentCount()
 		getAllRooms();
-
-		// console.log(roomsList);
 	}, []);
 
 	useEffect(() => {
 		async function getUserByEmail(email) {
 			const data =
 				await Dashboard__connection.getUserByEmail(email);
-			console.log(data);
 
 			if (data.error) {
 				setMessage_func(false, data.error);
@@ -101,22 +97,18 @@ const DashboardPage = () => {
 		}
 
 		if (email.length > 0) {
-			console.log(email);
 			getUserByEmail(email);
 		}else {
-			// console.log("clear all");
 			setClientData({})
 			setClientId("")
 		}
 	}, [email]);
 
 	const searchHandler = (input) => {
-		// console.log(input)
 		setEmail(input);
 	};
 
 	const clientRegisterHandler = async (client) => {
-		console.log(client);
 		const newClient = {
 			firstName: client["First Name"],
 			lastName: client["Last Name"],
@@ -140,7 +132,6 @@ const DashboardPage = () => {
 			);
 			setMessageStatus_func();
 		}
-		console.log(data);
 		setClientData(client);
 	};
 

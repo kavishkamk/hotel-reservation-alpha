@@ -18,14 +18,10 @@ const LoginPage = () => {
 	const navigate = useNavigate()
 
 	const loginHandler = async (email, password)=> {
-		console.log(email)
-		console.log(password)
-
 		const result = await Auth__connection.loginHandler(
 			email,
 			password
 		);
-		// console.log(result)
 
 		if(result.status === false){
 			setMessage_func(false, result.message)

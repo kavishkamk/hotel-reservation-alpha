@@ -3,25 +3,10 @@ import { Link } from "react-router-dom";
 import Input from "../dashboard/InputField";
 
 const SummaryContainer = (props) => {
-
 	const [order, setOrder] = useState(props.item)
-
-	// const paidHandler = () => {
-	// 	Auth.savePrintReserveData({
-
-	// 	})
-
-	// 	// make the payment
-	// 	window.open("/print", "_blank", 'height=full')
-	// };
-
-	const checkinHandler = () => {};
-
-	const checkoutHandler = () => {};
 
 	useEffect(()=> {
 		if(props.item){
-			// console.log(props.item)
 			setOrder(props.item)
 		}
 	}, [props.item])
