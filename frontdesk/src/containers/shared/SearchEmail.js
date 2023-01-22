@@ -26,12 +26,13 @@ const SearchEmail = (props) => {
 				<input
 					type="search"
 					name="Search"
-					placeholder="Search Email Address"
+					placeholder={props.onClick ? "Search Email Address": "Email Address"}
 					defaultValue={value}
 					id="searchInput"
 					className="w-full py-2 px-10 text-sm rounded-md focus:outline-none bg-white text-gray-700 focus:bg-gray-100 focus:border-indigo-200"
 				/>
-				<span className="absolute inset-y-0 right-2 flex items-center ">
+
+				{props.onClick && (<span className="absolute inset-y-0 right-2 flex items-center ">
 					<button
 						type="button"
 						title="search"
@@ -50,7 +51,7 @@ const SearchEmail = (props) => {
 					<button onClick={deleteEmailHandler} className="bg-gray-300 my-1 px-2 rounded-lg font-bold ml-1">
 						x
 					</button>
-				</span>
+				</span>)}
 			</div>
 		</fieldset>
 	);

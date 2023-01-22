@@ -25,13 +25,7 @@ const CheckinPage = () => {
 
 	const [email, setEmail] = useState(Auth.getClientEmail());
 	const [clientData, setClientData] = useState({});
-
 	const [reservations, setReservations] = useState([]);
-
-	const searchHandler = (input) => {
-		console.log(input);
-		setEmail(input);
-	};
 
 	async function getBookingSummary(id) {
 		const checkinSummary =
@@ -110,33 +104,6 @@ const CheckinPage = () => {
 		}
 	}, [email]);
 
-	// const paidHandler = (printData) => {
-	// 	const nights = Dates.getDifferenceInDays(printData.checkin, printData.checkout)
-
-	// 	Auth.savePrintReserveData({
-	// 		id: printData.id,
-	// 		name: `${clientData["First Name"]} ${clientData["Last Name"]}`,
-	// 		email: clientData["Email"],
-	// 		phone: clientData["Contact No"],
-	// 		checkin: printData.checkin,
-	// 		checkout: printData.checkout,
-	// 		guests: printData.guests,
-	// 		room: {
-	// 			id: printData.roomType,
-	// 			name: printData.room,
-	// 			count: printData.roomCount,
-	// 			price: printData.roomPrice
-	// 		},
-	// 		total: printData.price,
-	// 		nights: nights,
-	// 		datesSet: true
-	// 	});
-
-	// 	console.log(Auth.getPrintReserveData());
-	// 	// make the payment
-	// 		window.open("/print", "_blank", 'height=full')
-	// };
-
 	const checkinHandler = async (id) => {
 		if (Object.keys(clientData).length > 0) {
 			const res = await Checkin__connection.setCheckin(id);
@@ -158,7 +125,7 @@ const CheckinPage = () => {
 		<PageContainer>
 			<div className="flex flex-row w-full items-start pt-2 font-manrope">
 				<div className="w-1/2 pl-10">
-					<SearchEmail onClick={searchHandler} />
+					<SearchEmail />
 					<ClientRegistration
 						email={email}
 						clientData={clientData}
