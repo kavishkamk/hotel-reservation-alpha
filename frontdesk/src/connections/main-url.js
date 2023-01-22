@@ -1,1 +1,1 @@
-export const url = "https://alphahotelreservation.dev/api";
+export const url = "https://kavishkamk.live/api";

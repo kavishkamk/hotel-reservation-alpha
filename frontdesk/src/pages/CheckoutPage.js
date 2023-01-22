@@ -25,28 +25,7 @@ const CheckoutPage = () => {
 
 	const [email, setEmail] = useState(Auth.getClientEmail());
 	const [clientData, setClientData] = useState({});
-
-	const [reservations, setReservations] = useState();
-	// [
-		// {
-		// 	id: 1,
-		// 	room: "Deluxe Room",
-		// 	checkin: "2022-12-18",
-		// 	checkout: "2022-12-21",
-		// 	guests: 3,
-		// 	roomCount: 2,
-		// 	price: 24000,
-		// },
-		// {
-		// 	id: 2,
-		// 	room: "Varenda Room",
-		// 	checkin: "2022-12-18",
-		// 	checkout: "2022-12-21",
-		// 	guests: 1,
-		// 	roomCount: 1,
-		// 	price: 10000,
-		// },
-	// ];
+	const [reservations, setReservations] = useState([]);
 	
 	const searchHandler = (input) => {
 		console.log(input);
@@ -131,10 +110,6 @@ const CheckoutPage = () => {
 		}
 	}, [clientData]);
 
-	// useEffect(() => {
-	// 	console.log(reservations);
-	// }, [reservations]);
-
 	const checkoutHandler = async (id) => {
 		if (Object.keys(clientData).length > 0) {
 			const res = await Checkout__connection.setCheckout(id);
@@ -159,7 +134,7 @@ const CheckoutPage = () => {
 		<PageContainer>
 			<div className="flex flex-row w-full items-start pt-2 font-manrope">
 				<div className="w-1/2 pl-10">
-					<SearchEmail onClick={searchHandler} />
+					<SearchEmail />
 					<ClientRegistration
 						email={email}
 						clientData={clientData}
