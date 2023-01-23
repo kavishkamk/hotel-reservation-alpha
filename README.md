@@ -6,7 +6,7 @@
 - https://golden-aurora-admin.vercel.app/
 - admin account for log into front desk
 ```
-    username: micronovo234@gmail.com
+    username: micronovo@gmail.com
     password: alphahotel
 ```
 
