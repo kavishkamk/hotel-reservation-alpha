@@ -58,7 +58,7 @@
 - Authentication and Autherization (JWT token, email verifications)
 - Front end hosted on vercel
 - Configure a domain for backend cluster
-- Configure a SSL certificate to server through ingress-nginx
+- Configure a SSL certificate to serve through ingress-nginx
 
 
 
