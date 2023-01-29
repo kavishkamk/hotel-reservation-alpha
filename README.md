@@ -1,3 +1,6 @@
+# Hotel Reservation System
+
+<!--
 ## Client site url
 - https://golden-aurora-hotel.vercel.app/
 
@@ -12,11 +15,11 @@
 
 
 ## API Request URL
-<!-- ```
+ ```
     https://alphahotelreservation.dev
-``` -->
+```
 - https://kavishkamk.live
-
+ -->
 ## Architecture Diagram
 <img src="https://github.com/kavishkamk/hotel-reservation-alpha/blob/main/images/diagrams/architecture-diagram.png" alt="Architectur" title="Architecture Diagram">
 
